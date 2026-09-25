@@ -3,6 +3,7 @@ import { useApi } from '../../shared/hooks/useApi';
 import { useInstalacao } from '../../shared/hooks/useInstalacao';
 import { useNotificacoes } from '../../shared/hooks/useNotificacoes';
 import { useSessao } from '../../shared/hooks/useSessao';
+import { useSincronizacao } from '../../shared/hooks/useSincronizacao';
 import type { PerfilDoApp } from '../../shared/api/tipos';
 import styles from './PerfilPage.module.scss';
 
@@ -38,6 +39,7 @@ export function PerfilPage({ perfil, aoVoltar }: { perfil: PerfilDoApp; aoVoltar
   const notificacoes = useNotificacoes();
   const instalacao = useInstalacao();
   const saude = useApi<SaudeDoSync>('/health/sync');
+  const sync = useSincronizacao(saude.recarregar);
 
   return (
     <div className={styles.tela}>
@@ -114,6 +116,31 @@ export function PerfilPage({ perfil, aoVoltar }: { perfil: PerfilDoApp; aoVoltar
             </ul>
           </div>
         )}
+
+        <button
+          type="button"
+          className={styles.secundario}
+          onClick={() => void sync.sincronizar()}
+          disabled={sync.rodando}
+        >
+          {sync.rodando ? 'Sincronizando…' : 'Sincronizar agora'}
+        </button>
+        {sync.rodando ? (
+          <p className={styles.apoio}>
+            Roda sessões, lançamentos, metadata e notas, nessa ordem. Leva alguns minutos; pode sair
+            desta tela que o servidor continua.
+          </p>
+        ) : null}
+        {sync.estado === 'concluido' ? (
+          <p className={styles.apoio} role="status">
+            Sincronização terminada.
+          </p>
+        ) : null}
+        {sync.erro ? (
+          <p className={styles.erro} role="alert">
+            {sync.erro}
+          </p>
+        ) : null}
       </section>
 
       <div className={styles.rodape}>

@@ -6,6 +6,7 @@ import { IconeBusca, IconeRevisar, IconeSeta } from '../../shared/components/Ico
 import { PillFilter } from '../../shared/components/PillFilter';
 import { Trilha } from '../../shared/components/Trilha';
 import { useApi } from '../../shared/hooks/useApi';
+import { useSincronizacao } from '../../shared/hooks/useSincronizacao';
 import type {
   ContagemDaRevisao,
   Home,
@@ -58,6 +59,10 @@ export function HomePage({
   const query = useMemo(() => ({ user: perfil.id }), [perfil.id]);
   const home = useApi<Home>('/home', { query });
   const revisao = useApi<ContagemDaRevisao>('/review/count');
+  const sync = useSincronizacao(() => {
+    home.recarregar();
+    revisao.recarregar();
+  });
 
   const filtrando = tags.length > 0;
 
@@ -260,9 +265,22 @@ export function HomePage({
           ))}
 
           {trilhas.length === 0 ? (
-            <p className={styles.aviso}>
-              Nada por aqui ainda. Rode um sync para popular o catálogo.
-            </p>
+            <div className={styles.aviso}>
+              <p>
+                {sync.rodando
+                  ? 'Sincronizando com os cinemas… leva alguns minutos.'
+                  : 'Nada por aqui ainda. Sincronize para popular o catálogo.'}
+              </p>
+              <button
+                type="button"
+                className={styles.tentar}
+                onClick={() => void sync.sincronizar()}
+                disabled={sync.rodando}
+              >
+                {sync.rodando ? 'Sincronizando…' : 'Sincronizar agora'}
+              </button>
+              {sync.erro ? <p role="alert">{sync.erro}</p> : null}
+            </div>
           ) : null}
         </main>
       )}
