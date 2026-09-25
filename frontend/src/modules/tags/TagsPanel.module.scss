@@ -1,0 +1,159 @@
+@use '../../shared/styles/tokens' as t;
+
+// Medidas do modelo `mobile-tags.html`: painel de 262 px encostado na direita,
+// cantos arredondados só do lado de dentro, item de 48 px de altura.
+
+.fundo {
+  position: fixed;
+  inset: 0;
+  z-index: t.$z-overlay;
+  // a home continua visível por baixo, escurecida — é o que o modelo mostra
+  background: rgba(11, 10, 15, 0.55);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.painel {
+  width: 262px;
+  max-width: 82vw;
+  height: 100dvh;
+  padding: t.$space-8 0 calc(#{t.$space-8} + env(safe-area-inset-bottom, 0px));
+  border: 1px solid t.$border;
+  border-right: none;
+  border-radius: t.$radius-lg 0 0 t.$radius-lg;
+  background: #16131d;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-5;
+  animation: entrar 180ms ease-out;
+}
+
+@keyframes entrar {
+  from {
+    transform: translateX(100%);
+  }
+}
+
+.cabecalho {
+  flex-shrink: 0;
+  padding: 0 t.$space-8 0 t.$gutter;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: t.$space-4;
+}
+
+.titulo {
+  margin: 0;
+  font-size: t.$fs-md;
+}
+
+.acoes {
+  display: flex;
+  align-items: center;
+  gap: t.$space-2;
+}
+
+.limpar {
+  min-height: t.$touch-target;
+  min-width: 0;
+  padding: 0 t.$space-4;
+  color: t.$accent-on-soft;
+  font-size: t.$fs-sm;
+  font-weight: t.$fw-medium;
+}
+
+.fechar {
+  width: t.$touch-target;
+  height: t.$touch-target;
+  border-radius: t.$radius-lg;
+  color: t.$text-support;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lista {
+  flex: 1;
+  min-height: 0;
+  padding: 0 t.$gutter;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.grupo {
+  display: flex;
+  flex-direction: column;
+}
+
+.rotulo {
+  margin: 0;
+  padding: t.$space-7 0 t.$space-2;
+  font-family: t.$font-text;
+  font-size: t.$fs-2xs;
+  font-weight: t.$fw-medium;
+  letter-spacing: t.$ls-label;
+  text-transform: uppercase;
+  color: t.$text-group-label;
+}
+
+.item {
+  // o recuo negativo faz o realce do item ativo sangrar até a borda do texto
+  // sem empurrar o rótulo do grupo para dentro
+  margin-left: -#{t.$space-6};
+  width: calc(100% + #{t.$space-6} * 2);
+  min-height: 48px;
+  padding: 0 t.$space-6;
+  border-radius: t.$radius-md;
+  color: #e7e3ef;
+  font-size: t.$fs-md;
+  font-weight: t.$fw-medium;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: t.$space-4;
+}
+
+.ativa {
+  background: t.$accent-soft;
+  color: t.$accent-on-soft;
+}
+
+.nome {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.contagem {
+  flex-shrink: 0;
+  font-size: t.$fs-xs;
+  color: t.$text-group-label;
+}
+
+.ativa .contagem {
+  color: inherit;
+  opacity: 0.75;
+}
+
+.aviso {
+  padding: t.$space-8 0;
+  color: t.$text-support;
+  font-size: t.$fs-sm;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: t.$space-5;
+}
+
+.tentar {
+  padding: 0 t.$space-7;
+  border-radius: t.$radius-md;
+  background: t.$accent-soft;
+  border: 1px solid t.$accent;
+  color: t.$accent-on-soft;
+  font-size: t.$fs-sm;
+  font-weight: t.$fw-semibold;
+}

@@ -1,0 +1,215 @@
+@use '../../shared/styles/tokens' as t;
+
+.tela {
+  min-height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: t.$space-7 0 calc(#{t.$space-10} + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-7;
+  overflow-x: clip;
+
+  // o desktop segue o mobile (§3): a mesma coluna, um pouco mais larga
+  @media (min-width: t.$bp-desktop) {
+    max-width: 720px;
+  }
+}
+
+.cabecalho {
+  padding: 0 t.$gutter;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-5;
+}
+
+.linha {
+  display: flex;
+  align-items: center;
+  gap: t.$space-5;
+}
+
+.voltar {
+  width: t.$touch-target;
+  height: t.$touch-target;
+  flex-shrink: 0;
+  border-radius: t.$radius-lg;
+  border: 1px solid t.$border;
+  background: t.$surface-card;
+  color: t.$text-secondary;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.titulo {
+  margin: 0;
+  font-size: 24px;
+}
+
+.explicacao {
+  font-size: t.$fs-xs;
+  line-height: 1.5;
+  color: t.$text-support;
+}
+
+.filtros {
+  display: flex;
+  gap: t.$space-3;
+  padding: 0 t.$gutter;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.filtro {
+  min-height: 40px;
+  flex-shrink: 0;
+  padding: 0 t.$space-6;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border;
+  background: t.$surface-card;
+  color: #bdb6cc;
+  font-size: t.$fs-xs;
+  font-weight: t.$fw-medium;
+  white-space: nowrap;
+}
+
+.ativo {
+  background: t.$accent-soft;
+  border-color: transparent;
+  color: t.$accent-on-soft;
+  font-weight: t.$fw-semibold;
+}
+
+.lista {
+  padding: 0 t.$gutter;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-6;
+}
+
+.card {
+  padding: t.$space-7;
+  border-radius: t.$radius-xl;
+  background: t.$surface-card;
+  border: 1px solid #262233;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-5;
+}
+
+.bloco {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.rotulo {
+  font-size: t.$fs-3xs;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: t.$text-group-label;
+}
+
+.nome {
+  font-size: t.$fs-sm + 1px;
+  font-weight: t.$fw-semibold;
+  line-height: 1.3;
+}
+
+.meta {
+  font-size: t.$fs-2xs;
+  line-height: 1.4;
+  color: t.$text-support;
+}
+
+.linhaDeScore {
+  display: flex;
+  align-items: center;
+  gap: t.$space-4;
+}
+
+.score {
+  padding: 5px t.$space-4;
+  border-radius: 7px;
+  // o laranja é o secundário do HBUrso; no CatFlix resolve para o rosa. É um
+  // aviso, não um acento de marca — por isso usa o slot 2.
+  background: t.$accent-2-soft;
+  color: t.$accent-2-on-soft;
+  font-size: t.$fs-2xs;
+  font-weight: t.$fw-semibold;
+  font-variant-numeric: tabular-nums;
+}
+
+.motivo {
+  font-size: t.$fs-2xs;
+  color: t.$text-label;
+}
+
+.divisor {
+  height: 1px;
+  background: #262233;
+}
+
+.acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: t.$space-3;
+}
+
+.primaria,
+.secundaria {
+  min-height: t.$touch-target;
+  padding: 0 t.$space-6;
+  border-radius: t.$radius-md;
+  font-size: t.$fs-xs;
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
+
+.primaria {
+  flex-grow: 1;
+  background: t.$accent;
+  color: t.$accent-on-solid;
+  font-weight: t.$fw-semibold;
+}
+
+.secundaria {
+  border: 1px solid t.$border;
+  background: #1a1724;
+  color: t.$text-secondary;
+  font-weight: t.$fw-medium;
+}
+
+.erro,
+.vazio {
+  margin: 0 t.$gutter;
+  padding: t.$space-6;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border-strong;
+  background: t.$surface-chip;
+  color: t.$text-support;
+  font-size: t.$fs-sm;
+  text-align: center;
+}
+
+/**
+ * A frase que o matcher gravou ao parar. É a informação que decide a revisão —
+ * fica em destaque discreto, não como nota de rodapé.
+ */
+.explicacaoDoMatcher {
+  padding: t.$space-4 t.$space-5;
+  border-radius: t.$radius-md;
+  background: t.$surface-chip;
+  border-left: 2px solid t.$border-strong;
+  color: t.$text-secondary;
+  font-size: t.$fs-2xs;
+  line-height: 1.5;
+}

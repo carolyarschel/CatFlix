@@ -1,0 +1,735 @@
+// App de Filmes — schema canônico
+// Derivado da seção 6 do contexto.md. Convenções:
+//   - modelos em PascalCase, campos em camelCase, tabelas/colunas em snake_case (@map/@@map)
+//   - enum = vocabulário NOSSO (podemos versionar). String = vocabulário de terceiro
+//     (ingresso/TMDB), que pode mudar sem aviso e não deve quebrar o sync.
+//   - nada destrutivo: o que some da fonte é marcado (lastSeenAt/active), não apagado.
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [pg_trgm]
+}
+
+// ─────────────────────────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────────────────────────
+
+enum MediaType {
+  movie
+  series
+}
+
+enum TitleStatus {
+  matched
+  orphan
+  not_a_film
+  /// absorvido por outro Title num merge (§7.3). Fica como lápide: o
+  /// TitleAlias aponta para ele, então apagá-lo levaria o registro do merge
+  /// junto. Sem sessões e sem ids externos, não aparece no app.
+  merged
+}
+
+enum ExternalSource {
+  ingresso
+  tmdb
+  imdb
+  tvdb // previsto (Sonarr)
+  radarr // previsto
+  sonarr // previsto
+  jellyfin // previsto
+}
+
+enum MatchMethod {
+  cache
+  exact
+  fuzzy
+  manual
+}
+
+enum CreditRole {
+  director
+  cast
+}
+
+enum AudioType {
+  original
+  dublado
+  legendado
+  desconhecido
+}
+
+enum SessionKind {
+  regular
+  pre_estreia
+  especial
+}
+
+enum AvailabilitySource {
+  cinema
+  jellyfin // previsto
+  radarr // previsto
+  sonarr // previsto
+}
+
+enum AvailabilityStatus {
+  em_cartaz
+  pre_estreia
+  em_breve
+  na_biblioteca // previsto (jellyfin)
+  monitorado // previsto (radarr)
+}
+
+enum UserTitleStatus {
+  quero_ver
+  marcado
+  visto
+}
+
+enum TagFacet {
+  sala
+  cinema
+  audio
+  manual
+}
+
+enum TagOrigin {
+  auto
+  manual
+}
+
+enum MatchStage {
+  cache // estágio 0
+  triage // estágio 1
+  strong // estágio 2
+  fuzzy // estágio 3
+  threshold // estágio 4
+}
+
+enum MatchOutcome {
+  accepted
+  review
+  orphan
+  not_a_film
+  no_candidate
+}
+
+enum ReviewReason {
+  low_confidence
+  no_candidate
+  possible_duplicate
+  probable_non_film
+}
+
+enum ReviewStatus {
+  open
+  resolved
+}
+
+enum ReviewResolution {
+  confirmed
+  replaced
+  marked_not_a_film
+  merged
+  dismissed
+}
+
+enum RawSource {
+  ingresso
+  tmdb
+  omdb
+}
+
+enum SyncJobType {
+  ingresso_sessions
+  ingresso_now_playing
+  ingresso_upcoming
+  tmdb_metadata
+  omdb_ratings
+  tags_rebuild
+  manual
+}
+
+enum SyncStatus {
+  running
+  success
+  partial
+  failed
+}
+
+enum CanaryLayer {
+  transport
+  contract
+  semantic
+  matching
+}
+
+enum AlertSeverity {
+  info
+  warning
+  critical
+}
+
+// ─────────────────────────────────────────────────────────────
+// CAMADA CRUA E OPERAÇÃO
+// ─────────────────────────────────────────────────────────────
+
+/// Toda resposta externa é gravada aqui ANTES de qualquer parsing (§7.1).
+/// Permite reprocessar o histórico sem chamar a API de novo.
+model RawPayload {
+  id         String    @id @default(cuid())
+  source     RawSource
+  endpoint   String
+  params     Json?
+  bodyHash   String    @map("body_hash") // sha256 do corpo: detecta "nada mudou"
+  body       Json
+  httpStatus Int       @map("http_status")
+  fetchedAt  DateTime  @default(now()) @map("fetched_at") @db.Timestamptz(3)
+
+  syncRunId String?  @map("sync_run_id")
+  syncRun   SyncRun? @relation(fields: [syncRunId], references: [id], onDelete: SetNull)
+
+  @@index([source, endpoint, fetchedAt])
+  @@index([bodyHash])
+  @@index([syncRunId])
+  @@map("raw_payloads")
+}
+
+model SyncRun {
+  id          String      @id @default(cuid())
+  jobType     SyncJobType @map("job_type")
+  status      SyncStatus  @default(running)
+  startedAt   DateTime    @default(now()) @map("started_at") @db.Timestamptz(3)
+  finishedAt  DateTime?   @map("finished_at") @db.Timestamptz(3)
+  triggeredBy String?     @map("triggered_by") // null = cron; senão userId de quem apertou "Sincronizar agora"
+
+  // contagens (§6)
+  readCount    Int @default(0) @map("read_count")
+  newCount     Int @default(0) @map("new_count")
+  matchedCount Int @default(0) @map("matched_count")
+  reviewCount  Int @default(0) @map("review_count")
+  errorCount   Int @default(0) @map("error_count")
+
+  errorMessage String? @map("error_message")
+  details      Json?
+
+  rawPayloads    RawPayload[]
+  canaryChecks   CanaryCheck[]
+  matchDecisions MatchDecision[]
+
+  @@index([jobType, startedAt])
+  @@index([status])
+  @@map("sync_runs")
+}
+
+model CanaryCheck {
+  id            String      @id @default(cuid())
+  layer         CanaryLayer
+  target        String // ex.: "ingresso:/sessions", "matching:auto_rate"
+  passed        Boolean
+  measuredValue Float?      @map("measured_value")
+  threshold     Float?
+  message       String?
+  details       Json?
+  checkedAt     DateTime    @default(now()) @map("checked_at") @db.Timestamptz(3)
+
+  syncRunId String?  @map("sync_run_id")
+  syncRun   SyncRun? @relation(fields: [syncRunId], references: [id], onDelete: SetNull)
+
+  alerts Alert[]
+
+  @@index([layer, target, checkedAt])
+  @@index([passed, checkedAt])
+  @@map("canary_checks")
+}
+
+model Alert {
+  id       String        @id @default(cuid())
+  severity AlertSeverity
+  message  String
+  /// chave de deduplicação (ex.: "transport:ingresso:403"). Enquanto houver um
+  /// Alert aberto com o mesmo fingerprint, o Notifier não reenvia (§8).
+  fingerprint String
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  sentAt      DateTime? @map("sent_at") @db.Timestamptz(3)
+  resolvedAt  DateTime? @map("resolved_at") @db.Timestamptz(3)
+  notifier    String? // qual implementação de Notifier entregou
+  details     Json?
+
+  canaryCheckId String?      @map("canary_check_id")
+  canaryCheck   CanaryCheck? @relation(fields: [canaryCheckId], references: [id], onDelete: SetNull)
+
+  // unicidade "um alerta aberto por fingerprint" → índice parcial em SQL (ver MIGRATIONS.md)
+  @@index([fingerprint, resolvedAt])
+  @@index([createdAt])
+  @@map("alerts")
+}
+
+// ─────────────────────────────────────────────────────────────
+// CATÁLOGO CANÔNICO
+// ─────────────────────────────────────────────────────────────
+
+model Title {
+  id        String      @id @default(cuid())
+  mediaType MediaType   @default(movie) @map("media_type")
+  status    TitleStatus @default(orphan)
+
+  title         String // pt-BR (ou o título cru do ingresso, se órfão)
+  originalTitle String? @map("original_title")
+
+  /// versões normalizadas (minúsculas, sem acento, sem sufixos) — base do pg_trgm (§7.2)
+  normalizedTitle         String  @map("normalized_title")
+  normalizedOriginalTitle String? @map("normalized_original_title")
+
+  year           Int?
+  releaseDate    DateTime? @map("release_date") @db.Date // necessário para a regra de refresh do OMDb (§5.3)
+  runtimeMinutes Int?      @map("runtime_minutes")
+  overview       String?
+  posterUrl      String?   @map("poster_url")
+  backdropUrl    String?   @map("backdrop_url")
+
+  // notas — SEMPRE nullable, ausência nunca quebra o fluxo (§5.3)
+  imdbRating       Decimal?  @map("imdb_rating") @db.Decimal(3, 1)
+  rtRating         Int?      @map("rt_rating") // 0–100
+  ratingsUpdatedAt DateTime? @map("ratings_updated_at") @db.Timestamptz(3)
+
+  metadataUpdatedAt DateTime? @map("metadata_updated_at") @db.Timestamptz(3) // cache TMDB de 30 dias (§5.2)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  externalIds    TitleExternalId[]
+  credits        TitleCredit[]
+  genres         TitleGenre[]
+  companies      TitleCompany[]
+  sessions       Session[]
+  availabilities Availability[]
+  userStates     UserTitleState[]
+  tags           TitleTag[]
+
+  mergedFrom        TitleAlias[]    @relation("AliasTo")
+  mergedInto        TitleAlias[]    @relation("AliasFrom")
+  matchCandidateOf  MatchDecision[] @relation("MatchCandidate")
+  matchResultOf     MatchDecision[] @relation("MatchResult")
+  reviewCandidateOf ReviewItem[]    @relation("ReviewCandidate")
+  reviewSubjectOf   ReviewItem[]    @relation("ReviewSubject")
+  reviewResolvedTo  ReviewItem[]    @relation("ReviewResolvedTitle")
+
+  @@index([status])
+  @@index([mediaType, status])
+  @@index([year])
+  @@index([normalizedTitle(ops: raw("gin_trgm_ops"))], type: Gin)
+  @@index([normalizedOriginalTitle(ops: raw("gin_trgm_ops"))], type: Gin)
+  @@map("titles")
+}
+
+/// Vários IDs do ingresso podem apontar para o mesmo Title (dublado, IMAX, pré-estreia…).
+/// Um mesmo (source, externalId) nunca aponta para dois Titles.
+model TitleExternalId {
+  id         String         @id @default(cuid())
+  titleId    String         @map("title_id")
+  title      Title          @relation(fields: [titleId], references: [id], onDelete: Cascade)
+  source     ExternalSource
+  externalId String         @map("external_id")
+
+  /// Página da obra NA FONTE. Hoje só o ingresso preenche: é o `movies[].siteURL`
+  /// do CONTRATO.md §4.3, e é o link do botão que o §1 pede no detalhe do filme.
+  /// Fica aqui, e não em `Title`, porque é a URL DAQUELE id externo — o mesmo
+  /// filme tem uma página por evento do ingresso.
+  sourceUrl String? @map("source_url")
+
+  confidence   Float?
+  method       MatchMethod
+  verifiedById String?   @map("verified_by_id")
+  verifiedBy   User?     @relation(fields: [verifiedById], references: [id], onDelete: SetNull)
+  verifiedAt   DateTime? @map("verified_at") @db.Timestamptz(3)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  // garante que um id do TMDB/IMDb/ingresso só exista uma vez no catálogo inteiro
+  @@unique([source, externalId])
+  // um Title só pode ter UM id por fonte canônica → índice parcial em SQL (ver MIGRATIONS.md)
+  @@index([titleId, source])
+  @@map("title_external_ids")
+}
+
+/// Registro de merges, para o sync não separar de novo o que foi unido (§7.3).
+model TitleAlias {
+  id          String   @id @default(cuid())
+  fromTitleId String   @map("from_title_id")
+  toTitleId   String   @map("to_title_id")
+  fromTitle   Title    @relation("AliasFrom", fields: [fromTitleId], references: [id], onDelete: Cascade)
+  toTitle     Title    @relation("AliasTo", fields: [toTitleId], references: [id], onDelete: Cascade)
+  reason      String
+  mergedById  String?  @map("merged_by_id")
+  mergedBy    User?    @relation(fields: [mergedById], references: [id], onDelete: SetNull)
+  mergedAt    DateTime @default(now()) @map("merged_at") @db.Timestamptz(3)
+  snapshot    Json? // estado do Title absorvido, para auditoria
+
+  @@index([fromTitleId])
+  @@index([toTitleId])
+  @@map("title_aliases")
+}
+
+model Person {
+  id         String        @id @default(cuid())
+  tmdbId     Int?          @unique @map("tmdb_id")
+  name       String
+  profileUrl String?       @map("profile_url")
+  credits    TitleCredit[]
+
+  @@index([name])
+  @@map("people")
+}
+
+model TitleCredit {
+  id        String     @id @default(cuid())
+  titleId   String     @map("title_id")
+  title     Title      @relation(fields: [titleId], references: [id], onDelete: Cascade)
+  personId  String     @map("person_id")
+  person    Person     @relation(fields: [personId], references: [id], onDelete: Cascade)
+  role      CreditRole
+  character String?
+  order     Int?
+
+  @@unique([titleId, personId, role])
+  @@index([titleId, role, order])
+  @@map("title_credits")
+}
+
+model Genre {
+  id     String       @id @default(cuid())
+  tmdbId Int?         @unique @map("tmdb_id")
+  name   String       @unique
+  titles TitleGenre[]
+
+  @@map("genres")
+}
+
+model TitleGenre {
+  titleId String @map("title_id")
+  title   Title  @relation(fields: [titleId], references: [id], onDelete: Cascade)
+  genreId String @map("genre_id")
+  genre   Genre  @relation(fields: [genreId], references: [id], onDelete: Cascade)
+
+  @@id([titleId, genreId])
+  @@index([genreId])
+  @@map("title_genres")
+}
+
+model Company {
+  id            String         @id @default(cuid())
+  tmdbId        Int?           @unique @map("tmdb_id")
+  name          String
+  logoUrl       String?        @map("logo_url")
+  originCountry String?        @map("origin_country")
+  titles        TitleCompany[]
+
+  @@index([name])
+  @@map("companies")
+}
+
+model TitleCompany {
+  titleId   String  @map("title_id")
+  title     Title   @relation(fields: [titleId], references: [id], onDelete: Cascade)
+  companyId String  @map("company_id")
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@id([titleId, companyId])
+  @@index([companyId])
+  @@map("title_companies")
+}
+
+// ─────────────────────────────────────────────────────────────
+// CINEMA
+// ─────────────────────────────────────────────────────────────
+
+model Cinema {
+  id         String  @id @default(cuid())
+  ingressoId String  @unique @map("ingresso_id")
+  name       String
+  chain      String? // rede (Cinemark, UCI, Kinoplex…)
+  address    String?
+  cityName   String? @map("city_name")
+  cityId     String? @map("city_id") // id da cidade no ingresso (INGRESSO_CITY_ID)
+  timezone   String  @default("America/Sao_Paulo") // vem da resposta de cidades do ingresso
+
+  active     Boolean  @default(true) // some da API → false, nunca deletado
+  lastSeenAt DateTime @default(now()) @map("last_seen_at") @db.Timestamptz(3)
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  sessions Session[]
+
+  @@index([cityId, active])
+  @@map("cinemas")
+}
+
+model Session {
+  id String @id @default(cuid())
+
+  /// chave natural do ingresso: torna o sync idempotente
+  ingressoSessionId String @unique @map("ingresso_session_id")
+
+  titleId  String @map("title_id")
+  title    Title  @relation(fields: [titleId], references: [id], onDelete: Cascade)
+  cinemaId String @map("cinema_id")
+  cinema   Cinema @relation(fields: [cinemaId], references: [id], onDelete: Cascade)
+
+  startsAt DateTime @map("starts_at") @db.Timestamptz(3)
+
+  /// tipo de sala normalizado (imax, xd, vip, dolby, dbox, 4dx, normal…).
+  /// String, não enum: formato novo do ingresso não pode quebrar o sync.
+  roomType  String  @map("room_type")
+  roomLabel String? @map("room_label") // rótulo cru, como veio da API
+  roomName  String? @map("room_name") // "Sala 7"
+
+  audio       AudioType   @default(desconhecido)
+  is3d        Boolean     @default(false) @map("is_3d")
+  sessionKind SessionKind @default(regular) @map("session_kind")
+
+  purchaseUrl String? @map("purchase_url")
+
+  active     Boolean  @default(true) // sessão que sumiu da API → false
+  lastSeenAt DateTime @default(now()) @map("last_seen_at") @db.Timestamptz(3)
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([titleId, startsAt])
+  @@index([cinemaId, startsAt])
+  @@index([startsAt, active])
+  @@index([sessionKind, startsAt])
+  @@map("sessions")
+}
+
+/// Disponibilidade por FONTE. Separado do estado do usuário (§6).
+model Availability {
+  id      String @id @default(cuid())
+  titleId String @map("title_id")
+  title   Title  @relation(fields: [titleId], references: [id], onDelete: Cascade)
+
+  source AvailabilitySource
+  status AvailabilityStatus
+
+  firstSeenAt DateTime  @default(now()) @map("first_seen_at") @db.Timestamptz(3)
+  lastSeenAt  DateTime  @default(now()) @map("last_seen_at") @db.Timestamptz(3)
+  endedAt     DateTime? @map("ended_at") @db.Timestamptz(3) // saiu de cartaz, sem apagar histórico
+
+  @@unique([titleId, source, status])
+  @@index([source, status, endedAt])
+  @@map("availabilities")
+}
+
+// ─────────────────────────────────────────────────────────────
+// USUÁRIOS E TAGS
+// ─────────────────────────────────────────────────────────────
+
+/// Dois registros fixos, criados por seed: catflix e hburso.
+model User {
+  id              String   @id // "catflix" | "hburso"
+  displayName     String   @map("display_name")
+  initial         String // "C" | "H" — círculo do PosterCard
+  accent          String // acento principal (#FF4D8D / #9D7BFF)
+  accentSecondary String?  @map("accent_secondary") // HBUrso: laranja #FF8A3D
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  titleStates   UserTitleState[]
+  ownedTags     Tag[]
+  pushSubs      PushSubscription[]
+  verifiedIds   TitleExternalId[]
+  resolvedItems ReviewItem[]
+  merges        TitleAlias[]
+
+  @@map("users")
+}
+
+/// Dispositivo inscrito para receber notificação do PWA (§3, resolvido em
+/// 22/09/2026). A identidade é o `endpoint`, que o navegador emite e que
+/// identifica o par (navegador, dispositivo) — não a pessoa.
+///
+/// ⚠️ No iOS, o Safari só emite endpoint se o PWA estiver INSTALADO na tela de
+/// início (iOS 16.4+). Aberto pelo navegador, não há inscrição nenhuma.
+model PushSubscription {
+  id String @id @default(cuid())
+
+  userId String? @map("user_id")
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  /// URL do serviço de push do navegador; identifica o dispositivo
+  endpoint String @unique
+  /// chaves da inscrição, usadas para cifrar o payload do Web Push
+  p256dh String
+  auth   String
+
+  userAgent String?  @map("user_agent")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  lastSentAt DateTime? @map("last_sent_at") @db.Timestamptz(3)
+
+  /// o serviço de push respondeu 404/410: a inscrição morreu (app desinstalado,
+  /// permissão revogada). Marcada, não apagada — o histórico conta a história.
+  expiredAt    DateTime? @map("expired_at") @db.Timestamptz(3)
+  failureCount Int       @default(0) @map("failure_count")
+
+  @@index([userId])
+  @@index([expiredAt])
+  @@map("push_subscriptions")
+}
+
+/// Estado do usuário — SEPARADO de Availability (§6).
+model UserTitleState {
+  id      String @id @default(cuid())
+  userId  String @map("user_id")
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  titleId String @map("title_id")
+  title   Title  @relation(fields: [titleId], references: [id], onDelete: Cascade)
+
+  status UserTitleStatus
+
+  wantedAt  DateTime? @map("wanted_at") @db.Timestamptz(3)
+  markedAt  DateTime? @map("marked_at") @db.Timestamptz(3)
+  watchedAt DateTime? @map("watched_at") @db.Timestamptz(3)
+
+  /// origem da marcação: "app" hoje; futuramente "jellyfin", "cronicas" (§13/§14)
+  source          String   @default("app")
+  statusChangedAt DateTime @default(now()) @map("status_changed_at") @db.Timestamptz(3)
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt       DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@unique([userId, titleId])
+  @@index([userId, status])
+  @@index([titleId])
+  @@map("user_title_states")
+}
+
+model Tag {
+  id      String    @id @default(cuid())
+  facet   TagFacet
+  value   String // slug normalizado: "imax", "cinemark-shopping", "dublado"
+  label   String // exibição: "IMAX", "Cinemark Shopping", "Dublado"
+  origin  TagOrigin
+  ownerId String?   @map("owner_id") // só para facet = manual
+  owner   User?     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  titles TitleTag[]
+
+  // (facet, value, ownerId) é único; como ownerId é NULL nas tags auto,
+  // a unicidade real precisa de índices parciais em SQL (ver MIGRATIONS.md)
+  @@unique([facet, value, ownerId])
+  @@index([facet, origin])
+  @@map("tags")
+}
+
+model TitleTag {
+  titleId String @map("title_id")
+  title   Title  @relation(fields: [titleId], references: [id], onDelete: Cascade)
+  tagId   String @map("tag_id")
+  tag     Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  /// auto → recalculada a cada sync. manual → o sync NUNCA toca.
+  origin    TagOrigin
+  addedById String?   @map("added_by_id")
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@id([titleId, tagId])
+  @@index([tagId])
+  @@index([origin])
+  @@map("title_tags")
+}
+
+// ─────────────────────────────────────────────────────────────
+// MATCHING
+// ─────────────────────────────────────────────────────────────
+
+/// Log de CADA decisão do pipeline. Nada decide sem deixar rastro (§7.2).
+model MatchDecision {
+  id String @id @default(cuid())
+
+  // evento do ingresso (denormalizado: o rastro precisa sobreviver a merges)
+  ingressoEventId String  @map("ingresso_event_id")
+  ingressoTitle   String  @map("ingresso_title")
+  ingressoYear    Int?    @map("ingresso_year")
+  normalizedQuery String? @map("normalized_query") // título após o normalizador
+
+  stage   MatchStage
+  outcome MatchOutcome
+
+  // candidato avaliado
+  candidateTmdbId  Int?    @map("candidate_tmdb_id")
+  candidateTitleId String? @map("candidate_title_id")
+  candidateTitle   Title?  @relation("MatchCandidate", fields: [candidateTitleId], references: [id], onDelete: SetNull)
+  candidateLabel   String? @map("candidate_label")
+
+  // composição do score (§7.2: título 0.5, duração 0.2, ano 0.2, crédito 0.1)
+  scoreTotal    Float? @map("score_total")
+  scoreTitle    Float? @map("score_title")
+  scoreRuntime  Float? @map("score_runtime")
+  scoreYear     Float? @map("score_year")
+  scoreCredits  Float? @map("score_credits")
+  thresholdUsed Float? @map("threshold_used")
+
+  resultTitleId String? @map("result_title_id")
+  resultTitle   Title?  @relation("MatchResult", fields: [resultTitleId], references: [id], onDelete: SetNull)
+
+  reason  String?
+  details Json? // candidatos descartados, versão da lista de sufixos, trecho do payload
+
+  syncRunId String?  @map("sync_run_id")
+  syncRun   SyncRun? @relation(fields: [syncRunId], references: [id], onDelete: SetNull)
+
+  decidedAt DateTime @default(now()) @map("decided_at") @db.Timestamptz(3)
+
+  @@index([ingressoEventId, decidedAt])
+  @@index([stage, outcome, decidedAt])
+  @@index([syncRunId])
+  @@map("match_decisions")
+}
+
+/// Fila de revisão humana. Alimenta o badge e a página Revisar.
+model ReviewItem {
+  id String @id @default(cuid())
+
+  ingressoEventId String @map("ingresso_event_id")
+  ingressoTitle   String @map("ingresso_title")
+  ingressoYear    Int?   @map("ingresso_year")
+  ingressoPayload Json?  @map("ingresso_payload") // o que mostrar no card da fila
+
+  /// Title já criado para esse evento (órfão), quando houver
+  subjectTitleId String? @map("subject_title_id")
+  subjectTitle   Title?  @relation("ReviewSubject", fields: [subjectTitleId], references: [id], onDelete: SetNull)
+
+  /// candidato sugerido (nullable: motivo no_candidate)
+  candidateTitleId String? @map("candidate_title_id")
+  candidateTitle   Title?  @relation("ReviewCandidate", fields: [candidateTitleId], references: [id], onDelete: SetNull)
+  candidateTmdbId  Int?    @map("candidate_tmdb_id")
+  candidateLabel   String? @map("candidate_label")
+  candidatePayload Json?   @map("candidate_payload")
+
+  score  Float?
+  reason ReviewReason
+  status ReviewStatus @default(open)
+
+  resolution      ReviewResolution?
+  resolvedTitleId String?           @map("resolved_title_id")
+  resolvedTitle   Title?            @relation("ReviewResolvedTitle", fields: [resolvedTitleId], references: [id], onDelete: SetNull)
+  resolvedById    String?           @map("resolved_by_id")
+  resolvedBy      User?             @relation(fields: [resolvedById], references: [id], onDelete: SetNull)
+  resolvedAt      DateTime?         @map("resolved_at") @db.Timestamptz(3)
+  note            String?
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  // um item aberto por evento → índice parcial em SQL (ver MIGRATIONS.md)
+  @@index([status, createdAt])
+  @@index([ingressoEventId])
+  @@index([reason])
+  @@map("review_items")
+}

@@ -1,0 +1,325 @@
+{
+  "adult": false,
+  "backdrop_path": "/eZ239CUp1d6OryZEBPnO2n87gMG.jpg",
+  "belongs_to_collection": {
+    "id": 726871,
+    "name": "Duna: Coleção",
+    "poster_path": "/wSvsy0TwSg6u47CHqEcax194AGk.jpg",
+    "backdrop_path": "/fahk0Fu7VUUfK6IkTt1R3waOD9F.jpg"
+  },
+  "budget": 190000000,
+  "genres": [
+    {
+      "id": 878,
+      "name": "Ficção científica"
+    },
+    {
+      "id": 12,
+      "name": "Aventura"
+    }
+  ],
+  "homepage": "https://www.warnerbros.com.br/filmes/duna-parte-dois",
+  "id": 693134,
+  "imdb_id": "tt15239678",
+  "origin_country": [
+    "US"
+  ],
+  "original_language": "en",
+  "original_title": "Dune: Part Two",
+  "overview": "A jornada de Paul Atreides continua. Ele está determinado a buscar vingança contra aqueles que destruíram sua família e seu lar. Com a ajuda de Chani e dos Fremen, ele embarca em uma jornada espiritual, mística e marcial. Se torna Muad'Dib, o líder messiânico dos Fremen, enquanto luta para evitar um futuro sombrio que ele testemunhou em visões. No entanto, suas ações inadvertidamente desencadeiam uma Guerra Santa em seu nome, que se espalha pelo universo conhecido. Enquanto enfrenta escolhas difíceis entre o amor por Chani e o destino de seu povo, Paul precisa usar suas habilidades e conhecimentos para evitar o terrível futuro que previu.",
+  "popularity": 56.9937,
+  "poster_path": "/hH5lhwd8RzvVGbpRixPvIOltZLt.jpg",
+  "production_companies": [
+    {
+      "id": 923,
+      "logo_path": "/5UQsZrfbfG2dYJbx8DxfoTr2Bvu.png",
+      "name": "Legendary Pictures",
+      "origin_country": "US"
+    }
+  ],
+  "production_countries": [
+    {
+      "iso_3166_1": "US",
+      "name": "United States of America"
+    }
+  ],
+  "release_date": "2024-02-27",
+  "revenue": 714844358,
+  "runtime": 166,
+  "softcore": false,
+  "spoken_languages": [
+    {
+      "english_name": "English",
+      "iso_639_1": "en",
+      "name": "English"
+    }
+  ],
+  "status": "Released",
+  "tagline": "Vida longa aos guerreiros.",
+  "title": "Duna: Parte Dois",
+  "video": false,
+  "vote_average": 8.136,
+  "vote_count": 8591,
+  "credits": {
+    "cast": [
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 1190668,
+        "known_for_department": "Acting",
+        "name": "Timothée Chalamet",
+        "original_name": "Timothée Chalamet",
+        "popularity": 7.4287,
+        "profile_path": "/dFxpwRpmzpVfP1zjluH68DeQhyj.jpg",
+        "cast_id": 2,
+        "character": "Paul Atreides",
+        "credit_id": "5e959c45955c6500159f1c98",
+        "order": 0
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 505710,
+        "known_for_department": "Acting",
+        "name": "Zendaya",
+        "original_name": "Zendaya",
+        "popularity": 12.1739,
+        "profile_path": "/3WdOloHpjtjL96uVOhFRRCcYSwq.jpg",
+        "cast_id": 3,
+        "character": "Chani",
+        "credit_id": "5e959c5caf58cb001adc1c94",
+        "order": 1
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 933238,
+        "known_for_department": "Acting",
+        "name": "Rebecca Ferguson",
+        "original_name": "Rebecca Ferguson",
+        "popularity": 11.0415,
+        "profile_path": "/ra53cM1aNmdH0aFhj8yBqPOj2fb.jpg",
+        "cast_id": 8,
+        "character": "Jessica",
+        "credit_id": "5f193d28519bbb003570317b",
+        "order": 2
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 3810,
+        "known_for_department": "Acting",
+        "name": "Javier Bardem",
+        "original_name": "Javier Bardem",
+        "popularity": 5.5261,
+        "profile_path": "/zfRID0jx8DKBluPGU9xtk9sZWUt.jpg",
+        "cast_id": 14,
+        "character": "Stilgar",
+        "credit_id": "603ccede60c51d7aeb807f49",
+        "order": 3
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 16851,
+        "known_for_department": "Acting",
+        "name": "Josh Brolin",
+        "original_name": "Josh Brolin",
+        "popularity": 6.6705,
+        "profile_path": "/sX2etBbIkxRaCsATyw5ZpOVMPTD.jpg",
+        "cast_id": 5,
+        "character": "Gurney Halleck",
+        "credit_id": "5e959c7daf58cb0012dc1007",
+        "order": 4
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 86654,
+        "known_for_department": "Acting",
+        "name": "Austin Butler",
+        "original_name": "Austin Butler",
+        "popularity": 4.9226,
+        "profile_path": "/atdAs4pFGjUQ4m2W8kJYly7N6cC.jpg",
+        "cast_id": 54,
+        "character": "Feyd-Rautha",
+        "credit_id": "6261033257530e0066d2daa3",
+        "order": 5
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 1373737,
+        "known_for_department": "Acting",
+        "name": "Florence Pugh",
+        "original_name": "Florence Pugh",
+        "popularity": 9.2909,
+        "profile_path": "/1Uvfh7xL4U2evkhs0M3C7BbBYFf.jpg",
+        "cast_id": 53,
+        "character": "Princess Irulan",
+        "credit_id": "626103233d745415a727d041",
+        "order": 6
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 543530,
+        "known_for_department": "Acting",
+        "name": "Dave Bautista",
+        "original_name": "Dave Bautista",
+        "popularity": 4.9576,
+        "profile_path": "/snk6JiXOOoRjPtHU5VMoy6qbd32.jpg",
+        "cast_id": 10,
+        "character": "Beast Rabban",
+        "credit_id": "5f193dd5a6d931003785f7c0",
+        "order": 7
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 4690,
+        "known_for_department": "Acting",
+        "name": "Christopher Walken",
+        "original_name": "Christopher Walken",
+        "popularity": 5.742,
+        "profile_path": "/ApgDL7nudR9T2GpjCG4vESgymO2.jpg",
+        "cast_id": 55,
+        "character": "Emperor",
+        "credit_id": "627d48c8f6596f16bc6ab4f0",
+        "order": 8
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 121529,
+        "known_for_department": "Acting",
+        "name": "Léa Seydoux",
+        "original_name": "Léa Seydoux",
+        "popularity": 4.705,
+        "profile_path": "/4q6xqqWLLleQrFjeqeYYV8B0fwE.jpg",
+        "cast_id": 56,
+        "character": "Lady Margot Fenring",
+        "credit_id": "62b1fdef9f51af006252fe1a",
+        "order": 9
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 1640,
+        "known_for_department": "Acting",
+        "name": "Stellan Skarsgård",
+        "original_name": "Stellan Skarsgård",
+        "popularity": 4.1964,
+        "profile_path": "/mW7xmtGV4y79kQGn0zkKVGDMAmw.jpg",
+        "cast_id": 9,
+        "character": "Baron Harkonnen",
+        "credit_id": "5f193d86447f9c0034365752",
+        "order": 10
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 44079,
+        "known_for_department": "Acting",
+        "name": "Charlotte Rampling",
+        "original_name": "Charlotte Rampling",
+        "popularity": 2.83,
+        "profile_path": "/Htvl9mN6mlf2a18RAFzNXF3RiG.jpg",
+        "cast_id": 13,
+        "character": "Reverend Mother Mohiam",
+        "credit_id": "603cced1c56d2d0050bda663",
+        "order": 11
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 2037046,
+        "known_for_department": "Acting",
+        "name": "Souheila Yacoub",
+        "original_name": "Souheila Yacoub",
+        "popularity": 1.9878,
+        "profile_path": "/A233BHgXw0dzbeOpvHfJwL9gLy1.jpg",
+        "cast_id": 110,
+        "character": "Shishakli",
+        "credit_id": "6468f6ff2bcf67011bf33ac8",
+        "order": 12
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 2974,
+        "known_for_department": "Acting",
+        "name": "Roger Yuan",
+        "original_name": "Roger Yuan",
+        "popularity": 1.1863,
+        "profile_path": "/jHdxbT6n3ToYKw0DVFIUkva86SO.jpg",
+        "cast_id": 133,
+        "character": "Lanville",
+        "credit_id": "65d9aa3ae78e2d018680af7e",
+        "order": 13
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 205923,
+        "known_for_department": "Acting",
+        "name": "Babs Olusanmokun",
+        "original_name": "Babs Olusanmokun",
+        "popularity": 2.6112,
+        "profile_path": "/bqycmpUrpISeLzQniiYwAZ5X1RN.jpg",
+        "cast_id": 123,
+        "character": "Jamis",
+        "credit_id": "65cf29a69ac5350147df71ce",
+        "order": 14
+      }
+    ],
+    "crew": [
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 137427,
+        "known_for_department": "Directing",
+        "name": "Denis Villeneuve",
+        "original_name": "Denis Villeneuve",
+        "popularity": 3.6628,
+        "profile_path": "/zdDx9Xs93UIrJFWYApYR28J8M6b.jpg",
+        "credit_id": "6178ed77c2b9df0062239903",
+        "department": "Writing",
+        "job": "Screenplay"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 137427,
+        "known_for_department": "Directing",
+        "name": "Denis Villeneuve",
+        "original_name": "Denis Villeneuve",
+        "popularity": 3.6628,
+        "profile_path": "/zdDx9Xs93UIrJFWYApYR28J8M6b.jpg",
+        "credit_id": "5e959beedb72c00012ad7dcf",
+        "department": "Directing",
+        "job": "Director"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 564940,
+        "known_for_department": "Writing",
+        "name": "Jon Spaihts",
+        "original_name": "Jon Spaihts",
+        "popularity": 1.0889,
+        "profile_path": "/n5JF0cYCWe8AUqb4Sto042rnG4e.jpg",
+        "credit_id": "5e9ca1bfe22d28001b61990e",
+        "department": "Writing",
+        "job": "Screenplay"
+      }
+    ]
+  },
+  "external_ids": {
+    "imdb_id": "tt15239678",
+    "wikidata_id": "Q109228991",
+    "facebook_id": "dune",
+    "instagram_id": "dunemovie",
+    "twitter_id": "dunemovie"
+  }
+}

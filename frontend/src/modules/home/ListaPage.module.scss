@@ -1,0 +1,93 @@
+@use '../../shared/styles/tokens' as t;
+
+.tela {
+  position: relative;
+  min-height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+  padding-bottom: calc(#{t.$space-10} + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-8;
+  overflow-x: clip;
+
+  // o desktop segue o mobile (§3): a mesma coluna, mais larga
+  @media (min-width: t.$bp-desktop) {
+    max-width: 720px;
+  }
+}
+
+.ambiente {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 220px;
+  background: linear-gradient(to bottom, t.$ambient 0%, t.$bg 100%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.cabecalho {
+  padding: t.$space-7 t.$gutter 0;
+  display: flex;
+  align-items: center;
+  gap: t.$space-4;
+}
+
+.voltar {
+  width: t.$touch-target;
+  height: t.$touch-target;
+  margin-left: -#{t.$space-4};
+  border-radius: t.$radius-lg;
+  color: t.$text;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.titulos {
+  min-width: 0;
+}
+
+.titulo {
+  margin: 0;
+  font-size: t.$fs-xxl;
+}
+
+.contagem {
+  color: t.$text-label;
+  font-size: t.$fs-sm;
+}
+
+.grade {
+  padding: 0 t.$gutter;
+  display: grid;
+  // 150 px é a largura do card; `auto-fill` dá 2 colunas no celular e 4 no
+  // desktop sem uma segunda medida escrita à mão — igual à grade das tags
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: t.$space-8 t.$space-4;
+  justify-items: start;
+}
+
+.aviso {
+  margin: t.$space-10 auto;
+  padding: 0 t.$gutter;
+  color: t.$text-support;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: t.$space-5;
+}
+
+.tentar {
+  padding: 0 t.$space-8;
+  border-radius: t.$radius-md;
+  background: t.$accent-soft;
+  border: 1px solid t.$accent;
+  color: t.$accent-on-soft;
+  font-weight: t.$fw-semibold;
+}

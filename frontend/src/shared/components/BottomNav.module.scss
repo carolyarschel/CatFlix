@@ -1,0 +1,53 @@
+@use '../styles/tokens' as t;
+
+.barra {
+  position: sticky;
+  // acima da área do gesto do iPhone; sem isto a barra fica embaixo do risco
+  bottom: calc(t.$space-8 + env(safe-area-inset-bottom, 0px));
+  z-index: t.$z-nav;
+  align-self: center;
+  margin: t.$space-8 auto 0;
+  padding: t.$space-3 t.$space-4;
+  border-radius: 34px;
+  background: rgba(32, 28, 43, 0.94);
+  border: 1px solid #332e42;
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  gap: t.$space-1;
+  width: max-content;
+  max-width: calc(100% - #{t.$gutter} * 2);
+}
+
+.item {
+  min-width: 74px;
+  min-height: 52px;
+  padding: 0 t.$space-4;
+  border-radius: 26px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: t.$space-1;
+  color: t.$text-support;
+  font-size: t.$fs-2xs;
+  font-weight: t.$fw-medium;
+}
+
+.ativo {
+  background: rgba(244, 241, 248, 0.1);
+  color: t.$text;
+  font-weight: t.$fw-semibold;
+}
+
+.inicial {
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  color: t.$accent-on-solid;
+  font-size: t.$fs-xs;
+  font-weight: t.$fw-bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

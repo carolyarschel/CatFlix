@@ -1,0 +1,18 @@
+@use '../styles/tokens' as t;
+
+.badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 19px;
+  height: 19px;
+  padding: 0 5px;
+  border-radius: t.$radius-pill;
+  background: t.$accent;
+  color: t.$accent-on-solid;
+  font-size: t.$fs-2xs;
+  font-weight: t.$fw-bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

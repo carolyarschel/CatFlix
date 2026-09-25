@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Início mobile — HBUrso</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body { margin: 0; background: #0B0A0F; font-family: 'Instrument Sans', system-ui, sans-serif; }
+a { color: #B79BFF; text-decoration: none; }
+a:hover { color: #D0BDFF; }
+</style>
+</helmet>
+<div style="width: 390px; height: 1900px; box-sizing: border-box; display: flex; flex-direction: column; background: #0B0A0F; color: #F4F1F8; overflow: hidden; position: relative;">
+
+  <div style="position: absolute; top: 0; left: 0; width: 390px; height: 700px; background: #151327;"></div>
+
+  <header style="position: relative; box-sizing: border-box; padding: 16px 20px 0 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <span style="width: 30px; height: 34px; border-radius: 7px; background: {{accent}}; color: #150A28; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 21px; font-weight: 800; display: flex; align-items: center; justify-content: center;">H</span>
+      <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 26px; font-weight: 700; letter-spacing: -0.02em;">Início</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <button type="button" aria-label="Buscar filme" style="width: 44px; height: 44px; border-radius: 12px; border: none; background: none; color: #EDE9F4; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M16.5 16.5L21 21"></path></svg>
+      </button>
+      <button type="button" aria-label="Trocar perfil" style="width: 44px; height: 44px; border-radius: 12px; border: none; background: {{accent}}; color: #150A28; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer;">H</button>
+    </div>
+  </header>
+
+  <div style="position: relative; margin-top: 14px; padding-left: 20px; display: flex; gap: 10px; overflow: hidden;">
+    <button type="button" style="min-height: 44px; flex-shrink: 0; padding: 0 20px; border-radius: 22px; border: 1px solid rgba(244, 241, 248, 0.18); background: rgba(244, 241, 248, 0.10); color: #F4F1F8; font-family: inherit; font-size: 15px; font-weight: 500; cursor: pointer;">Em cartaz</button>
+    <button type="button" style="min-height: 44px; flex-shrink: 0; padding: 0 20px; border-radius: 22px; border: 1px solid rgba(244, 241, 248, 0.18); background: rgba(244, 241, 248, 0.10); color: #F4F1F8; font-family: inherit; font-size: 15px; font-weight: 500; cursor: pointer;">Pré-estreias</button>
+    <button type="button" style="min-height: 44px; flex-shrink: 0; padding: 0 20px; border-radius: 22px; border: 1px solid rgba(244, 241, 248, 0.18); background: rgba(244, 241, 248, 0.10); color: #F4F1F8; font-family: inherit; font-size: 15px; font-weight: 500; cursor: pointer;">Em breve</button>
+    <a href="TagsMobile.dc.html" style="min-height: 44px; flex-shrink: 0; padding: 0 20px; border-radius: 22px; border: 1px solid rgba(244, 241, 248, 0.18); background: rgba(244, 241, 248, 0.10); color: #F4F1F8; font-size: 15px; font-weight: 500; display: flex; align-items: center; gap: 6px;">
+      Tags
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+    </a>
+  </div>
+
+  <section style="position: relative; margin-top: 18px; box-sizing: border-box; padding: 0 20px;">
+    <div style="border: 1px solid #2E2A3C; border-radius: 14px; background: #131019; overflow: hidden;">
+      <div style="height: 424px; background: #1D1A33; box-sizing: border-box; padding: 16px; display: flex; flex-direction: column; justify-content: space-between;">
+        <span style="font-size: 10px; letter-spacing: 0.14em; color: #8C85A0;">PÔSTER TMDB</span>
+        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 40px; line-height: 0.98; font-weight: 800; letter-spacing: -0.03em; color: #F4F1F8;">Duna: Parte Dois</span>
+      </div>
+      <div style="box-sizing: border-box; padding: 14px 16px 16px 16px; display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; font-size: 13px; color: #A79FB5;">
+          <span style="color: #F4F1F8; font-weight: 600;">Filme</span>
+          <span style="color: #5E5771;">•</span>
+          <span>Ficção científica</span>
+          <span style="color: #5E5771;">•</span>
+          <span>IMAX</span>
+          <span style="color: #5E5771;">•</span>
+          <span>Legendado</span>
+        </div>
+        <button type="button" style="width: 100%; min-height: 52px; border-radius: 10px; border: none; background: #F4F1F8; color: #14111C; font-family: inherit; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 9.5V7a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v2.5a2.5 2.5 0 0 0 0 5V17a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-2.5a2.5 2.5 0 0 0 0-5z"></path><path d="M14 6v12"></path></svg>
+          Ver sessões
+        </button>
+        <button type="button" style="width: 100%; min-height: 52px; border-radius: 10px; border: none; background: rgba(244, 241, 248, 0.12); color: #F4F1F8; font-family: inherit; font-size: 16px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+          Marcar com a Gata
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section style="position: relative; margin-top: 30px; display: flex; flex-direction: column; gap: 12px;">
+    <h2 style="margin: 0; padding: 0 20px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 19px; font-weight: 700;">Em cartaz agora</h2>
+    <div style="padding-left: 20px; display: flex; gap: 10px; overflow: hidden;">
+      <sc-for list="{{emCartaz}}" as="item" hint-placeholder-count="3">
+        <article style="width: 150px; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px;">
+          <button type="button" aria-label="Abrir detalhes do filme" style="padding: 0; border: none; background: none; cursor: pointer; display: block;">
+            <div style="height: 222px; border-radius: 6px; background: {{item.posterBg}}; border: 1px solid #2A2537; box-sizing: border-box; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; text-align: left; position: relative; overflow: hidden;">
+              <span style="font-size: 9px; letter-spacing: 0.14em; color: #8C85A0;">PÔSTER</span>
+              <sc-if value="{{item.marcado}}" hint-placeholder-val="{{true}}">
+                <span style="position: absolute; top: 8px; right: 8px; width: 22px; height: 22px; border-radius: 11px; background: {{item.marcaCor}}; color: #17131E; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;">{{item.marcaInicial}}</span>
+              </sc-if>
+              <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 15px; line-height: 1.12; font-weight: 700; color: #EFEBF5;">{{item.titulo}}</span>
+              <sc-if value="{{item.temFaixa}}" hint-placeholder-val="{{true}}">
+                <span style="position: absolute; left: 0; right: 0; bottom: 0; padding: 5px 8px; background: {{accent2}}; color: #241205; font-size: 10px; font-weight: 700; text-align: center;">{{item.faixa}}</span>
+              </sc-if>
+            </div>
+          </button>
+          <div style="display: flex; align-items: center; gap: 8px; font-size: 11px; color: #CFC9DB;">
+            <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 2px; background: #F5C518;"></span>{{item.imdb}}</span>
+            <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 4px; background: #FA320A;"></span>{{item.rt}}</span>
+          </div>
+          <span style="font-size: 10px; color: #8C85A0;">{{item.sala}}</span>
+        </article>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="position: relative; margin-top: 26px; display: flex; flex-direction: column; gap: 12px;">
+    <h2 style="margin: 0; padding: 0 20px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 19px; font-weight: 700;">Pré-estreias</h2>
+    <div style="padding-left: 20px; display: flex; gap: 10px; overflow: hidden;">
+      <sc-for list="{{preEstreias}}" as="item" hint-placeholder-count="3">
+        <article style="width: 150px; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px;">
+          <button type="button" aria-label="Abrir detalhes do filme" style="padding: 0; border: none; background: none; cursor: pointer; display: block;">
+            <div style="height: 222px; border-radius: 6px; background: {{item.posterBg}}; border: 1px solid #2A2537; box-sizing: border-box; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; text-align: left; position: relative; overflow: hidden;">
+              <span style="font-size: 9px; letter-spacing: 0.14em; color: #8C85A0;">PÔSTER</span>
+              <sc-if value="{{item.marcado}}" hint-placeholder-val="{{true}}">
+                <span style="position: absolute; top: 8px; right: 8px; width: 22px; height: 22px; border-radius: 11px; background: {{item.marcaCor}}; color: #17131E; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;">{{item.marcaInicial}}</span>
+              </sc-if>
+              <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 15px; line-height: 1.12; font-weight: 700; color: #EFEBF5;">{{item.titulo}}</span>
+              <sc-if value="{{item.temFaixa}}" hint-placeholder-val="{{true}}">
+                <span style="position: absolute; left: 0; right: 0; bottom: 0; padding: 5px 8px; background: {{accent2}}; color: #241205; font-size: 10px; font-weight: 700; text-align: center;">{{item.faixa}}</span>
+              </sc-if>
+            </div>
+          </button>
+          <div style="display: flex; align-items: center; gap: 8px; font-size: 11px; color: #CFC9DB;">
+            <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 2px; background: #F5C518;"></span>{{item.imdb}}</span>
+            <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 4px; background: #FA320A;"></span>{{item.rt}}</span>
+          </div>
+          <span style="font-size: 10px; color: #8C85A0;">{{item.sala}}</span>
+        </article>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="position: relative; margin-top: 26px; display: flex; flex-direction: column; gap: 12px;">
+    <h2 style="margin: 0; padding: 0 20px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 19px; font-weight: 700;">Já marcados por vocês</h2>
+    <div style="padding-left: 20px; display: flex; gap: 10px; overflow: hidden;">
+      <sc-for list="{{marcados}}" as="item" hint-placeholder-count="3">
+        <article style="width: 150px; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px;">
+          <button type="button" aria-label="Abrir detalhes do filme" style="padding: 0; border: none; background: none; cursor: pointer; display: block;">
+            <div style="height: 222px; border-radius: 6px; background: {{item.posterBg}}; border: 1px solid #2A2537; box-sizing: border-box; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; text-align: left; position: relative; overflow: hidden;">
+              <span style="font-size: 9px; letter-spacing: 0.14em; color: #8C85A0;">PÔSTER</span>
+              <sc-if value="{{item.marcado}}" hint-placeholder-val="{{true}}">
+                <span style="position: absolute; top: 8px; right: 8px; width: 22px; height: 22px; border-radius: 11px; background: {{item.marcaCor}}; color: #17131E; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;">{{item.marcaInicial}}</span>
+              </sc-if>
+              <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 15px; line-height: 1.12; font-weight: 700; color: #EFEBF5;">{{item.titulo}}</span>
+              <sc-if value="{{item.temFaixa}}" hint-placeholder-val="{{true}}">
+                <span style="position: absolute; left: 0; right: 0; bottom: 0; padding: 5px 8px; background: {{accent2}}; color: #241205; font-size: 10px; font-weight: 700; text-align: center;">{{item.faixa}}</span>
+              </sc-if>
+            </div>
+          </button>
+          <div style="display: flex; align-items: center; gap: 8px; font-size: 11px; color: #CFC9DB;">
+            <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 2px; background: #F5C518;"></span>{{item.imdb}}</span>
+            <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 7px; height: 7px; border-radius: 4px; background: #FA320A;"></span>{{item.rt}}</span>
+          </div>
+          <span style="font-size: 10px; color: #8C85A0;">{{item.sala}}</span>
+        </article>
+      </sc-for>
+    </div>
+  </section>
+
+  <nav aria-label="Navegação principal" style="position: relative; margin-top: auto; margin-bottom: 20px; align-self: center; box-sizing: border-box; padding: 8px 10px; border-radius: 34px; background: rgba(32, 28, 43, 0.94); border: 1px solid #332E42; display: flex; align-items: center; gap: 4px;">
+    <a href="HBUrsoMobile.dc.html" style="min-width: 74px; min-height: 52px; padding: 0 10px; border-radius: 26px; background: rgba(244, 241, 248, 0.10); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #F4F1F8; font-size: 11px; font-weight: 600;">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 11l8-6.5 8 6.5v8a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1z"></path></svg>
+      Início
+    </a>
+    <a href="#em-breve" style="min-width: 74px; min-height: 52px; padding: 0 10px; border-radius: 26px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #A79FB5; font-size: 11px; font-weight: 500;">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>
+      Em breve
+    </a>
+    <a href="#marcados" style="min-width: 74px; min-height: 52px; padding: 0 10px; border-radius: 26px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #A79FB5; font-size: 11px; font-weight: 500;">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 3h12v18l-6-4.5L6 21z"></path></svg>
+      Marcados
+    </a>
+    <a href="#perfil" style="min-width: 74px; min-height: 52px; padding: 0 10px; border-radius: 26px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #A79FB5; font-size: 11px; font-weight: 500;">
+      <span style="width: 22px; height: 22px; border-radius: 7px; background: {{accent}}; color: #150A28; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center;">H</span>
+      HBUrso
+    </a>
+  </nav>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#9D7BFF","options":["#9D7BFF","#FF8A3D","#FF4D8D","#4DD4C0"]},"accent2":{"editor":"color","default":"#FF8A3D","options":["#FF8A3D","#9D7BFF","#FF4D8D"]},"$preview":{"width":390,"height":1900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      accent: this.props.accent ?? '#9D7BFF',
+      accent2: this.props.accent2 ?? '#FF8A3D',
+      emCartaz: [
+        { titulo: 'Pobres Criaturas', imdb: '7,8', rt: '88%', sala: 'Espaço Itaú · LEG', posterBg: '#251C24', marcado: false, marcaInicial: '', marcaCor: '#9D7BFF', temFaixa: false, faixa: '' },
+        { titulo: 'Divertida Mente 2', imdb: '7,6', rt: '91%', sala: 'Kinoplex · XD · DUB', posterBg: '#1B2230', marcado: true, marcaInicial: 'H', marcaCor: '#9D7BFF', temFaixa: false, faixa: '' },
+        { titulo: 'Godzilla e Kong', imdb: '6,2', rt: '54%', sala: 'UCI · 3D · DUB', posterBg: '#1A2126', marcado: false, marcaInicial: '', marcaCor: '#9D7BFF', temFaixa: true, faixa: 'Última semana' }
+      ],
+      preEstreias: [
+        { titulo: 'Wicked', imdb: '7,4', rt: '88%', sala: 'Cinemark · IMAX', posterBg: '#1E2430', marcado: false, marcaInicial: '', marcaCor: '#9D7BFF', temFaixa: true, faixa: 'Qui · 23h59' },
+        { titulo: 'Nosferatu', imdb: '7,3', rt: '85%', sala: 'Kinoplex · Dolby', posterBg: '#241C22', marcado: true, marcaInicial: 'H', marcaCor: '#9D7BFF', temFaixa: true, faixa: 'Qua · 21h' },
+        { titulo: 'O Brutalista', imdb: '7,9', rt: '93%', sala: 'Cinépolis · VIP', posterBg: '#1D2028', marcado: false, marcaInicial: '', marcaCor: '#9D7BFF', temFaixa: true, faixa: 'Dom · 18h' }
+      ],
+      marcados: [
+        { titulo: 'Duna: Parte Dois', imdb: '8,5', rt: '92%', sala: 'Cinemark · IMAX · LEG', posterBg: '#1D1A33', marcado: true, marcaInicial: 'C', marcaCor: '#FF4D8D', temFaixa: false, faixa: '' },
+        { titulo: 'Anora', imdb: '7,5', rt: '91%', sala: 'Cinépolis · VIP · LEG', posterBg: '#221E2B', marcado: true, marcaInicial: 'C', marcaCor: '#FF4D8D', temFaixa: false, faixa: '' },
+        { titulo: 'Divertida Mente 2', imdb: '7,6', rt: '91%', sala: 'Kinoplex · XD · DUB', posterBg: '#1B2230', marcado: true, marcaInicial: 'H', marcaCor: '#9D7BFF', temFaixa: false, faixa: '' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

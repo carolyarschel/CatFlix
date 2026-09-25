@@ -1,0 +1,131 @@
+// ─────────────────────────────────────────────────────────────
+// Tokens do App de Filmes (§12 do contexto.md)
+//
+// SÓ variáveis SCSS — este arquivo não gera uma linha de CSS.
+// Uso nos componentes:  @use '../../shared/styles/tokens' as t;
+//
+// As cores de acento NÃO estão aqui como valor final: elas variam por perfil
+// e são servidas como variáveis CSS (--accent, --accent-soft, --accent-text,
+// --accent-2) trocadas por [data-profile] no reset.scss. Use $accent abaixo,
+// que aponta para a variável CSS.
+// ─────────────────────────────────────────────────────────────
+
+// ── Fundo e ambiente ─────────────────────────────────────────
+$bg: #0b0a0f;
+$ambient-catflix: #171021; // faixa atrás do hero, perfil CatFlix
+$ambient-hburso: #151327; // faixa atrás do hero, perfil HBUrso
+
+// ── Superfícies ──────────────────────────────────────────────
+$surface-bar: #121019; // sidebar, barras, nav flutuante
+$surface-card: #15121d; // cards
+$surface-chip: #1c1927; // chips neutros
+
+// ── Bordas ───────────────────────────────────────────────────
+$border-subtle: #221e2e;
+$border: #2a2537;
+$border-strong: #2e2a3c;
+
+// ── Texto ────────────────────────────────────────────────────
+$text: #f4f1f8; // principal
+$text-secondary: #cfc9db; // secundário
+$text-support: #a79fb5; // apoio
+$text-label: #8c85a0; // rótulos
+$text-group-label: #6f6883; // rótulos de grupo
+
+// ── Perfis (valores de origem; o consumo é via --accent) ─────
+$catflix-accent: #ff4d8d;
+$catflix-soft: rgba(255, 77, 141, 0.16);
+$catflix-on-soft: #ffa9c8;
+$catflix-on-solid: #24040f;
+
+// HBUrso: o roxo manda, o laranja é secundário. Não dar o mesmo peso aos dois.
+$hburso-accent: #9d7bff;
+$hburso-soft: rgba(157, 123, 255, 0.18);
+$hburso-on-soft: #c7b1ff;
+$hburso-on-solid: #150a28;
+$hburso-secondary: #ff8a3d;
+$hburso-secondary-soft: rgba(255, 138, 61, 0.16);
+$hburso-on-secondary-soft: #ffb27a;
+
+// ── Acento corrente (resolve para o perfil ativo) ────────────
+$accent: var(--accent);
+$accent-soft: var(--accent-soft);
+$accent-on-soft: var(--accent-text);
+$accent-on-solid: var(--accent-on-solid);
+$accent-2: var(--accent-2);
+$accent-2-soft: var(--accent-2-soft);
+$accent-2-on-soft: var(--accent-2-text);
+$ambient: var(--ambient);
+
+// ── Marcadores de nota ───────────────────────────────────────
+$imdb: #f5c518; // quadrado
+$rt: #fa320a; // círculo
+
+// ── Tipografia ───────────────────────────────────────────────
+$font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+$font-text: 'Instrument Sans', system-ui, sans-serif;
+
+// escala tirada dos modelos mobile (que mandam nos componentes compartilhados)
+$fs-hero: 40px;
+$fs-xxl: 26px;
+$fs-xl: 21px;
+$fs-lg: 19px;
+$fs-md: 16px;
+$fs-base: 15px;
+$fs-sm: 13px;
+$fs-xs: 12px;
+$fs-2xs: 11px;
+$fs-3xs: 10px;
+$fs-4xs: 9px;
+
+$ls-display: -0.03em;
+$ls-title: -0.02em;
+$ls-label: 0.14em; // rótulos em caixa alta
+
+$lh-tight: 1.1;
+$lh-title: 1.25;
+$lh-body: 1.5;
+
+$fw-regular: 400;
+$fw-medium: 500;
+$fw-semibold: 600;
+$fw-bold: 700;
+
+// ── Espaçamento ──────────────────────────────────────────────
+$space-1: 4px;
+$space-2: 6px;
+$space-3: 8px;
+$space-4: 10px;
+$space-5: 12px;
+$space-6: 14px;
+$space-7: 16px;
+$space-8: 20px;
+$space-9: 24px;
+$space-10: 32px;
+
+$gutter: 20px; // margem lateral da tela no mobile
+
+// ── Raios ────────────────────────────────────────────────────
+$radius-xs: 2px;
+$radius-sm: 4px;
+$radius-poster: 6px; // pôster no mobile
+$radius-md: 10px;
+$radius-lg: 12px;
+$radius-xl: 14px;
+$radius-pill: 999px;
+
+// ── Alvos e medidas ──────────────────────────────────────────
+$touch-target: 44px; // mínimo de toque (§12)
+
+// pôster 2:3. String para o Sass não tratar a barra como divisão;
+// use interpolado:  aspect-ratio: #{t.$poster-ratio};
+$poster-ratio: '2 / 3';
+
+// ── Camadas ──────────────────────────────────────────────────
+$z-nav: 100;
+$z-overlay: 200; // painel de tags sobre a home escurecida
+$z-toast: 300;
+
+// ── Quebras ──────────────────────────────────────────────────
+// Mobile é a direção mais recente: escreva mobile primeiro e suba com min-width.
+$bp-desktop: 900px;

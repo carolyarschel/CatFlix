@@ -1,0 +1,61 @@
+{
+  "version": "2026-09-22.2",
+  "_comentario": "Classificação de tipo de sessão do ingresso. A regra ESTRUTURAL (types[].id === 0 é áudio, id > 0 é formato de sala) está no parser e não depende desta lista — ver modules/ingresso/CONTRATO.md §6. Isto aqui só dá nome bonito e prioridade ao que já foi classificado. Formato novo que o ingresso inventar é classificado certo mesmo sem estar aqui: vira slug a partir do nome.",
+  "_audio": "Mapeia o nome do tipo de áudio (id === 0) para o enum AudioType do Prisma. Nome desconhecido vira 'desconhecido', nunca quebra o sync.",
+  "audioByName": {
+    "dublado": "dublado",
+    "dub": "dublado",
+    "legendado": "legendado",
+    "leg": "legendado",
+    "nacional": "original",
+    "nac": "original",
+    "original": "original"
+  },
+  "_formatosIgnorados": "Formatos que não distinguem sala nenhuma: toda sessão comum é 'Normal'/2D. Ficam de fora do roomType, que então cai em 'normal'.",
+  "formatosIgnorados": [
+    "normal",
+    "2d"
+  ],
+  "_tridimensional": "Slugs que significam 3D. Viram Session.is3d e NÃO entram no roomType, que é sobre a sala.",
+  "tridimensional": [
+    "3d"
+  ],
+  "_prioridade": "Uma sessão pode ter vários formatos ao mesmo tempo (ex.: VIP + Laser). roomType guarda um só, o primeiro desta lista que aparecer; roomLabel guarda todos, como vieram. Formato fora da lista entra depois dos conhecidos, mas entra.",
+  "prioridade": [
+    "4dx",
+    "imax",
+    "screenx",
+    "xd",
+    "dolby-cinema",
+    "dolby-atmos",
+    "d-box",
+    "infinity-vision",
+    "macro-xe",
+    "superscreen",
+    "premier",
+    "prime",
+    "vip",
+    "laser"
+  ],
+  "_rotulos": "Rotulo de exibicao por slug de formato. Sem isto, a tag 'xd' herdava o rotulo da SESSAO inteira e o painel de tags mostrava 'XD · D-Box' como se fosse um formato so. Slug que nao esta aqui vira Title Case a partir do proprio slug, entao formato novo do ingresso nao fica feio nem quebra.",
+  "rotulos": {
+    "imax": "IMAX",
+    "xd": "XD",
+    "4dx": "4DX",
+    "screenx": "ScreenX",
+    "d-box": "D-BOX",
+    "dolby-atmos": "Dolby Atmos",
+    "dolby-cinema": "Dolby Cinema",
+    "infinity-vision": "Infinity Vision",
+    "macro-xe": "Macro XE",
+    "superscreen": "SuperScreen",
+    "vip": "VIP",
+    "laser": "Laser",
+    "premier": "Premier",
+    "prime": "Prime",
+    "junior": "Junior",
+    "cine-inclusivo": "Cine Inclusivo",
+    "3d": "3D",
+    "normal": "Normal"
+  }
+}

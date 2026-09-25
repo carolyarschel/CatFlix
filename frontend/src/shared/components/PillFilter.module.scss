@@ -1,0 +1,35 @@
+@use '../styles/tokens' as t;
+
+.faixa {
+  display: flex;
+  gap: t.$space-4;
+  padding: 0 t.$gutter;
+  overflow-x: auto;
+  scrollbar-width: none;
+  // o filtro rola sozinho no celular; a barra de rolagem roubaria altura
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.pill {
+  min-height: t.$touch-target;
+  flex-shrink: 0;
+  padding: 0 t.$space-8;
+  border-radius: t.$radius-pill;
+  border: 1px solid rgba(244, 241, 248, 0.18);
+  background: rgba(244, 241, 248, 0.1);
+  color: t.$text;
+  font-size: t.$fs-base;
+  font-weight: t.$fw-medium;
+  display: flex;
+  align-items: center;
+  gap: t.$space-2;
+  white-space: nowrap;
+}
+
+.ativa {
+  background: t.$accent-soft;
+  border-color: t.$accent;
+  color: t.$accent-on-soft;
+}

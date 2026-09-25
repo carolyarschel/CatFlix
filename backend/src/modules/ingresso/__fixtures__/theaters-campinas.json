@@ -1,0 +1,705 @@
+{
+  "items": [
+    {
+      "id": "1061",
+      "boxOfficeId": "9115",
+      "images": [
+        {
+          "url": "https://ingresso-a.akamaihd.net/prd/img/cinema/avatar/avatarcorporation_10.svg",
+          "type": "Logo"
+        },
+        {
+          "url": "https://www.ingresso.com/images/placeholder-movie-banner.jpg",
+          "type": "Banner"
+        }
+      ],
+      "theaterBackgroundColor": "",
+      "urlKey": "cine-araujo-multiplex-parque-das-bandeiras",
+      "name": "Cine Araújo Multiplex Parque Das Bandeiras",
+      "siteURL": "https://www.ingresso.com/cinema/cine-araujo-multiplex-parque-das-bandeiras?city=campinas&partnership=www&ing_source=api&ing_medium=link-cinema&ing_campaign=www&ing_content=cine-araujo-multiplex-parque-das-bandeiras",
+      "nationalSiteURL": "https://www.ingresso.com/cinema/cine-araujo-multiplex-parque-das-bandeiras?city=campinas&partnership=www&ing_source=api&ing_medium=link-cinema&ing_campaign=www&ing_content=cine-araujo-multiplex-parque-das-bandeiras",
+      "cnpj": "03608600003140",
+      "districtAuthorization": "",
+      "address": "Avenida John Boyd Dunlop",
+      "addressComplement": "Anexo Shop. Das Bandeiras",
+      "number": "3900",
+      "cityId": "14",
+      "cityName": "Campinas",
+      "state": "São Paulo",
+      "uf": "SP",
+      "neighborhood": "Campo Grande",
+      "properties": {
+        "hasBomboniere": true,
+        "hasContactlessWithdrawal": true,
+        "hasSession": true,
+        "hasSeatDistancePolicy": false,
+        "hasSeatDistancePolicyArena": false
+      },
+      "functionalities": {
+        "operationPolicyEnabled": true
+      },
+      "telephones": [
+        "(19) 3728-4321"
+      ],
+      "geolocation": {
+        "lat": -22.92521,
+        "lng": -47.12697
+      },
+      "deliveryType": [
+        "Bilheteria/ATM",
+        "Aplicativo/Scannerless"
+      ],
+      "corporation": "Cine Araújo",
+      "corporationId": "10",
+      "corporationPriority": 0,
+      "corporationAvatarBackground": "#000000",
+      "rooms": [
+        {
+          "id": "3068",
+          "name": "Sala 1 - MAX SCREEN LASER",
+          "fullName": "Araújo Campinas 1",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "3069",
+          "name": "Sala 2 - MAX SCREEN LASER",
+          "fullName": "Araújo Campinas 2",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "3070",
+          "name": "Sala 3 - VIP",
+          "fullName": "Araújo Campinas 3",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "3071",
+          "name": "Sala 4",
+          "fullName": "Araújo Campinas 4",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "3072",
+          "name": "Sala 5",
+          "fullName": "Araújo Campinas 5",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "3073",
+          "name": "Sala 6",
+          "fullName": "Araújo Campinas 6",
+          "capacity": 0,
+          "documents": []
+        }
+      ],
+      "totalRooms": 6,
+      "enabled": true,
+      "blockMessage": "",
+      "partnershipType": null,
+      "operationPolicies": []
+    },
+    {
+      "id": "135",
+      "boxOfficeId": "3171",
+      "images": [
+        {
+          "url": "https://ingresso-a.akamaihd.net/prd/img/cinema/avatar/avatarcorporation_1.svg",
+          "type": "Logo"
+        },
+        {
+          "url": "https://www.ingresso.com/images/placeholder-movie-banner.jpg",
+          "type": "Banner"
+        }
+      ],
+      "theaterBackgroundColor": "",
+      "urlKey": "cinemark-shopping-iguatemi-campinas",
+      "name": "Cinemark Shopping Iguatemi Campinas",
+      "siteURL": "https://www.ingresso.com/cinema/cinemark-shopping-iguatemi-campinas?city=campinas&partnership=www&ing_source=api&ing_medium=link-cinema&ing_campaign=www&ing_content=cinemark-shopping-iguatemi-campinas",
+      "nationalSiteURL": "https://www.ingresso.com/cinema/cinemark-shopping-iguatemi-campinas?city=campinas&partnership=www&ing_source=api&ing_medium=link-cinema&ing_campaign=www&ing_content=cinemark-shopping-iguatemi-campinas",
+      "cnpj": "00779721008045",
+      "districtAuthorization": "",
+      "address": "Av. Iguatemi",
+      "addressComplement": "SUC C - 3º piso",
+      "number": "777",
+      "cityId": "14",
+      "cityName": "Campinas",
+      "state": "São Paulo",
+      "uf": "SP",
+      "neighborhood": "Vila Brandina",
+      "properties": {
+        "hasBomboniere": true,
+        "hasContactlessWithdrawal": true,
+        "hasSession": true,
+        "hasSeatDistancePolicy": false,
+        "hasSeatDistancePolicyArena": false
+      },
+      "functionalities": {
+        "operationPolicyEnabled": true
+      },
+      "telephones": [
+        "(19) 32533-006"
+      ],
+      "geolocation": {
+        "lat": -22.89374,
+        "lng": -47.02425
+      },
+      "deliveryType": [
+        "Bilheteria/ATM",
+        "Aplicativo/Scannerless"
+      ],
+      "corporation": "Cinemark",
+      "corporationId": "1",
+      "corporationPriority": 0,
+      "corporationAvatarBackground": "#DD0000",
+      "rooms": [
+        {
+          "id": "433",
+          "name": "Sala 1",
+          "fullName": "Cinemark Shopping Iguatemi Campinas 1",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "434",
+          "name": "Sala 2",
+          "fullName": "Cinemark Shopping Iguatemi Campinas 2",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "435",
+          "name": "Sala 3",
+          "fullName": "Cinemark Shopping Iguatemi Campinas 3",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "436",
+          "name": "Sala 4",
+          "fullName": "Cinemark Shopping Iguatemi Campinas 4",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "437",
+          "name": "Sala 5",
+          "fullName": "Cinemark Shopping Iguatemi Campinas 5",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "438",
+          "name": "Sala 6",
+          "fullName": "Cinemark Shopping Iguatemi Campinas 6",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "454",
+          "name": "Sala 7",
+          "fullName": "Cinemark Shopping Iguatemi Campinas 7",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "455",
+          "name": "Sala 8",
+          "fullName": "Cinemark Shopping Iguatemi Campinas 8",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "3922",
+          "name": "Prime 9",
+          "fullName": "Cinemark Shopping Iguatemi Campinas Prime 9",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "3923",
+          "name": "Prime 10",
+          "fullName": "Cinemark Shopping  Iguatemi Campinas Prime 10",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "3924",
+          "name": "Prime 11",
+          "fullName": "Cinemark Shopping Iguatemi Campinas Prime 11",
+          "capacity": 0,
+          "documents": []
+        }
+      ],
+      "totalRooms": 11,
+      "enabled": true,
+      "blockMessage": "",
+      "partnershipType": null,
+      "operationPolicies": []
+    },
+    {
+      "id": "1057",
+      "boxOfficeId": "6118",
+      "images": [
+        {
+          "url": "https://ingresso-a.akamaihd.net/prd/img/cinema/avatar/avatarcorporation_5.svg",
+          "type": "Logo"
+        },
+        {
+          "url": "https://www.ingresso.com/images/placeholder-movie-banner.jpg",
+          "type": "Banner"
+        }
+      ],
+      "theaterBackgroundColor": "",
+      "urlKey": "cinepolis-campinas-shopping",
+      "name": "Cinépolis Campinas Shopping",
+      "siteURL": "https://www.ingresso.com/cinema/cinepolis-campinas-shopping?city=campinas&partnership=www&ing_source=api&ing_medium=link-cinema&ing_campaign=www&ing_content=cinepolis-campinas-shopping",
+      "nationalSiteURL": "https://www.ingresso.com/cinema/cinepolis-campinas-shopping?city=campinas&partnership=www&ing_source=api&ing_medium=link-cinema&ing_campaign=www&ing_content=cinepolis-campinas-shopping",
+      "cnpj": "09652820002771",
+      "districtAuthorization": "",
+      "address": "Rua Jacy Teixeira de Camargo",
+      "addressComplement": "Térreo",
+      "number": "940",
+      "cityId": "14",
+      "cityName": "Campinas",
+      "state": "São Paulo",
+      "uf": "SP",
+      "neighborhood": "Jardim do Lago",
+      "properties": {
+        "hasBomboniere": false,
+        "hasContactlessWithdrawal": true,
+        "hasSession": true,
+        "hasSeatDistancePolicy": false,
+        "hasSeatDistancePolicyArena": false
+      },
+      "functionalities": {
+        "operationPolicyEnabled": true
+      },
+      "telephones": [],
+      "geolocation": {
+        "lat": -22.93237,
+        "lng": -47.07739
+      },
+      "deliveryType": [
+        "Bilheteria/ATM",
+        "Aplicativo/Scannerless"
+      ],
+      "corporation": "Cinépolis",
+      "corporationId": "5",
+      "corporationPriority": 0,
+      "corporationAvatarBackground": "#064a89",
+      "rooms": [
+        {
+          "id": "3037",
+          "name": "Sala 1",
+          "fullName": "Cinépolis  Campinas 1",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "3042",
+          "name": "Sala 2",
+          "fullName": "Cinépolis Campinas 2",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "3047",
+          "name": "Sala 3",
+          "fullName": "Cinépolis Campinas 3",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "3048",
+          "name": "Sala 4",
+          "fullName": "Cinépolis Campinas 4",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "3049",
+          "name": "Sala 5",
+          "fullName": "Cinépolis Campinas 5",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "3050",
+          "name": "Sala 6",
+          "fullName": "Cinépolis Campinas 6",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "3051",
+          "name": "Sala 7",
+          "fullName": "Cinépolis Campinas 7",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "3052",
+          "name": "Sala 8",
+          "fullName": "Cinépolis Campinas 8",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "3053",
+          "name": "Sala 9",
+          "fullName": "Cinépolis Campinas 9",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "3054",
+          "name": "Sala 10",
+          "fullName": "Cinépolis Campinas 10",
+          "capacity": 0,
+          "documents": []
+        }
+      ],
+      "totalRooms": 10,
+      "enabled": true,
+      "blockMessage": "Infelizmente estamos sem comunicação com o local.",
+      "partnershipType": null,
+      "operationPolicies": []
+    },
+    {
+      "id": "1524",
+      "boxOfficeId": "0001",
+      "images": [
+        {
+          "url": "https://ingresso-a.akamaihd.net/prd/img/cinema/avatar/avatarcorporation_5.svg",
+          "type": "Logo"
+        },
+        {
+          "url": "https://www.ingresso.com/images/placeholder-movie-banner.jpg",
+          "type": "Banner"
+        }
+      ],
+      "theaterBackgroundColor": "",
+      "urlKey": "cinepolis-shopping-galleria-campinas",
+      "name": "Cinépolis Shopping Galleria Campinas",
+      "siteURL": "https://www.ingresso.com/cinema/cinepolis-shopping-galleria-campinas?city=campinas&partnership=www&ing_source=api&ing_medium=link-cinema&ing_campaign=www&ing_content=cinepolis-shopping-galleria-campinas",
+      "nationalSiteURL": "https://www.ingresso.com/cinema/cinepolis-shopping-galleria-campinas?city=campinas&partnership=www&ing_source=api&ing_medium=link-cinema&ing_campaign=www&ing_content=cinepolis-shopping-galleria-campinas",
+      "cnpj": "09652820005959",
+      "districtAuthorization": "",
+      "address": "Av. Selma Parada Bailarina",
+      "addressComplement": "",
+      "number": "505",
+      "cityId": "14",
+      "cityName": "Campinas",
+      "state": "São Paulo",
+      "uf": "SP",
+      "neighborhood": "Jardim Nilópolis",
+      "properties": {
+        "hasBomboniere": false,
+        "hasContactlessWithdrawal": true,
+        "hasSession": true,
+        "hasSeatDistancePolicy": false,
+        "hasSeatDistancePolicyArena": false
+      },
+      "functionalities": {
+        "operationPolicyEnabled": true
+      },
+      "telephones": [],
+      "geolocation": {
+        "lat": -22.88579,
+        "lng": -47.06749
+      },
+      "deliveryType": [
+        "Bilheteria/ATM",
+        "Aplicativo/Scannerless"
+      ],
+      "corporation": "Cinépolis",
+      "corporationId": "5",
+      "corporationPriority": 0,
+      "corporationAvatarBackground": "#064a89",
+      "rooms": [
+        {
+          "id": "4555",
+          "name": "Sala 1",
+          "fullName": "Cinépolis Galleria Campinas 1",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "4556",
+          "name": "Sala 2",
+          "fullName": "Cinépolis Galleria Campinas 2",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "4557",
+          "name": "Sala 3",
+          "fullName": "Cinépolis Galleria Campinas 3",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "4558",
+          "name": "Sala 4",
+          "fullName": "Cinépolis Galleria Campinas 4",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "4559",
+          "name": "Sala 5 JR",
+          "fullName": "Cinépolis Galleria Campinas 5 JR",
+          "capacity": 0,
+          "documents": []
+        }
+      ],
+      "totalRooms": 5,
+      "enabled": true,
+      "blockMessage": "",
+      "partnershipType": null,
+      "operationPolicies": []
+    },
+    {
+      "id": "136",
+      "boxOfficeId": "1135",
+      "images": [
+        {
+          "url": "https://ingresso-a.akamaihd.net/prd/img/cinema/avatar/avatarcorporation_2.svg",
+          "type": "Logo"
+        },
+        {
+          "url": "https://ingresso-a.akamaihd.net/prd/img/cinema/cover/cover_theater_136.webp",
+          "type": "Banner"
+        }
+      ],
+      "theaterBackgroundColor": "",
+      "urlKey": "kinoplex-dom-pedro",
+      "name": "Kinoplex Dom Pedro",
+      "siteURL": "https://www.ingresso.com/cinema/kinoplex-dom-pedro?city=campinas&partnership=www&ing_source=api&ing_medium=link-cinema&ing_campaign=www&ing_content=kinoplex-dom-pedro",
+      "nationalSiteURL": "https://www.ingresso.com/cinema/kinoplex-dom-pedro?city=campinas&partnership=www&ing_source=api&ing_medium=link-cinema&ing_campaign=www&ing_content=kinoplex-dom-pedro",
+      "cnpj": "33497660000421",
+      "districtAuthorization": "",
+      "address": "Av. Guilherme Campos",
+      "addressComplement": "EUC A18",
+      "number": "500",
+      "cityId": "14",
+      "cityName": "Campinas",
+      "state": "São Paulo",
+      "uf": "SP",
+      "neighborhood": "Jardim Santa Genebra",
+      "properties": {
+        "hasBomboniere": true,
+        "hasContactlessWithdrawal": true,
+        "hasSession": true,
+        "hasSeatDistancePolicy": false,
+        "hasSeatDistancePolicyArena": false
+      },
+      "functionalities": {
+        "operationPolicyEnabled": true
+      },
+      "telephones": [],
+      "geolocation": {
+        "lat": -22.84793,
+        "lng": -47.06328
+      },
+      "deliveryType": [
+        "Bilheteria/ATM",
+        "Aplicativo/Scannerless"
+      ],
+      "corporation": "Kinoplex",
+      "corporationId": "2",
+      "corporationPriority": 0,
+      "corporationAvatarBackground": "#f26822",
+      "rooms": [
+        {
+          "id": "439",
+          "name": "Sala 1",
+          "fullName": "Kinoplex Dom Pedro 1",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "440",
+          "name": "Sala 2",
+          "fullName": "Kinoplex Dom Pedro 2",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "441",
+          "name": "Sala 3",
+          "fullName": "Kinoplex Dom Pedro 3",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "442",
+          "name": "Sala 4",
+          "fullName": "Kinoplex Dom Pedro 4",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "443",
+          "name": "Sala 5",
+          "fullName": "Kinoplex Dom Pedro 5",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "444",
+          "name": "Sala 6",
+          "fullName": "Kinoplex Dom Pedro 6",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "445",
+          "name": "Sala 7",
+          "fullName": "Kinoplex Dom Pedro 7",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "446",
+          "name": "Sala 8",
+          "fullName": "Kinoplex Dom Pedro 8",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "447",
+          "name": "Sala 9",
+          "fullName": "Kinoplex Dom Pedro Platinum 9",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "448",
+          "name": "Sala 10",
+          "fullName": "Kinoplex Dom Pedro Platinum 10",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "449",
+          "name": "Sala 11",
+          "fullName": "Kinoplex Dom Pedro 11",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "450",
+          "name": "Sala 12",
+          "fullName": "Kinoplex Dom Pedro 12",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "451",
+          "name": "Sala 13",
+          "fullName": "Kinoplex Dom Pedro 13",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "452",
+          "name": "Sala 14",
+          "fullName": "Kinoplex Dom Pedro 14",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "453",
+          "name": "Sala 15",
+          "fullName": "Kinoplex Dom Pedro 15",
+          "capacity": 0,
+          "documents": []
+        }
+      ],
+      "totalRooms": 15,
+      "enabled": true,
+      "blockMessage": "",
+      "partnershipType": null,
+      "operationPolicies": []
+    },
+    {
+      "id": "1587",
+      "boxOfficeId": "0067",
+      "images": [
+        {
+          "url": "https://ingresso-a.akamaihd.net/prd/img/cinema/avatar/avatarcorporation_21.svg",
+          "type": "Logo"
+        },
+        {
+          "url": "https://www.ingresso.com/images/placeholder-movie-banner.jpg",
+          "type": "Banner"
+        }
+      ],
+      "theaterBackgroundColor": "",
+      "urlKey": "parque-d-pedro-shopping",
+      "name": "Parque D. Pedro Shopping",
+      "siteURL": "https://www.ingresso.com/cinema/parque-d-pedro-shopping?city=campinas&partnership=www&ing_source=api&ing_medium=link-cinema&ing_campaign=www&ing_content=parque-d-pedro-shopping",
+      "nationalSiteURL": "https://www.ingresso.com/cinema/parque-d-pedro-shopping?city=campinas&partnership=www&ing_source=api&ing_medium=link-cinema&ing_campaign=www&ing_content=parque-d-pedro-shopping",
+      "cnpj": "00860640000171",
+      "districtAuthorization": "",
+      "address": "Expo D. Pedro",
+      "addressComplement": "próximo à entrada das Pedras, estacionamento.",
+      "number": "300",
+      "cityId": "14",
+      "cityName": "Campinas",
+      "state": "São Paulo",
+      "uf": "SP",
+      "neighborhood": "Jardim Santa Genebra",
+      "properties": {
+        "hasBomboniere": false,
+        "hasContactlessWithdrawal": true,
+        "hasSession": false,
+        "hasSeatDistancePolicy": false,
+        "hasSeatDistancePolicyArena": false
+      },
+      "functionalities": {
+        "operationPolicyEnabled": true
+      },
+      "telephones": [],
+      "geolocation": {
+        "lat": -22.84748,
+        "lng": -47.06306
+      },
+      "deliveryType": [
+        "Aplicativo/Scannerless"
+      ],
+      "corporation": "OUTROS EVENTOS",
+      "corporationId": "21",
+      "corporationPriority": 0,
+      "corporationAvatarBackground": "#252525",
+      "rooms": [
+        {
+          "id": "4797",
+          "name": "Centro de Exposições",
+          "fullName": "Centro de Exposições",
+          "capacity": 0,
+          "documents": []
+        },
+        {
+          "id": "4798",
+          "name": "Centro de Exposições",
+          "fullName": "Centro de Exposições",
+          "capacity": 0,
+          "documents": []
+        }
+      ],
+      "totalRooms": 2,
+      "enabled": true,
+      "blockMessage": "",
+      "partnershipType": null,
+      "operationPolicies": []
+    }
+  ],
+  "count": 6
+}

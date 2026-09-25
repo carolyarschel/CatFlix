@@ -1,0 +1,27 @@
+{
+  "page": 1,
+  "results": [
+    {
+      "adult": false,
+      "backdrop_path": "/eZ239CUp1d6OryZEBPnO2n87gMG.jpg",
+      "genre_ids": [
+        878,
+        12
+      ],
+      "id": 693134,
+      "title": "Duna: Parte Dois",
+      "original_language": "en",
+      "original_title": "Dune: Part Two",
+      "overview": "A jornada de Paul Atreides continua. Ele está determinado a buscar vingança contra aqueles que destruíram sua família e seu lar. Com a ajuda de Chani e dos Fremen, ele embarca em uma jornada espiritual, mística e marcial. Se torna Muad'Dib, o líder messiânico dos Fremen, enquanto luta para evitar um futuro sombrio que ele testemunhou em visões. No entanto, suas ações inadvertidamente desencadeiam uma Guerra Santa em seu nome, que se espalha pelo universo conhecido. Enquanto enfrenta escolhas difíceis entre o amor por Chani e o destino de seu povo, Paul precisa usar suas habilidades e conhecimentos para evitar o terrível futuro que previu.",
+      "popularity": 56.9937,
+      "poster_path": "/hH5lhwd8RzvVGbpRixPvIOltZLt.jpg",
+      "release_date": "2024-02-27",
+      "softcore": false,
+      "video": false,
+      "vote_average": 8.136,
+      "vote_count": 8593
+    }
+  ],
+  "total_pages": 1,
+  "total_results": 1
+}

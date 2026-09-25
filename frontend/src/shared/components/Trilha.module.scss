@@ -1,0 +1,78 @@
+@use '../styles/tokens' as t;
+
+.trilha {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-5;
+  // a âncora da barra de navegação não pode parar o título embaixo do cabeçalho
+  scroll-margin-top: t.$space-8;
+}
+
+.cabecalho {
+  padding: 0 t.$gutter;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: t.$space-5;
+}
+
+.titulo {
+  margin: 0;
+  font-size: t.$fs-lg;
+}
+
+.verTodos {
+  flex-shrink: 0;
+  min-height: t.$touch-target;
+  min-width: 0;
+  padding: 0 t.$space-3;
+  margin-right: -#{t.$space-3};
+  color: t.$accent-on-soft;
+  font-size: t.$fs-sm;
+  font-weight: t.$fw-medium;
+  white-space: nowrap;
+}
+
+/** Último lugar da esteira, no tamanho do card para a fileira não desalinhar. */
+.cartaoFinal {
+  width: 150px;
+  flex-shrink: 0;
+  aspect-ratio: #{t.$poster-ratio};
+  border-radius: t.$radius-poster;
+  border: 1px dashed t.$border-strong;
+  background: t.$surface-card;
+  color: t.$text-secondary;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: t.$space-2;
+}
+
+.mais {
+  font-family: t.$font-display;
+  font-size: t.$fs-xxl;
+  font-weight: t.$fw-bold;
+  color: t.$accent-on-soft;
+}
+
+.rotuloFinal {
+  font-size: t.$fs-sm;
+}
+
+.esteira {
+  display: flex;
+  gap: t.$space-4;
+  padding: 0 t.$gutter;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  > * {
+    scroll-snap-align: start;
+  }
+}

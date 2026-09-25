@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Painel de tags — mobile</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body { margin: 0; background: #0B0A0F; font-family: 'Instrument Sans', system-ui, sans-serif; }
+a { color: #FF6FA3; text-decoration: none; }
+a:hover { color: #FF9CC0; }
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #171021; color: #F4F1F8; overflow: hidden; position: relative;">
+
+  <div style="position: absolute; top: 0; left: 0; width: 390px; height: 844px; box-sizing: border-box; padding: 16px 20px; display: flex; flex-direction: column; gap: 14px; opacity: 0.35;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <span style="width: 30px; height: 34px; border-radius: 7px; background: {{accent}}; color: #24040F; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 21px; font-weight: 800; display: flex; align-items: center; justify-content: center;">C</span>
+      <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 26px; font-weight: 700; letter-spacing: -0.02em;">Início</span>
+    </div>
+    <div style="display: flex; gap: 10px;">
+      <span style="min-height: 44px; padding: 0 20px; border-radius: 22px; border: 1px solid rgba(244, 241, 248, 0.18); background: rgba(244, 241, 248, 0.10); font-size: 15px; display: flex; align-items: center;">Em cartaz</span>
+      <span style="min-height: 44px; padding: 0 20px; border-radius: 22px; border: 1px solid rgba(244, 241, 248, 0.18); background: rgba(244, 241, 248, 0.10); font-size: 15px; display: flex; align-items: center;">Pré-estreias</span>
+    </div>
+    <div style="height: 500px; border-radius: 14px; background: #221B2E; border: 1px solid #2E2A3C; box-sizing: border-box; padding: 16px; display: flex; align-items: flex-end;">
+      <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 40px; line-height: 0.98; font-weight: 800; letter-spacing: -0.03em;">Duna: Parte Dois</span>
+    </div>
+  </div>
+
+  <div style="position: absolute; top: 0; left: 0; width: 390px; height: 844px; background: rgba(11, 10, 15, 0.55);"></div>
+
+  <aside aria-label="Filtrar por tag" style="position: absolute; top: 34px; right: 0; width: 262px; height: 810px; box-sizing: border-box; padding: 18px 0; border-radius: 12px 0 0 12px; background: #16131D; border: 1px solid #2A2537; border-right: none; overflow: hidden; display: flex; flex-direction: column;">
+
+    <div style="padding: 0 20px 14px 20px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+      <span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #6F6883;">Sala</span>
+      <button type="button" aria-label="Fechar painel" style="width: 44px; height: 44px; border-radius: 12px; border: none; background: none; color: #A79FB5; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+      </button>
+    </div>
+
+    <sc-for list="{{tags}}" as="item" hint-placeholder-count="12">
+      <div style="padding: 0 20px;">
+        <sc-if value="{{item.cabecalho}}" hint-placeholder-val="{{true}}">
+          <span style="display: block; padding: 16px 0 6px 0; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #6F6883;">{{item.grupo}}</span>
+        </sc-if>
+        <button type="button" style="width: 100%; min-height: 48px; padding: 0 14px; margin-left: -14px; border-radius: 10px; border: none; background: {{item.fundo}}; color: {{item.cor}}; font-family: inherit; font-size: 17px; font-weight: 500; text-align: left; display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer;">
+          {{item.nome}}
+          <span style="font-size: 12px; color: #6F6883;">{{item.contagem}}</span>
+        </button>
+      </div>
+    </sc-for>
+
+  </aside>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#FF4D8D","options":["#FF4D8D","#9D7BFF","#FF8A3D","#4DD4C0"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const off = { fundo: 'transparent', cor: '#E7E3EF' };
+    const on = { fundo: 'rgba(255, 77, 141, 0.16)', cor: '#FFA9C8' };
+    return {
+      accent: this.props.accent ?? '#FF4D8D',
+      tags: [
+        { nome: 'IMAX', contagem: '6', cabecalho: false, grupo: '', fundo: on.fundo, cor: on.cor },
+        { nome: 'XD', contagem: '4', cabecalho: false, grupo: '', fundo: off.fundo, cor: off.cor },
+        { nome: 'VIP', contagem: '3', cabecalho: false, grupo: '', fundo: off.fundo, cor: off.cor },
+        { nome: 'Dolby', contagem: '2', cabecalho: false, grupo: '', fundo: off.fundo, cor: off.cor },
+        { nome: '3D', contagem: '5', cabecalho: false, grupo: '', fundo: off.fundo, cor: off.cor },
+        { nome: 'Cinemark', contagem: '14', cabecalho: true, grupo: 'Cinema', fundo: off.fundo, cor: off.cor },
+        { nome: 'Kinoplex', contagem: '9', cabecalho: false, grupo: '', fundo: off.fundo, cor: off.cor },
+        { nome: 'Cinépolis', contagem: '8', cabecalho: false, grupo: '', fundo: off.fundo, cor: off.cor },
+        { nome: 'Espaço Itaú', contagem: '6', cabecalho: false, grupo: '', fundo: off.fundo, cor: off.cor },
+        { nome: 'UCI', contagem: '5', cabecalho: false, grupo: '', fundo: off.fundo, cor: off.cor },
+        { nome: 'Legendado', contagem: '22', cabecalho: true, grupo: 'Áudio', fundo: off.fundo, cor: off.cor },
+        { nome: 'Dublado', contagem: '20', cabecalho: false, grupo: '', fundo: off.fundo, cor: off.cor },
+        { nome: 'Quero ver', contagem: '11', cabecalho: true, grupo: 'Suas tags', fundo: off.fundo, cor: off.cor },
+        { nome: 'Maratona', contagem: '4', cabecalho: false, grupo: '', fundo: off.fundo, cor: off.cor }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

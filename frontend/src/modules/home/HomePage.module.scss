@@ -1,0 +1,215 @@
+@use '../../shared/styles/tokens' as t;
+
+.tela {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-7;
+  padding-top: t.$space-7;
+
+  // A PÁGINA nunca rola de lado; só as trilhas rolam, por dentro.
+  //
+  // Sem isto o conteúdo das trilhas entra na área rolável do documento e a home
+  // inteira arrasta 2175 px para a direita — medido no Chrome. É `clip` e não
+  // `hidden` de propósito: `hidden` criaria um contexto de rolagem e a barra de
+  // navegação, que é `position: sticky`, deixaria de grudar.
+  overflow-x: clip;
+  // o desktop segue o mobile (§3, 23/09/2026): a mesma coluna, centrada e um
+  // pouco mais larga. Sem card horizontal, sem segunda gramática de layout.
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+
+  @media (min-width: t.$bp-desktop) {
+    max-width: 720px;
+  }
+}
+
+/** Faixa de ambiente atrás do hero (§12), na cor do perfil ativo. */
+.ambiente {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 700px;
+  // A emenda de 700 px aparecia como um risco atravessando a tela no desktop,
+  // onde o hero é mais alto. Os últimos 140 px dissolvem na cor do fundo.
+  background: linear-gradient(to bottom, t.$ambient 0%, t.$ambient 80%, t.$bg 100%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.cabecalho {
+  position: relative;
+  padding: 0 t.$gutter;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: t.$space-5;
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: t.$space-4;
+}
+
+.inicial {
+  width: 30px;
+  height: 34px;
+  border-radius: 7px;
+  background: t.$accent;
+  color: t.$accent-on-solid;
+  font-family: t.$font-display;
+  font-size: t.$fs-xl;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.titulo {
+  margin: 0;
+  font-size: t.$fs-xxl;
+  font-weight: t.$fw-bold;
+}
+
+.acoes {
+  display: flex;
+  align-items: center;
+  gap: t.$space-5;
+}
+
+.acao {
+  position: relative;
+  width: t.$touch-target;
+  height: t.$touch-target;
+  border-radius: t.$radius-lg;
+  color: #ede9f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+}
+
+.degradado {
+  margin: 0 t.$gutter;
+  padding: t.$space-3 t.$space-5;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border-strong;
+  background: t.$surface-chip;
+  color: t.$text-support;
+  font-size: t.$fs-xs;
+}
+
+.pillTags {
+  min-height: t.$touch-target;
+  flex-shrink: 0;
+  padding: 0 t.$space-8;
+  border-radius: t.$radius-pill;
+  border: 1px solid rgba(244, 241, 248, 0.18);
+  background: rgba(244, 241, 248, 0.1);
+  color: t.$text;
+  font-size: t.$fs-base;
+  font-weight: t.$fw-medium;
+  display: flex;
+  align-items: center;
+  gap: t.$space-2;
+  white-space: nowrap;
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+}
+
+.pillTagsAtiva {
+  background: t.$accent-soft;
+  border-color: t.$accent;
+  color: t.$accent-on-soft;
+}
+
+// ── Grade de resultados (home com tag ligada) ────────────────
+// Não é trilha: trilha rola de lado e esconde o fim, e aqui o fim é a
+// resposta. A grade usa o MESMO PosterCard (§12) — um card só no app.
+
+.resultados {
+  position: relative;
+  padding: t.$space-5 t.$gutter 0;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-5;
+}
+
+.tituloDaGrade {
+  margin: 0;
+  font-size: t.$fs-lg;
+}
+
+.grade {
+  display: grid;
+  // 150 px é a largura do card; o `auto-fill` acomoda 2 colunas no celular e
+  // 4 no desktop sem uma segunda medida escrita à mão
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: t.$space-8 t.$space-4;
+  justify-items: start;
+}
+
+.heroArea {
+  position: relative;
+  padding: 0 t.$gutter;
+}
+
+.trilhas {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-9;
+  padding-top: t.$space-5;
+}
+
+.aviso {
+  margin: t.$space-10 auto;
+  padding: 0 t.$gutter;
+  color: t.$text-support;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: t.$space-5;
+}
+
+.explicacao {
+  max-width: 34ch;
+  color: t.$text-label;
+  font-size: t.$fs-sm;
+}
+
+.saidas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: t.$space-4;
+}
+
+.secundario {
+  padding: 0 t.$space-8;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border-strong;
+  color: t.$text-secondary;
+  font-size: t.$fs-base;
+}
+
+.tentar {
+  padding: 0 t.$space-8;
+  border-radius: t.$radius-md;
+  background: t.$accent-soft;
+  border: 1px solid t.$accent;
+  color: t.$accent-on-soft;
+  font-weight: t.$fw-semibold;
+}

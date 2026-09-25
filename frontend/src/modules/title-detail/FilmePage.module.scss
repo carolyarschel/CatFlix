@@ -1,0 +1,471 @@
+@use '../../shared/styles/tokens' as t;
+
+.tela {
+  position: relative;
+  min-height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+  padding-bottom: calc(#{t.$space-10} + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-8;
+  overflow-x: clip;
+
+  // o desktop segue o mobile (§3): mesma coluna, um pouco mais larga
+  @media (min-width: t.$bp-desktop) {
+    max-width: 720px;
+  }
+}
+
+/**
+ * Faixa de ambiente com o backdrop do filme, no lugar da cor chapada da home.
+ * O gradiente por cima é o que mantém o texto legível sobre qualquer imagem —
+ * um pôster claro sem ele apagaria o título.
+ */
+.ambiente {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 340px;
+  background-size: cover;
+  background-position: center 20%;
+  z-index: -1;
+  pointer-events: none;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(11, 10, 15, 0.55) 0%,
+      rgba(11, 10, 15, 0.82) 55%,
+      t.$bg 100%
+    );
+  }
+}
+
+.cabecalho {
+  padding: t.$space-7 t.$gutter 0;
+}
+
+.voltar {
+  width: t.$touch-target;
+  height: t.$touch-target;
+  margin-left: -#{t.$space-4};
+  border-radius: t.$radius-lg;
+  background: rgba(18, 16, 25, 0.7);
+  backdrop-filter: blur(8px);
+  color: t.$text;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// ── Capa ─────────────────────────────────────────────────────
+
+.capa {
+  padding: 0 t.$gutter;
+  display: flex;
+  gap: t.$space-7;
+  align-items: flex-start;
+}
+
+.poster {
+  width: 132px;
+  flex-shrink: 0;
+  aspect-ratio: #{t.$poster-ratio};
+  border-radius: t.$radius-lg;
+  border: 1px solid t.$border;
+  background: t.$surface-card;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imagem {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.semPoster {
+  color: t.$text-group-label;
+  font-size: t.$fs-2xs;
+}
+
+.identidade {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-4;
+}
+
+.titulo {
+  margin: 0;
+  font-size: t.$fs-xxl;
+  line-height: t.$lh-tight;
+  letter-spacing: t.$ls-display;
+}
+
+.original {
+  color: t.$text-label;
+  font-size: t.$fs-sm;
+  font-style: italic;
+}
+
+.taxonomia {
+  color: t.$text-secondary;
+  font-size: t.$fs-sm;
+}
+
+.destaque {
+  color: t.$text;
+  font-weight: t.$fw-semibold;
+}
+
+.separador {
+  margin: 0 t.$space-2;
+  color: t.$text-group-label;
+}
+
+.marcas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: t.$space-4;
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: t.$space-2;
+  color: t.$text-support;
+  font-size: t.$fs-xs;
+}
+
+.inicial {
+  width: 20px;
+  height: 20px;
+  border-radius: t.$radius-sm;
+  color: #17131e;
+  font-family: t.$font-display;
+  font-size: t.$fs-2xs;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pendente {
+  margin: 0 t.$gutter;
+  padding: t.$space-4 t.$space-6;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border-strong;
+  background: t.$surface-chip;
+  color: t.$text-support;
+  font-size: t.$fs-xs;
+}
+
+// ── Ações ────────────────────────────────────────────────────
+
+.acoes {
+  padding: 0 t.$gutter;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-4;
+}
+
+// mesma gramática do HeroCard: primário claro, secundário translúcido, os dois
+// de largura total
+.primario {
+  min-height: 52px;
+  border-radius: t.$radius-md;
+  background: #f2eefb;
+  color: #1a1524;
+  font-size: t.$fs-md;
+  font-weight: t.$fw-semibold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: t.$space-3;
+}
+
+.secundario {
+  min-height: 52px;
+  border-radius: t.$radius-md;
+  border: 1px solid rgba(244, 241, 248, 0.18);
+  background: rgba(244, 241, 248, 0.1);
+  color: t.$text;
+  font-size: t.$fs-md;
+  font-weight: t.$fw-medium;
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+}
+
+// marcado: o botão vira o acento do perfil, que é a confirmação mais barata de
+// que a marcação pegou
+.secundarioAtivo {
+  border-color: t.$accent;
+  background: t.$accent-soft;
+  color: t.$accent-on-soft;
+}
+
+.estados {
+  display: flex;
+  gap: t.$space-3;
+}
+
+.estado {
+  flex: 1;
+  min-height: t.$touch-target;
+  padding: 0 t.$space-4;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border-strong;
+  color: t.$text-secondary;
+  font-size: t.$fs-sm;
+  font-weight: t.$fw-medium;
+
+  &:disabled {
+    opacity: 0.6;
+  }
+}
+
+.estadoAtivo {
+  border-color: t.$accent;
+  background: t.$accent-soft;
+  color: t.$accent-on-soft;
+}
+
+.erro {
+  color: #ff9b9b;
+  font-size: t.$fs-sm;
+}
+
+// ── Blocos ───────────────────────────────────────────────────
+
+.bloco {
+  padding: 0 t.$gutter;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-5;
+}
+
+.rotulo {
+  margin: 0;
+  font-size: t.$fs-lg;
+  display: flex;
+  align-items: center;
+  gap: t.$space-4;
+}
+
+.contagem {
+  padding: 0 t.$space-4;
+  border-radius: t.$radius-pill;
+  background: t.$surface-chip;
+  color: t.$text-support;
+  font-family: t.$font-text;
+  font-size: t.$fs-xs;
+  font-weight: t.$fw-medium;
+  letter-spacing: 0;
+}
+
+.sinopse {
+  color: t.$text-secondary;
+  font-size: t.$fs-base;
+}
+
+.vazio {
+  color: t.$text-label;
+  font-size: t.$fs-sm;
+}
+
+// ── Sessões ──────────────────────────────────────────────────
+
+// ── Filtro por tipo de sala ──────────────────────────────────
+
+.salas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: t.$space-3;
+}
+
+.sala {
+  min-height: t.$touch-target;
+  padding: 0 t.$space-6;
+  border-radius: t.$radius-pill;
+  border: 1px solid rgba(244, 241, 248, 0.18);
+  background: rgba(244, 241, 248, 0.1);
+  color: t.$text;
+  font-size: t.$fs-sm;
+  font-weight: t.$fw-medium;
+  white-space: nowrap;
+}
+
+.salaAtiva {
+  border-color: t.$accent;
+  background: t.$accent-soft;
+  color: t.$accent-on-soft;
+}
+
+.cinema {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-5;
+  padding-bottom: t.$space-5;
+
+  & + & {
+    border-top: 1px solid t.$border-subtle;
+    padding-top: t.$space-7;
+  }
+}
+
+.nomeDoCinema {
+  margin: 0;
+  font-size: t.$fs-md;
+  color: t.$text;
+}
+
+.dia {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-3;
+}
+
+.nomeDoDia {
+  font-size: t.$fs-2xs;
+  letter-spacing: t.$ls-label;
+  text-transform: uppercase;
+  color: t.$text-group-label;
+}
+
+.horarios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: t.$space-3;
+}
+
+.sessao {
+  min-height: t.$touch-target;
+  padding: t.$space-2 t.$space-6;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border-strong;
+  background: t.$surface-card;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1px;
+}
+
+.sessaoSemLink {
+  opacity: 0.6;
+}
+
+.hora {
+  font-family: t.$font-display;
+  font-size: t.$fs-md;
+  font-weight: t.$fw-semibold;
+  line-height: 1.1;
+}
+
+.detalhes {
+  color: t.$text-label;
+  font-size: t.$fs-3xs;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.maisDias {
+  align-self: flex-start;
+  min-height: t.$touch-target;
+  padding: 0 t.$space-7;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border-strong;
+  color: t.$text-secondary;
+  font-size: t.$fs-sm;
+  font-weight: t.$fw-medium;
+}
+
+// ── Ficha ────────────────────────────────────────────────────
+
+.ficha {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-4;
+}
+
+.linhaDaFicha {
+  display: grid;
+  grid-template-columns: 84px 1fr;
+  gap: t.$space-5;
+  align-items: baseline;
+}
+
+.termo {
+  font-size: t.$fs-2xs;
+  letter-spacing: t.$ls-label;
+  text-transform: uppercase;
+  color: t.$text-group-label;
+}
+
+.valor {
+  margin: 0;
+  color: t.$text-secondary;
+  font-size: t.$fs-base;
+}
+
+.elenco {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-3;
+  padding-top: t.$space-3;
+  border-top: 1px solid t.$border-subtle;
+}
+
+.pessoa {
+  display: flex;
+  justify-content: space-between;
+  gap: t.$space-6;
+  font-size: t.$fs-base;
+}
+
+.nomeDaPessoa {
+  color: t.$text;
+}
+
+.personagem {
+  min-width: 0;
+  color: t.$text-label;
+  font-size: t.$fs-sm;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// ── Estados da tela ──────────────────────────────────────────
+
+.aviso {
+  margin: t.$space-10 auto;
+  padding: 0 t.$gutter;
+  color: t.$text-support;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: t.$space-5;
+}
+
+.tentar {
+  padding: 0 t.$space-8;
+  border-radius: t.$radius-md;
+  background: t.$accent-soft;
+  border: 1px solid t.$accent;
+  color: t.$accent-on-soft;
+  font-weight: t.$fw-semibold;
+}

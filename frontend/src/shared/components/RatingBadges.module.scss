@@ -1,0 +1,40 @@
+@use '../styles/tokens' as t;
+
+.notas {
+  display: flex;
+  align-items: center;
+  gap: t.$space-3;
+  font-size: t.$fs-2xs;
+  color: t.$text-secondary;
+}
+
+.nota {
+  display: flex;
+  align-items: center;
+  gap: t.$space-1;
+}
+
+.marcaImdb {
+  width: 7px;
+  height: 7px;
+  border-radius: t.$radius-xs;
+  background: t.$imdb;
+  flex-shrink: 0;
+}
+
+.marcaRt {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: t.$rt;
+  flex-shrink: 0;
+}
+
+.visualmenteOculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

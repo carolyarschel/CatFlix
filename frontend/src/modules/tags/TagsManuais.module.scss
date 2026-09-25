@@ -1,0 +1,119 @@
+@use '../../shared/styles/tokens' as t;
+
+.bloco {
+  padding: 0 t.$gutter;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-5;
+}
+
+.rotulo {
+  margin: 0;
+  font-size: t.$fs-lg;
+}
+
+.grupo {
+  font-size: t.$fs-2xs;
+  letter-spacing: t.$ls-label;
+  text-transform: uppercase;
+  color: t.$text-group-label;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: t.$space-3;
+}
+
+.chip {
+  min-height: t.$touch-target;
+  padding: t.$space-2 t.$space-6;
+  border-radius: t.$radius-pill;
+  background: t.$surface-chip;
+  color: t.$text-secondary;
+  font-size: t.$fs-sm;
+  display: flex;
+  align-items: center;
+  gap: t.$space-3;
+}
+
+// a sua tag usa o seu acento; a do outro perfil fica neutra com borda, para
+// dar para ver que existe sem parecer que dá para tirar
+.chipMinha {
+  background: t.$accent-soft;
+  color: t.$accent-on-soft;
+}
+
+.chipDoOutro {
+  border: 1px dashed t.$border-strong;
+}
+
+.tirar {
+  width: 22px;
+  height: 22px;
+  min-width: 0;
+  min-height: 0;
+  margin-right: -#{t.$space-2};
+  border-radius: t.$radius-pill;
+  color: inherit;
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover,
+  &:focus-visible {
+    opacity: 1;
+  }
+}
+
+.vazio {
+  color: t.$text-label;
+  font-size: t.$fs-sm;
+}
+
+.formulario {
+  display: flex;
+  gap: t.$space-3;
+}
+
+.campo {
+  flex: 1;
+  min-width: 0;
+  min-height: t.$touch-target;
+  padding: 0 t.$space-6;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border-strong;
+  background: t.$surface-chip;
+  color: t.$text;
+  font-size: t.$fs-base;
+
+  &::placeholder {
+    color: t.$text-group-label;
+  }
+
+  &:focus-visible {
+    border-color: t.$accent;
+  }
+}
+
+.adicionar {
+  flex-shrink: 0;
+  padding: 0 t.$space-7;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$accent;
+  background: t.$accent-soft;
+  color: t.$accent-on-soft;
+  font-size: t.$fs-base;
+  font-weight: t.$fw-semibold;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.erro {
+  color: #ff9b9b;
+  font-size: t.$fs-sm;
+}

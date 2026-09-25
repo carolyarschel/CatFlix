@@ -1,0 +1,163 @@
+// ─────────────────────────────────────────────────────────────
+// ÚNICO SCSS global do projeto (§11).
+// Contém três coisas e nada mais:
+//   1. reset
+//   2. tipografia base
+//   3. variáveis de tema por perfil, trocadas por [data-profile] no <html>
+//
+// Todo o resto é .module.scss, um por componente/tela.
+// ─────────────────────────────────────────────────────────────
+
+@use './shared/styles/tokens' as t;
+
+// ── 3. Tema por perfil ───────────────────────────────────────
+// Aprovado com a Carol: as variáveis CSS ficam aqui, no arquivo que já é a
+// exceção global permitida. Trocar o atributo data-profile no <html> troca o
+// acento inteiro sem recarregar a página (critério de aceite nº 7).
+
+:root,
+[data-profile='catflix'] {
+  --accent: #{t.$catflix-accent};
+  --accent-soft: #{t.$catflix-soft};
+  --accent-text: #{t.$catflix-on-soft};
+  --accent-on-solid: #{t.$catflix-on-solid};
+  --ambient: #{t.$ambient-catflix};
+
+  // CatFlix não tem cor secundária: o slot existe para o componente não precisar
+  // saber qual perfil está ativo.
+  --accent-2: #{t.$catflix-accent};
+  --accent-2-soft: #{t.$catflix-soft};
+  --accent-2-text: #{t.$catflix-on-soft};
+}
+
+[data-profile='hburso'] {
+  --accent: #{t.$hburso-accent};
+  --accent-soft: #{t.$hburso-soft};
+  --accent-text: #{t.$hburso-on-soft};
+  --accent-on-solid: #{t.$hburso-on-solid};
+  --ambient: #{t.$ambient-hburso};
+
+  // o laranja é secundário: faixas de pôster e chips de sala, nunca o botão principal
+  --accent-2: #{t.$hburso-secondary};
+  --accent-2-soft: #{t.$hburso-secondary-soft};
+  --accent-2-text: #{t.$hburso-on-secondary-soft};
+}
+
+// ── 1. Reset ─────────────────────────────────────────────────
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  color-scheme: dark;
+}
+
+body {
+  min-height: 100dvh;
+  background: t.$bg;
+  color: t.$text;
+  font-family: t.$font-text;
+  font-size: t.$fs-base;
+  line-height: t.$lh-body;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+}
+
+button {
+  cursor: pointer;
+  // alvo de toque mínimo (§12)
+  min-height: t.$touch-target;
+  min-width: t.$touch-target;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+// ── 2. Tipografia base ───────────────────────────────────────
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: t.$font-display;
+  font-weight: t.$fw-bold;
+  line-height: t.$lh-title;
+  letter-spacing: t.$ls-title;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: t.$fs-xxl;
+  letter-spacing: t.$ls-display;
+}
+
+h2 {
+  font-size: t.$fs-lg;
+}
+
+h3 {
+  font-size: t.$fs-md;
+}
+
+h4 {
+  font-size: t.$fs-base;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+// ── Acessibilidade ───────────────────────────────────────────
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: t.$radius-sm;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

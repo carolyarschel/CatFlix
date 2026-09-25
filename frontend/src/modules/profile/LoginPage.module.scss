@@ -1,0 +1,173 @@
+@use '../../shared/styles/tokens' as t;
+
+.tela {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: t.$space-8 t.$gutter;
+  overflow-x: clip;
+}
+
+.ambiente {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, t.$ambient 0%, t.$bg 70%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.conteudo {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-9;
+}
+
+.cabecalho {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-2;
+  text-align: center;
+}
+
+.titulo {
+  margin: 0;
+  font-size: t.$fs-hero;
+  font-weight: 800;
+  letter-spacing: t.$ls-display;
+}
+
+.subtitulo {
+  color: t.$text-support;
+  font-size: t.$fs-md;
+}
+
+.perfis {
+  display: flex;
+  gap: t.$space-5;
+}
+
+.perfil {
+  flex: 1;
+  min-height: 120px;
+  padding: t.$space-7 t.$space-5;
+  border-radius: t.$radius-xl;
+  border: 1px solid t.$border-strong;
+  background: t.$surface-card;
+  color: t.$text-secondary;
+  font-size: t.$fs-base;
+  font-weight: t.$fw-semibold;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: t.$space-5;
+  transition: border-color 120ms ease, background 120ms ease;
+}
+
+.ativo {
+  background: t.$accent-soft;
+  color: t.$text;
+}
+
+.inicial {
+  width: 44px;
+  height: 48px;
+  border-radius: t.$radius-md;
+  color: #17131e;
+  font-family: t.$font-display;
+  font-size: t.$fs-xxl;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-5;
+}
+
+.rotulo {
+  font-size: t.$fs-sm;
+  color: t.$text-label;
+}
+
+.campo {
+  min-height: 52px;
+  padding: 0 t.$space-7;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border-strong;
+  background: t.$surface-chip;
+  color: t.$text;
+  font-size: t.$fs-md;
+  // 16px ou mais: abaixo disso o Safari do iPhone dá zoom ao focar o campo
+  // e a tela inteira sai do lugar
+
+  &::placeholder {
+    color: t.$text-group-label;
+  }
+
+  &:focus-visible {
+    border-color: t.$accent;
+  }
+}
+
+.erro {
+  padding: t.$space-3 t.$space-5;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border-strong;
+  background: t.$surface-chip;
+  color: t.$accent-on-soft;
+  font-size: t.$fs-sm;
+}
+
+.entrar {
+  min-height: 52px;
+  border-radius: t.$radius-md;
+  background: t.$accent;
+  color: t.$accent-on-solid;
+  font-size: t.$fs-md;
+  font-weight: t.$fw-bold;
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
+
+// ── Servidor inalcançável ────────────────────────────────────
+// O app instalado abre do cache do esqueleto; entrar depende do servidor.
+
+.semServidor {
+  padding: t.$space-6 t.$space-7;
+  border-radius: t.$radius-lg;
+  border: 1px solid t.$border-strong;
+  background: t.$surface-chip;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-4;
+  color: t.$text;
+  font-size: t.$fs-base;
+}
+
+.dica {
+  color: t.$text-support;
+  font-size: t.$fs-sm;
+}
+
+.tentar {
+  align-self: flex-start;
+  min-height: t.$touch-target;
+  padding: 0 t.$space-7;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$accent;
+  background: t.$accent-soft;
+  color: t.$accent-on-soft;
+  font-size: t.$fs-base;
+  font-weight: t.$fw-semibold;
+}

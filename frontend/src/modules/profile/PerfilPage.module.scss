@@ -1,0 +1,270 @@
+@use '../../shared/styles/tokens' as t;
+
+.tela {
+  position: relative;
+  min-height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 0 calc(#{t.$space-10} + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-9;
+
+  // o desktop segue o mobile (§3): a mesma coluna, mais larga
+  @media (min-width: t.$bp-desktop) {
+    max-width: 720px;
+  }
+}
+
+.ambiente {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 260px;
+  background: linear-gradient(to bottom, t.$ambient 0%, t.$bg 100%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.cabecalho {
+  padding: t.$space-7 t.$gutter 0;
+  display: flex;
+  align-items: center;
+  gap: t.$space-4;
+}
+
+.voltar {
+  width: t.$touch-target;
+  height: t.$touch-target;
+  margin-left: -#{t.$space-4};
+  border-radius: t.$radius-lg;
+  color: t.$text;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.titulo {
+  margin: 0;
+  font-size: t.$fs-xxl;
+}
+
+// ── Identidade ───────────────────────────────────────────────
+
+.identidade {
+  padding: 0 t.$gutter;
+  display: flex;
+  align-items: center;
+  gap: t.$space-6;
+}
+
+.inicial {
+  width: 48px;
+  height: 52px;
+  border-radius: t.$radius-md;
+  color: #17131e;
+  font-family: t.$font-display;
+  font-size: t.$fs-xl;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.nome {
+  font-family: t.$font-display;
+  font-size: t.$fs-lg;
+  font-weight: t.$fw-bold;
+}
+
+.detalhe {
+  color: t.$text-label;
+  font-size: t.$fs-sm;
+}
+
+// ── Blocos ───────────────────────────────────────────────────
+
+.bloco {
+  padding: 0 t.$gutter;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-5;
+}
+
+.rotulo {
+  margin: 0;
+  font-size: t.$fs-lg;
+}
+
+.apoio {
+  color: t.$text-support;
+  font-size: t.$fs-sm;
+}
+
+.codigo {
+  margin: 0 2px;
+  padding: 1px t.$space-2;
+  border-radius: t.$radius-sm;
+  background: t.$surface-chip;
+  color: t.$text-secondary;
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  font-size: t.$fs-xs;
+}
+
+.erro {
+  color: #ff9b9b;
+  font-size: t.$fs-sm;
+}
+
+.selo {
+  align-self: flex-start;
+  padding: t.$space-2 t.$space-6;
+  border-radius: t.$radius-pill;
+  font-size: t.$fs-sm;
+  font-weight: t.$fw-semibold;
+}
+
+.seloOk {
+  background: t.$accent-soft;
+  color: t.$accent-on-soft;
+}
+
+.seloAtencao {
+  background: rgba(255, 176, 61, 0.16);
+  color: #ffc98a;
+}
+
+// ── Botões ───────────────────────────────────────────────────
+// mesma gramática do HeroCard e do detalhe: primário claro, secundário
+// translúcido, os dois de largura total
+
+.primario {
+  min-height: 52px;
+  border-radius: t.$radius-md;
+  background: #f2eefb;
+  color: #1a1524;
+  font-size: t.$fs-md;
+  font-weight: t.$fw-semibold;
+}
+
+.primario:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.secundario {
+  min-height: 52px;
+  border-radius: t.$radius-md;
+  border: 1px solid rgba(244, 241, 248, 0.18);
+  background: rgba(244, 241, 248, 0.1);
+  color: t.$text;
+  font-size: t.$fs-md;
+  font-weight: t.$fw-medium;
+}
+
+// ── Passo a passo do iOS (§3, obrigatório) ───────────────────
+
+.instalacao {
+  padding: t.$space-7;
+  border-radius: t.$radius-lg;
+  border: 1px solid t.$accent;
+  background: t.$accent-soft;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-5;
+}
+
+.instalacaoTitulo {
+  color: t.$accent-on-soft;
+  font-size: t.$fs-base;
+  font-weight: t.$fw-semibold;
+}
+
+.passos {
+  margin: 0;
+  padding-left: t.$space-8;
+  list-style: decimal;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-4;
+  color: t.$text-secondary;
+  font-size: t.$fs-base;
+
+  strong {
+    color: t.$text;
+    font-weight: t.$fw-semibold;
+  }
+
+  li::marker {
+    color: t.$accent-on-soft;
+    font-weight: t.$fw-bold;
+  }
+}
+
+// ── Estado do sync ───────────────────────────────────────────
+
+.saude {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-5;
+}
+
+.execucoes {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-3;
+}
+
+.execucao {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: t.$space-5;
+  align-items: baseline;
+  padding: t.$space-3 0;
+  border-bottom: 1px solid t.$border-subtle;
+  font-size: t.$fs-sm;
+}
+
+.job {
+  color: t.$text-secondary;
+}
+
+.resultadoOk {
+  color: t.$text-label;
+  font-size: t.$fs-xs;
+}
+
+.resultadoFalhou {
+  color: #ff9b9b;
+  font-size: t.$fs-xs;
+  font-weight: t.$fw-semibold;
+}
+
+.quando {
+  color: t.$text-group-label;
+  font-size: t.$fs-xs;
+  min-width: 52px;
+  text-align: right;
+}
+
+// ── Rodapé ───────────────────────────────────────────────────
+
+.rodape {
+  margin-top: auto;
+  padding: t.$space-9 t.$gutter 0;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-4;
+}
+
+.sair {
+  min-height: 52px;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border-strong;
+  color: t.$text-secondary;
+  font-size: t.$fs-md;
+  font-weight: t.$fw-medium;
+}

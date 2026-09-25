@@ -1,0 +1,126 @@
+@use '../styles/tokens' as t;
+
+.hero {
+  border: 1px solid t.$border-strong;
+  border-radius: t.$radius-xl;
+  background: #131019;
+  overflow: hidden;
+}
+
+.palco {
+  position: relative;
+  // o modelo usa 424 px numa tela de 390; a proporção sobrevive a qualquer largura
+  aspect-ratio: 358 / 424;
+  background: #221b2e;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  // O desktop segue o mobile (§3), mas proporção não é medida: a 680 px de
+  // largura essa mesma razão daria 806 px de altura e o hero sozinho passaria
+  // da tela. A altura é limitada e o pôster é recortado pelo topo, onde os
+  // cartazes põem o que importa.
+  @media (min-width: t.$bp-desktop) {
+    aspect-ratio: auto;
+    height: min(62dvh, 620px);
+  }
+}
+
+.imagem {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  // o alto do cartaz costuma ter o rosto e o título; o corte vem de baixo
+  object-position: center top;
+}
+
+.marcas {
+  position: absolute;
+  top: t.$space-5;
+  right: t.$space-5;
+  display: flex;
+  gap: t.$space-2;
+}
+
+.marca {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: #17131e;
+  font-size: t.$fs-sm;
+  font-weight: t.$fw-bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.titulo {
+  position: relative;
+  margin: 0;
+  padding: t.$space-10 t.$space-7 t.$space-7;
+  font-family: t.$font-display;
+  font-size: t.$fs-hero;
+  line-height: 0.98;
+  font-weight: 800;
+  letter-spacing: t.$ls-display;
+  color: t.$text;
+  background: linear-gradient(to top, rgba(8, 7, 11, 0.94), rgba(8, 7, 11, 0));
+}
+
+.rodape {
+  padding: t.$space-6 t.$space-7 t.$space-7;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-6;
+}
+
+.taxonomia {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: t.$space-3;
+  font-size: t.$fs-sm;
+  color: t.$text-support;
+}
+
+.destaque {
+  color: t.$text;
+  font-weight: t.$fw-semibold;
+}
+
+.separador {
+  margin-right: t.$space-3;
+  color: #5e5771;
+}
+
+.primario,
+.secundario {
+  width: 100%;
+  min-height: 52px;
+  border-radius: t.$radius-md;
+  font-size: t.$fs-md;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: t.$space-4;
+}
+
+.primario {
+  background: t.$text;
+  color: #14111c;
+  font-weight: t.$fw-bold;
+}
+
+.secundario {
+  background: rgba(244, 241, 248, 0.12);
+  color: t.$text;
+  font-weight: t.$fw-semibold;
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}

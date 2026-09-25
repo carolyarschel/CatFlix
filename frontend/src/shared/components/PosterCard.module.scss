@@ -1,0 +1,124 @@
+@use '../styles/tokens' as t;
+
+// Medidas tiradas do modelo mobile: 150 px de largura, pôster de 222 px.
+// O modelo manda no card, no mobile e no desktop (§3, 23/09/2026).
+$largura: 150px;
+
+.card {
+  width: $largura;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-3;
+}
+
+.botao {
+  padding: 0;
+  border: none;
+  background: none;
+  display: block;
+  width: 100%;
+  // o botão do reset tem 44px de altura mínima; aqui quem manda é o pôster
+  min-height: 0;
+  min-width: 0;
+}
+
+.poster {
+  position: relative;
+  width: 100%;
+  aspect-ratio: #{t.$poster-ratio};
+  border-radius: t.$radius-poster;
+  border: 1px solid t.$border;
+  background: t.$surface-card;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  text-align: left;
+}
+
+.imagem {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.semPoster {
+  position: absolute;
+  top: t.$space-4;
+  left: t.$space-4;
+  font-size: t.$fs-4xs;
+  letter-spacing: t.$ls-label;
+  text-transform: uppercase;
+  color: t.$text-label;
+}
+
+.pendente {
+  position: absolute;
+  top: t.$space-3;
+  left: t.$space-3;
+  max-width: calc(100% - #{t.$space-3} * 2 - 30px);
+  padding: 3px t.$space-2;
+  border-radius: t.$radius-sm;
+  background: rgba(11, 10, 15, 0.82);
+  border: 1px solid t.$border-strong;
+  color: t.$text-support;
+  font-size: t.$fs-4xs;
+  line-height: 1.3;
+}
+
+.marcas {
+  position: absolute;
+  top: t.$space-3;
+  right: t.$space-3;
+  display: flex;
+  gap: t.$space-1;
+}
+
+.marca {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  color: #17131e;
+  font-size: t.$fs-2xs;
+  font-weight: t.$fw-bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nome {
+  position: relative;
+  padding: t.$space-8 t.$space-4 t.$space-4;
+  font-family: t.$font-display;
+  font-size: t.$fs-base;
+  line-height: 1.12;
+  font-weight: t.$fw-bold;
+  color: #efebf5;
+  // o degradê existe para o título ser legível sobre qualquer pôster —
+  // com pôster claro, texto branco sem véu some
+  background: linear-gradient(to top, rgba(8, 7, 11, 0.92), rgba(8, 7, 11, 0));
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.faixa {
+  position: relative;
+  padding: 5px t.$space-3;
+  background: t.$accent;
+  color: t.$accent-on-solid;
+  font-size: t.$fs-3xs;
+  font-weight: t.$fw-bold;
+  text-align: center;
+}
+
+.linha {
+  font-size: t.$fs-3xs;
+  color: t.$text-label;
+  line-height: 1.35;
+}

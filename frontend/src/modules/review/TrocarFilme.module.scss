@@ -1,0 +1,133 @@
+@use '../../shared/styles/tokens' as t;
+
+.fundo {
+  position: fixed;
+  inset: 0;
+  z-index: t.$z-overlay;
+  background: rgba(8, 7, 11, 0.76);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.painel {
+  width: 100%;
+  max-width: 480px;
+  max-height: 88dvh;
+  padding: t.$space-5 t.$gutter calc(#{t.$space-8} + env(safe-area-inset-bottom, 0px));
+  border-radius: t.$radius-xl t.$radius-xl 0 0;
+  border: 1px solid t.$border-strong;
+  background: t.$surface-bar;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-5;
+}
+
+.puxador {
+  width: 40px;
+  height: 4px;
+  border-radius: t.$radius-pill;
+  background: t.$border-strong;
+  align-self: center;
+}
+
+.evento {
+  font-size: t.$fs-xs;
+  color: t.$text-label;
+  line-height: 1.4;
+}
+
+.busca {
+  display: flex;
+  gap: t.$space-3;
+}
+
+.campo {
+  flex: 1;
+  min-width: 0;
+  min-height: t.$touch-target;
+  padding: 0 t.$space-6;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border-strong;
+  background: t.$surface-chip;
+  color: t.$text;
+  font-size: t.$fs-md;
+
+  &:focus-visible {
+    border-color: t.$accent;
+  }
+}
+
+.buscar {
+  min-height: t.$touch-target;
+  padding: 0 t.$space-7;
+  border-radius: t.$radius-md;
+  background: t.$accent;
+  color: t.$accent-on-solid;
+  font-size: t.$fs-sm;
+  font-weight: t.$fw-semibold;
+
+  &:disabled {
+    opacity: 0.45;
+  }
+}
+
+.erro {
+  font-size: t.$fs-sm;
+  color: t.$text-support;
+}
+
+.resultados {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-3;
+}
+
+.resultado {
+  width: 100%;
+  padding: t.$space-3;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border-subtle;
+  background: t.$surface-card;
+  display: flex;
+  align-items: center;
+  gap: t.$space-5;
+  text-align: left;
+}
+
+.poster,
+.semPoster {
+  width: 44px;
+  height: 66px;
+  flex-shrink: 0;
+  border-radius: t.$radius-sm;
+  object-fit: cover;
+  background: t.$surface-chip;
+}
+
+.texto {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.nome {
+  font-size: t.$fs-sm + 1px;
+  font-weight: t.$fw-semibold;
+  line-height: 1.25;
+}
+
+.meta {
+  font-size: t.$fs-2xs;
+  color: t.$text-support;
+}
+
+.fechar {
+  min-height: t.$touch-target;
+  color: t.$text-support;
+  font-size: t.$fs-base;
+}

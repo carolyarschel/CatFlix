@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Revisão mobile — fila de matching</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body { margin: 0; background: #0B0A0F; font-family: 'Instrument Sans', system-ui, sans-serif; }
+a { color: #FF6FA3; text-decoration: none; }
+a:hover { color: #FF9CC0; }
+</style>
+</helmet>
+<div style="width: 390px; height: 1300px; box-sizing: border-box; display: flex; flex-direction: column; background: #0B0A0F; color: #F4F1F8; overflow: hidden;">
+
+  <header style="box-sizing: border-box; padding: 16px 20px 0 20px; display: flex; flex-direction: column; gap: 12px;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <a href="MainMobile.dc.html" aria-label="Voltar" style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 12px; border: 1px solid #2A2537; background: #15121D; color: #CFC9DB; display: flex; align-items: center; justify-content: center;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
+      </a>
+      <h1 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 24px; font-weight: 700; letter-spacing: -0.02em;">Fila de revisão</h1>
+    </div>
+    <p style="margin: 0; font-size: 12px; line-height: 1.5; color: #A79FB5;">Sessões que o matcher não ligou a um filme com confiança suficiente. Nada é descartado: até resolver, o título aparece no app com aviso de metadata pendente.</p>
+  </header>
+
+  <div style="margin-top: 16px; padding-left: 20px; display: flex; gap: 8px; overflow: hidden;">
+    <button type="button" style="min-height: 40px; flex-shrink: 0; padding: 0 14px; border-radius: 10px; border: none; background: {{accentSoft}}; color: {{accentText}}; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;">Tudo (4)</button>
+    <button type="button" style="min-height: 40px; flex-shrink: 0; padding: 0 14px; border-radius: 10px; border: 1px solid #2A2537; background: #15121D; color: #BDB6CC; font-family: inherit; font-size: 12px; font-weight: 500; cursor: pointer;">Confiança baixa (2)</button>
+    <button type="button" style="min-height: 40px; flex-shrink: 0; padding: 0 14px; border-radius: 10px; border: 1px solid #2A2537; background: #15121D; color: #BDB6CC; font-family: inherit; font-size: 12px; font-weight: 500; cursor: pointer;">Sem candidato (1)</button>
+  </div>
+
+  <div style="margin-top: 18px; box-sizing: border-box; padding: 0 20px; display: flex; flex-direction: column; gap: 14px;">
+    <sc-for list="{{fila}}" as="item" hint-placeholder-count="4">
+      <article style="box-sizing: border-box; padding: 16px; border-radius: 14px; background: #15121D; border: 1px solid #262233; display: flex; flex-direction: column; gap: 12px;">
+
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+          <span style="font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #6F6883;">Evento no ingresso</span>
+          <span style="font-size: 14px; font-weight: 600; line-height: 1.3;">{{item.eventoTitulo}}</span>
+          <span style="font-size: 11px; color: #A79FB5;">{{item.eventoMeta}}</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="padding: 5px 10px; border-radius: 7px; background: {{item.scoreBg}}; color: {{item.scoreCor}}; font-size: 11px; font-weight: 600;">{{item.score}}</span>
+          <span style="font-size: 11px; color: #8C85A0;">{{item.motivo}}</span>
+        </div>
+
+        <div style="height: 1px; background: #262233;"></div>
+
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+          <span style="font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #6F6883;">Candidato TMDB</span>
+          <sc-if value="{{item.temCandidato}}" hint-placeholder-val="{{true}}">
+            <span style="font-size: 14px; font-weight: 600; line-height: 1.3;">{{item.candidatoTitulo}}</span>
+          </sc-if>
+          <span style="font-size: 11px; color: #A79FB5; line-height: 1.4;">{{item.candidatoMeta}}</span>
+        </div>
+
+        <div style="display: flex; gap: 8px;">
+          <button type="button" style="flex-grow: 1; min-height: 44px; padding: 0 12px; border-radius: 10px; border: none; background: {{accent}}; color: #24040F; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;">{{item.acaoPrimaria}}</button>
+          <button type="button" style="min-height: 44px; padding: 0 14px; border-radius: 10px; border: 1px solid #2A2537; background: #1A1724; color: #CFC9DB; font-family: inherit; font-size: 12px; font-weight: 500; cursor: pointer;">Trocar</button>
+          <button type="button" style="min-height: 44px; padding: 0 14px; border-radius: 10px; border: 1px solid #2A2537; background: #1A1724; color: #CFC9DB; font-family: inherit; font-size: 12px; font-weight: 500; cursor: pointer;">Não é filme</button>
+        </div>
+
+      </article>
+    </sc-for>
+  </div>
+
+  <nav aria-label="Navegação principal" style="margin-top: auto; margin-bottom: 20px; align-self: center; box-sizing: border-box; padding: 8px 10px; border-radius: 34px; background: rgba(32, 28, 43, 0.94); border: 1px solid #332E42; display: flex; align-items: center; gap: 2px;">
+    <a href="MainMobile.dc.html" style="width: 62px; min-height: 52px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; color: #A79FB5; font-size: 10px; font-weight: 500;">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M3 9h18M8 4v16M16 4v16"></path></svg>
+      Cartaz
+    </a>
+    <a href="MainMobile.dc.html" style="width: 62px; min-height: 52px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; color: #A79FB5; font-size: 10px; font-weight: 500;">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 3l2.2 5.6L20 9.6l-4 3.9 1 5.9-5-2.9-5 2.9 1-5.9-4-3.9 5.8-1z"></path></svg>
+      Estreias
+    </a>
+    <a href="MainMobile.dc.html" style="width: 62px; min-height: 52px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; color: #A79FB5; font-size: 10px; font-weight: 500;">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 3h12v18l-6-4.5L6 21z"></path></svg>
+      Marcados
+    </a>
+    <a href="MainMobile.dc.html" style="width: 62px; min-height: 52px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; color: #A79FB5; font-size: 10px; font-weight: 500;">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 12V4h8l9 9-8 8z"></path><circle cx="7.5" cy="7.5" r="1.4"></circle></svg>
+      Tags
+    </a>
+    <a href="RevisarMobile.dc.html" style="position: relative; width: 62px; min-height: 52px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; color: {{accentText}}; font-size: 10px; font-weight: 600; background: {{accentSoft}};">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 3a9 9 0 1 1-7.4 3.9"></path><path d="M4 3v4h4"></path></svg>
+      Revisar
+      <span style="position: absolute; top: 2px; right: 8px; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; background: {{accent}}; color: #24040F; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center;">4</span>
+    </a>
+  </nav>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#FF4D8D","options":["#FF4D8D","#9D7BFF","#FF8A3D","#4DD4C0"]},"$preview":{"width":390,"height":1300}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      accent: this.props.accent ?? '#FF4D8D',
+      accentSoft: 'rgba(255, 77, 141, 0.16)',
+      accentText: '#FFA9C8',
+      fila: [
+        {
+          eventoTitulo: 'DUNA PARTE 2 - REEXIBIÇÃO ESPECIAL IMAX',
+          eventoMeta: 'Cinemark · IMAX · 166 min · 19/09',
+          score: '0,81',
+          motivo: 'título com sufixo',
+          scoreBg: 'rgba(255, 138, 61, 0.16)',
+          scoreCor: '#FFB27A',
+          temCandidato: true,
+          candidatoTitulo: 'Dune: Part Two',
+          candidatoMeta: '2024 · 166 min · Denis Villeneuve · tt15239678',
+          acaoPrimaria: 'Confirmar'
+        },
+        {
+          eventoTitulo: 'MET ÓPERA: LA BOHÈME AO VIVO',
+          eventoMeta: 'Espaço Itaú · Normal · 195 min · 21/09',
+          score: '0,34',
+          motivo: 'provável não-filme',
+          scoreBg: 'rgba(255, 77, 141, 0.16)',
+          scoreCor: '#FFA9C8',
+          temCandidato: false,
+          candidatoMeta: 'Nenhum candidato acima de 0,75 — triagem sugere evento, não filme',
+          acaoPrimaria: 'Marcar evento'
+        },
+        {
+          eventoTitulo: 'O BRUTALISTA (LEG)',
+          eventoMeta: 'Cinépolis · VIP · 215 min · 22/09',
+          score: '0,88',
+          motivo: 'ano diverge 1',
+          scoreBg: 'rgba(255, 138, 61, 0.16)',
+          scoreCor: '#FFB27A',
+          temCandidato: true,
+          candidatoTitulo: 'The Brutalist',
+          candidatoMeta: '2024 · 215 min · Brady Corbet · tt8999762',
+          acaoPrimaria: 'Confirmar'
+        },
+        {
+          eventoTitulo: 'DIVERTIDAMENTE 2 - SESSÃO KIDS',
+          eventoMeta: 'Kinoplex · XD · 96 min · 20/09',
+          score: 'dup?',
+          motivo: 'já existe título igual',
+          scoreBg: 'rgba(157, 123, 255, 0.18)',
+          scoreCor: '#C7B1FF',
+          temCandidato: true,
+          candidatoTitulo: 'Divertida Mente 2 (já no catálogo)',
+          candidatoMeta: '2024 · 96 min · Kelsey Mann · tt22022452 · 3 sessões ligadas',
+          acaoPrimaria: 'Unir'
+        }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,957 @@
+[
+  {
+    "date": "2026-09-22",
+    "dateFormatted": "22/09",
+    "dayOfWeek": "terça-feira",
+    "isToday": true,
+    "movies": [
+      {
+        "id": "30413",
+        "b2BId": null,
+        "type": "Filme",
+        "title": "A Odisseia",
+        "originalTitle": "The Odyssey",
+        "movieIdUrl": "",
+        "inPreSale": false,
+        "isReexhibition": false,
+        "duration": "172",
+        "contentRating": "14 anos",
+        "distributor": "Universal Pictures Brasil",
+        "urlKey": "a-odisseia",
+        "siteURL": "https://www.ingresso.com/filme/a-odisseia?city=campinas&partnership=www&ing_source=api&ing_medium=link-filme&ing_campaign=www&ing_content=a-odisseia",
+        "nationalSiteURL": "https://www.ingresso.com/filme/a-odisseia?city=campinas&partnership=www&ing_source=api&ing_medium=link-filme&ing_campaign=www&ing_content=a-odisseia",
+        "siteURLByTheater": "https://www.ingresso.com/filme/a-odisseia?city=campinas&partnership=www&ing_source=api&ing_medium=link-cinema-filme&ing_campaign=www&ing_content=a-odisseia#cinema=kinoplex-dom-pedro",
+        "nationalSiteURLByTheater": "https://www.ingresso.com/filme/a-odisseia?city=campinas&partnership=www&ing_source=api&ing_medium=link-cinema-filme&ing_campaign=www&ing_content=a-odisseia#cinema=kinoplex-dom-pedro",
+        "ancineId": "",
+        "releaseYear": 2026,
+        "images": [
+          {
+            "url": "https://ingresso-a.akamaihd.net/prd/img/movie/a-odisseia/91713f7f-195b-4d60-89c2-8c94588f7aa5.webp",
+            "type": "PosterPortrait"
+          },
+          {
+            "url": "https://ingresso-a.akamaihd.net/prd/img/movie/a-odisseia/640ae222-42a8-427d-b950-4ed71d27dbe9.webp",
+            "type": "PosterHorizontal"
+          }
+        ],
+        "trailers": [
+          {
+            "type": "YouTube",
+            "url": "https://www.youtube.com/watch?v=CWQyZSd-mC8",
+            "embeddedUrl": "//www.youtube.com/embed/CWQyZSd-mC8"
+          },
+          {
+            "type": "YouTube",
+            "url": "https://www.youtube.com/watch?v=NJV9Pw2kXc4",
+            "embeddedUrl": "//www.youtube.com/embed/NJV9Pw2kXc4"
+          },
+          {
+            "type": "YouTube",
+            "url": "https://www.youtube.com/watch?v=GcI3K4_-CuQ",
+            "embeddedUrl": "//www.youtube.com/embed/GcI3K4_-CuQ"
+          }
+        ],
+        "genres": [
+          "Ação",
+          "Aventura",
+          "Épico",
+          "Fantasia"
+        ],
+        "ratingDescriptors": [
+          "Violência"
+        ],
+        "accessibilityHubs": [],
+        "tags": [
+          "Semana do cinema 2026"
+        ],
+        "completeTags": [
+          {
+            "name": "Semana do cinema 2026",
+            "background": "",
+            "color": ""
+          }
+        ],
+        "rooms": [
+          {
+            "name": "Sala 12",
+            "type": null,
+            "sessions": [
+              {
+                "id": "87026411",
+                "boxOfficeId": "5e955813-ec52-47f3-88f4-7fc433a371af",
+                "eventBoxOfficeId": "30837",
+                "price": 66.11,
+                "room": "Sala 12",
+                "type": [
+                  "Normal",
+                  "Dublado"
+                ],
+                "types": [
+                  {
+                    "id": 1,
+                    "name": "Normal",
+                    "alias": "2D",
+                    "display": false,
+                    "typeDescriptions": {
+                      "detailedImage": "https://ingresso-a.akamaihd.net/prd/img/sessiontype/"
+                    }
+                  },
+                  {
+                    "id": 0,
+                    "name": "Dublado",
+                    "alias": "DUB",
+                    "display": true,
+                    "typeDescriptions": {
+                      "detailedImage": "https://ingresso-a.akamaihd.net/prd/img/copytype/"
+                    }
+                  }
+                ],
+                "date": {
+                  "localDate": "2026-09-22T16:40:00-03:00",
+                  "isToday": true,
+                  "dayOfWeek": "terça-feira",
+                  "dayAndMonth": "22/09",
+                  "hour": "16:40",
+                  "year": "2026"
+                },
+                "realDate": {
+                  "localDate": "2026-09-22T16:40:00-03:00",
+                  "isToday": true,
+                  "dayOfWeek": "terça-feira",
+                  "dayAndMonth": "22/09",
+                  "hour": "16:40",
+                  "year": "2026"
+                },
+                "time": "16:40",
+                "defaultSector": "4583662",
+                "midnightMessage": null,
+                "siteURL": "https://checkout.ingresso.com/?sessionId=87026411&partnership=www&ing_source=api&ing_medium=link-checkout&ing_campaign=www&ing_content=a-odisseia",
+                "nationalSiteURL": null,
+                "appCheckoutUrl": "",
+                "hasSeatSelection": true,
+                "driveIn": false,
+                "streaming": false,
+                "isNewCheckout": true,
+                "maxTicketsPerCar": 0,
+                "enabled": true,
+                "blockMessage": ""
+              },
+              {
+                "id": "87026414",
+                "boxOfficeId": "cfc480f0-d25d-4c65-be65-6932c49c54c0",
+                "eventBoxOfficeId": "30837",
+                "price": 66.11,
+                "room": "Sala 12",
+                "type": [
+                  "Normal",
+                  "Dublado"
+                ],
+                "types": [
+                  {
+                    "id": 1,
+                    "name": "Normal",
+                    "alias": "2D",
+                    "display": false,
+                    "typeDescriptions": {
+                      "detailedImage": "https://ingresso-a.akamaihd.net/prd/img/sessiontype/"
+                    }
+                  },
+                  {
+                    "id": 0,
+                    "name": "Dublado",
+                    "alias": "DUB",
+                    "display": true,
+                    "typeDescriptions": {
+                      "detailedImage": "https://ingresso-a.akamaihd.net/prd/img/copytype/"
+                    }
+                  }
+                ],
+                "date": {
+                  "localDate": "2026-09-22T20:00:00-03:00",
+                  "isToday": true,
+                  "dayOfWeek": "terça-feira",
+                  "dayAndMonth": "22/09",
+                  "hour": "20:00",
+                  "year": "2026"
+                },
+                "realDate": {
+                  "localDate": "2026-09-22T20:00:00-03:00",
+                  "isToday": true,
+                  "dayOfWeek": "terça-feira",
+                  "dayAndMonth": "22/09",
+                  "hour": "20:00",
+                  "year": "2026"
+                },
+                "time": "20:00",
+                "defaultSector": "4583662",
+                "midnightMessage": null,
+                "siteURL": "https://checkout.ingresso.com/?sessionId=87026414&partnership=www&ing_source=api&ing_medium=link-checkout&ing_campaign=www&ing_content=a-odisseia",
+                "nationalSiteURL": null,
+                "appCheckoutUrl": "",
+                "hasSeatSelection": true,
+                "driveIn": false,
+                "streaming": false,
+                "isNewCheckout": true,
+                "maxTicketsPerCar": 0,
+                "enabled": true,
+                "blockMessage": ""
+              }
+            ]
+          }
+        ],
+        "sessionTypes": null,
+        "ratingDetails": {
+          "id": 2,
+          "name": "14 anos",
+          "label": "14",
+          "displayName": "14 anos",
+          "description": "Atos Criminosos, Conteúdo Sexual, Linguagem Imprópria, Temas Sensíveis, Violência, Estigma ou Preconceito.",
+          "color": "#F58220"
+        }
+      }
+    ]
+  },
+  {
+    "date": "2026-09-30",
+    "dateFormatted": "30/09",
+    "dayOfWeek": "quarta-feira",
+    "isToday": false,
+    "movies": [
+      {
+        "id": "33361",
+        "b2BId": null,
+        "type": "Filme",
+        "title": "LINKIN PARK: UNSHATTER",
+        "originalTitle": "LINKIN PARK: UNSHATTER",
+        "movieIdUrl": "",
+        "inPreSale": true,
+        "isReexhibition": false,
+        "duration": "110",
+        "contentRating": "Verifique a Classificação",
+        "distributor": "Sato Company",
+        "urlKey": "linkin-park-unshatter",
+        "siteURL": "https://www.ingresso.com/filme/linkin-park-unshatter?city=campinas&partnership=www&ing_source=api&ing_medium=link-filme&ing_campaign=www&ing_content=linkin-park-unshatter",
+        "nationalSiteURL": "https://www.ingresso.com/filme/linkin-park-unshatter?city=campinas&partnership=www&ing_source=api&ing_medium=link-filme&ing_campaign=www&ing_content=linkin-park-unshatter",
+        "siteURLByTheater": "https://www.ingresso.com/filme/linkin-park-unshatter?city=campinas&partnership=www&ing_source=api&ing_medium=link-cinema-filme&ing_campaign=www&ing_content=linkin-park-unshatter#cinema=kinoplex-dom-pedro",
+        "nationalSiteURLByTheater": "https://www.ingresso.com/filme/linkin-park-unshatter?city=campinas&partnership=www&ing_source=api&ing_medium=link-cinema-filme&ing_campaign=www&ing_content=linkin-park-unshatter#cinema=kinoplex-dom-pedro",
+        "ancineId": "",
+        "releaseYear": 2026,
+        "images": [
+          {
+            "url": "https://ingresso-a.akamaihd.net/prd/img/movie/linkin-park-unshatter/208c28f6-7e68-4a61-802e-62b8fc3e9dd2.webp",
+            "type": "PosterPortrait"
+          },
+          {
+            "url": "https://ingresso-a.akamaihd.net/prd/img/movie/linkin-park-unshatter/2b108b13-b956-4be1-a3cc-2180c822759c.webp",
+            "type": "PosterHorizontal"
+          }
+        ],
+        "trailers": [
+          {
+            "type": "YouTube",
+            "url": "https://www.youtube.com/watch?v=BIlD-sENQCs",
+            "embeddedUrl": "//www.youtube.com/embed/BIlD-sENQCs"
+          }
+        ],
+        "genres": [
+          "Show"
+        ],
+        "ratingDescriptors": [],
+        "accessibilityHubs": [],
+        "tags": [],
+        "completeTags": [],
+        "rooms": [
+          {
+            "name": "Sala 3",
+            "type": null,
+            "sessions": [
+              {
+                "id": "86384472",
+                "boxOfficeId": "8cd11517-5fd3-4cd5-8f31-708077fb1782",
+                "eventBoxOfficeId": "30888",
+                "price": 68.39,
+                "room": "Sala 3",
+                "type": [
+                  "Normal",
+                  "Legendado"
+                ],
+                "types": [
+                  {
+                    "id": 1,
+                    "name": "Normal",
+                    "alias": "2D",
+                    "display": false,
+                    "typeDescriptions": {
+                      "detailedImage": "https://ingresso-a.akamaihd.net/prd/img/sessiontype/"
+                    }
+                  },
+                  {
+                    "id": 0,
+                    "name": "Legendado",
+                    "alias": "LEG",
+                    "display": true,
+                    "typeDescriptions": {
+                      "detailedImage": "https://ingresso-a.akamaihd.net/prd/img/copytype/"
+                    }
+                  }
+                ],
+                "date": {
+                  "localDate": "2026-09-30T19:10:00-03:00",
+                  "isToday": false,
+                  "dayOfWeek": "quarta-feira",
+                  "dayAndMonth": "30/09",
+                  "hour": "19:10",
+                  "year": "2026"
+                },
+                "realDate": {
+                  "localDate": "2026-09-30T19:10:00-03:00",
+                  "isToday": false,
+                  "dayOfWeek": "quarta-feira",
+                  "dayAndMonth": "30/09",
+                  "hour": "19:10",
+                  "year": "2026"
+                },
+                "time": "19:10",
+                "defaultSector": "4583655",
+                "midnightMessage": null,
+                "siteURL": "https://checkout.ingresso.com/?sessionId=86384472&partnership=www&ing_source=api&ing_medium=link-checkout&ing_campaign=www&ing_content=linkin-park-unshatter",
+                "nationalSiteURL": null,
+                "appCheckoutUrl": "",
+                "hasSeatSelection": true,
+                "driveIn": false,
+                "streaming": false,
+                "isNewCheckout": true,
+                "maxTicketsPerCar": 0,
+                "enabled": true,
+                "blockMessage": ""
+              },
+              {
+                "id": "86384462",
+                "boxOfficeId": "6a6630c7-720e-40df-ae28-e99d832779ae",
+                "eventBoxOfficeId": "30888",
+                "price": 68.39,
+                "room": "Sala 3",
+                "type": [
+                  "Normal",
+                  "Legendado"
+                ],
+                "types": [
+                  {
+                    "id": 1,
+                    "name": "Normal",
+                    "alias": "2D",
+                    "display": false,
+                    "typeDescriptions": {
+                      "detailedImage": "https://ingresso-a.akamaihd.net/prd/img/sessiontype/"
+                    }
+                  },
+                  {
+                    "id": 0,
+                    "name": "Legendado",
+                    "alias": "LEG",
+                    "display": true,
+                    "typeDescriptions": {
+                      "detailedImage": "https://ingresso-a.akamaihd.net/prd/img/copytype/"
+                    }
+                  }
+                ],
+                "date": {
+                  "localDate": "2026-09-30T21:30:00-03:00",
+                  "isToday": false,
+                  "dayOfWeek": "quarta-feira",
+                  "dayAndMonth": "30/09",
+                  "hour": "21:30",
+                  "year": "2026"
+                },
+                "realDate": {
+                  "localDate": "2026-09-30T21:30:00-03:00",
+                  "isToday": false,
+                  "dayOfWeek": "quarta-feira",
+                  "dayAndMonth": "30/09",
+                  "hour": "21:30",
+                  "year": "2026"
+                },
+                "time": "21:30",
+                "defaultSector": "4583655",
+                "midnightMessage": null,
+                "siteURL": "https://checkout.ingresso.com/?sessionId=86384462&partnership=www&ing_source=api&ing_medium=link-checkout&ing_campaign=www&ing_content=linkin-park-unshatter",
+                "nationalSiteURL": null,
+                "appCheckoutUrl": "",
+                "hasSeatSelection": true,
+                "driveIn": false,
+                "streaming": false,
+                "isNewCheckout": true,
+                "maxTicketsPerCar": 0,
+                "enabled": true,
+                "blockMessage": ""
+              }
+            ]
+          }
+        ],
+        "sessionTypes": null,
+        "ratingDetails": {
+          "id": 61,
+          "name": "Verifique a Classificação",
+          "label": "?",
+          "displayName": "?",
+          "description": "Consulte a classificação",
+          "color": "#666"
+        }
+      }
+    ]
+  },
+  {
+    "date": "2026-10-07",
+    "dateFormatted": "07/10",
+    "dayOfWeek": "quarta-feira",
+    "isToday": false,
+    "movies": [
+      {
+        "id": "33450",
+        "b2BId": null,
+        "type": "Filme",
+        "title": "Queen Budapest",
+        "originalTitle": "Queen Budapest",
+        "movieIdUrl": "",
+        "inPreSale": true,
+        "isReexhibition": false,
+        "duration": "97",
+        "contentRating": "Verifique a Classificação",
+        "distributor": "Trafalgar",
+        "urlKey": "queen-budapest",
+        "siteURL": "https://www.ingresso.com/filme/queen-budapest?city=campinas&partnership=www&ing_source=api&ing_medium=link-filme&ing_campaign=www&ing_content=queen-budapest",
+        "nationalSiteURL": "https://www.ingresso.com/filme/queen-budapest?city=campinas&partnership=www&ing_source=api&ing_medium=link-filme&ing_campaign=www&ing_content=queen-budapest",
+        "siteURLByTheater": "https://www.ingresso.com/filme/queen-budapest?city=campinas&partnership=www&ing_source=api&ing_medium=link-cinema-filme&ing_campaign=www&ing_content=queen-budapest#cinema=kinoplex-dom-pedro",
+        "nationalSiteURLByTheater": "https://www.ingresso.com/filme/queen-budapest?city=campinas&partnership=www&ing_source=api&ing_medium=link-cinema-filme&ing_campaign=www&ing_content=queen-budapest#cinema=kinoplex-dom-pedro",
+        "ancineId": "",
+        "releaseYear": 2026,
+        "images": [
+          {
+            "url": "https://ingresso-a.akamaihd.net/prd/img/movie/queen-budapest/200608b5-a88c-4ede-a965-2de3fd4d2f29.webp",
+            "type": "PosterPortrait"
+          }
+        ],
+        "trailers": [],
+        "genres": [
+          "Show"
+        ],
+        "ratingDescriptors": [],
+        "accessibilityHubs": [],
+        "tags": [],
+        "completeTags": [],
+        "rooms": [
+          {
+            "name": "Sala 7",
+            "type": null,
+            "sessions": [
+              {
+                "id": "86501497",
+                "boxOfficeId": "a16f2ec1-3a9c-474d-afed-7c741f9f6478",
+                "eventBoxOfficeId": "30920",
+                "price": 68.39,
+                "room": "Sala 7",
+                "type": [
+                  "IMAX",
+                  "Legendado"
+                ],
+                "types": [
+                  {
+                    "id": 16,
+                    "name": "IMAX",
+                    "alias": "IMAX",
+                    "display": true,
+                    "typeDescriptions": {
+                      "detailedImage": "https://ingresso-a.akamaihd.net/prd/img/sessiontype/"
+                    }
+                  },
+                  {
+                    "id": 0,
+                    "name": "Legendado",
+                    "alias": "LEG",
+                    "display": true,
+                    "typeDescriptions": {
+                      "detailedImage": "https://ingresso-a.akamaihd.net/prd/img/copytype/"
+                    }
+                  }
+                ],
+                "date": {
+                  "localDate": "2026-10-07T19:00:00-03:00",
+                  "isToday": false,
+                  "dayOfWeek": "quarta-feira",
+                  "dayAndMonth": "07/10",
+                  "hour": "19:00",
+                  "year": "2026"
+                },
+                "realDate": {
+                  "localDate": "2026-10-07T19:00:00-03:00",
+                  "isToday": false,
+                  "dayOfWeek": "quarta-feira",
+                  "dayAndMonth": "07/10",
+                  "hour": "19:00",
+                  "year": "2026"
+                },
+                "time": "19:00",
+                "defaultSector": "4583688",
+                "midnightMessage": null,
+                "siteURL": "https://checkout.ingresso.com/?sessionId=86501497&partnership=www&ing_source=api&ing_medium=link-checkout&ing_campaign=www&ing_content=queen-budapest",
+                "nationalSiteURL": null,
+                "appCheckoutUrl": "",
+                "hasSeatSelection": true,
+                "driveIn": false,
+                "streaming": false,
+                "isNewCheckout": true,
+                "maxTicketsPerCar": 0,
+                "enabled": true,
+                "blockMessage": ""
+              }
+            ]
+          }
+        ],
+        "sessionTypes": null,
+        "ratingDetails": {
+          "id": 61,
+          "name": "Verifique a Classificação",
+          "label": "?",
+          "displayName": "?",
+          "description": "Consulte a classificação",
+          "color": "#666"
+        }
+      }
+    ]
+  },
+  {
+    "date": "2026-10-28",
+    "dateFormatted": "28/10",
+    "dayOfWeek": "quarta-feira",
+    "isToday": false,
+    "movies": [
+      {
+        "id": "33962",
+        "b2BId": null,
+        "type": "Filme",
+        "title": "Ozzy & Black Sabbath - Back To The Beginning",
+        "originalTitle": "Ozzy & Black Sabbath - Back To The Beginning",
+        "movieIdUrl": "",
+        "inPreSale": true,
+        "isReexhibition": false,
+        "duration": "147",
+        "contentRating": "Verifique a Classificação",
+        "distributor": "Sem Distribuidor",
+        "urlKey": "ozzy-e-black-sabbath-back-to-the-beginning",
+        "siteURL": "https://www.ingresso.com/filme/ozzy-e-black-sabbath-back-to-the-beginning?city=campinas&partnership=www&ing_source=api&ing_medium=link-filme&ing_campaign=www&ing_content=ozzy-e-black-sabbath-back-to-the-beginning",
+        "nationalSiteURL": "https://www.ingresso.com/filme/ozzy-e-black-sabbath-back-to-the-beginning?city=campinas&partnership=www&ing_source=api&ing_medium=link-filme&ing_campaign=www&ing_content=ozzy-e-black-sabbath-back-to-the-beginning",
+        "siteURLByTheater": "https://www.ingresso.com/filme/ozzy-e-black-sabbath-back-to-the-beginning?city=campinas&partnership=www&ing_source=api&ing_medium=link-cinema-filme&ing_campaign=www&ing_content=ozzy-e-black-sabbath-back-to-the-beginning#cinema=kinoplex-dom-pedro",
+        "nationalSiteURLByTheater": "https://www.ingresso.com/filme/ozzy-e-black-sabbath-back-to-the-beginning?city=campinas&partnership=www&ing_source=api&ing_medium=link-cinema-filme&ing_campaign=www&ing_content=ozzy-e-black-sabbath-back-to-the-beginning#cinema=kinoplex-dom-pedro",
+        "ancineId": "",
+        "releaseYear": 2026,
+        "images": [
+          {
+            "url": "https://ingresso-a.akamaihd.net/prd/img/movie/ozzy-e-black-sabbath-back-to-the-beginning/d90febcf-ad95-4498-b1c1-5067402d05a5.webp",
+            "type": "PosterPortrait"
+          }
+        ],
+        "trailers": [],
+        "genres": [
+          "Documentário",
+          "Show Musical"
+        ],
+        "ratingDescriptors": [],
+        "accessibilityHubs": [],
+        "tags": [],
+        "completeTags": [],
+        "rooms": [
+          {
+            "name": "Sala 4",
+            "type": null,
+            "sessions": [
+              {
+                "id": "87103405",
+                "boxOfficeId": "9e0a5791-c8d2-4373-950a-88177e11972f",
+                "eventBoxOfficeId": "31025",
+                "price": 68.39,
+                "room": "Sala 4",
+                "type": [
+                  "Normal",
+                  "Legendado"
+                ],
+                "types": [
+                  {
+                    "id": 1,
+                    "name": "Normal",
+                    "alias": "2D",
+                    "display": false,
+                    "typeDescriptions": {
+                      "detailedImage": "https://ingresso-a.akamaihd.net/prd/img/sessiontype/"
+                    }
+                  },
+                  {
+                    "id": 0,
+                    "name": "Legendado",
+                    "alias": "LEG",
+                    "display": true,
+                    "typeDescriptions": {
+                      "detailedImage": "https://ingresso-a.akamaihd.net/prd/img/copytype/"
+                    }
+                  }
+                ],
+                "date": {
+                  "localDate": "2026-10-28T20:00:00-03:00",
+                  "isToday": false,
+                  "dayOfWeek": "quarta-feira",
+                  "dayAndMonth": "28/10",
+                  "hour": "20:00",
+                  "year": "2026"
+                },
+                "realDate": {
+                  "localDate": "2026-10-28T20:00:00-03:00",
+                  "isToday": false,
+                  "dayOfWeek": "quarta-feira",
+                  "dayAndMonth": "28/10",
+                  "hour": "20:00",
+                  "year": "2026"
+                },
+                "time": "20:00",
+                "defaultSector": "4583657",
+                "midnightMessage": null,
+                "siteURL": "https://checkout.ingresso.com/?sessionId=87103405&partnership=www&ing_source=api&ing_medium=link-checkout&ing_campaign=www&ing_content=ozzy-e-black-sabbath-back-to-the-beginning",
+                "nationalSiteURL": null,
+                "appCheckoutUrl": "",
+                "hasSeatSelection": true,
+                "driveIn": false,
+                "streaming": false,
+                "isNewCheckout": true,
+                "maxTicketsPerCar": 0,
+                "enabled": true,
+                "blockMessage": ""
+              }
+            ]
+          }
+        ],
+        "sessionTypes": null,
+        "ratingDetails": {
+          "id": 61,
+          "name": "Verifique a Classificação",
+          "label": "?",
+          "displayName": "?",
+          "description": "Consulte a classificação",
+          "color": "#666"
+        }
+      }
+    ]
+  },
+  {
+    "date": "2026-11-04",
+    "dateFormatted": "04/11",
+    "dayOfWeek": "quarta-feira",
+    "isToday": false,
+    "movies": [
+      {
+        "id": "33976",
+        "b2BId": null,
+        "type": "Filme",
+        "title": "Rammstein - Live In Mexico City",
+        "originalTitle": "Rammstein - Live In Mexico City",
+        "movieIdUrl": "",
+        "inPreSale": false,
+        "isReexhibition": false,
+        "duration": "110",
+        "contentRating": "Verifique a Classificação",
+        "distributor": "Sem Distribuidor",
+        "urlKey": "rammstein-live-in-mexico-city",
+        "siteURL": "https://www.ingresso.com/filme/rammstein-live-in-mexico-city?city=campinas&partnership=www&ing_source=api&ing_medium=link-filme&ing_campaign=www&ing_content=rammstein-live-in-mexico-city",
+        "nationalSiteURL": "https://www.ingresso.com/filme/rammstein-live-in-mexico-city?city=campinas&partnership=www&ing_source=api&ing_medium=link-filme&ing_campaign=www&ing_content=rammstein-live-in-mexico-city",
+        "siteURLByTheater": "https://www.ingresso.com/filme/rammstein-live-in-mexico-city?city=campinas&partnership=www&ing_source=api&ing_medium=link-cinema-filme&ing_campaign=www&ing_content=rammstein-live-in-mexico-city#cinema=kinoplex-dom-pedro",
+        "nationalSiteURLByTheater": "https://www.ingresso.com/filme/rammstein-live-in-mexico-city?city=campinas&partnership=www&ing_source=api&ing_medium=link-cinema-filme&ing_campaign=www&ing_content=rammstein-live-in-mexico-city#cinema=kinoplex-dom-pedro",
+        "ancineId": "",
+        "releaseYear": 2026,
+        "images": [
+          {
+            "url": "https://ingresso-a.akamaihd.net/prd/img/movie/rammstein-live-in-mexico-city/f528af51-e93c-4274-a0fb-293804acc4ab.webp",
+            "type": "PosterPortrait"
+          }
+        ],
+        "trailers": [],
+        "genres": [
+          "Documentário",
+          "Musical"
+        ],
+        "ratingDescriptors": [],
+        "accessibilityHubs": [],
+        "tags": [],
+        "completeTags": [],
+        "rooms": [
+          {
+            "name": "Sala 4",
+            "type": null,
+            "sessions": [
+              {
+                "id": "87103409",
+                "boxOfficeId": "3ff6d934-5303-4cef-97c3-81f4a38ef3c0",
+                "eventBoxOfficeId": "31027",
+                "price": 68.39,
+                "room": "Sala 4",
+                "type": [
+                  "Normal",
+                  "Legendado"
+                ],
+                "types": [
+                  {
+                    "id": 1,
+                    "name": "Normal",
+                    "alias": "2D",
+                    "display": false,
+                    "typeDescriptions": {
+                      "detailedImage": "https://ingresso-a.akamaihd.net/prd/img/sessiontype/"
+                    }
+                  },
+                  {
+                    "id": 0,
+                    "name": "Legendado",
+                    "alias": "LEG",
+                    "display": true,
+                    "typeDescriptions": {
+                      "detailedImage": "https://ingresso-a.akamaihd.net/prd/img/copytype/"
+                    }
+                  }
+                ],
+                "date": {
+                  "localDate": "2026-11-04T20:30:00-03:00",
+                  "isToday": false,
+                  "dayOfWeek": "quarta-feira",
+                  "dayAndMonth": "04/11",
+                  "hour": "20:30",
+                  "year": "2026"
+                },
+                "realDate": {
+                  "localDate": "2026-11-04T20:30:00-03:00",
+                  "isToday": false,
+                  "dayOfWeek": "quarta-feira",
+                  "dayAndMonth": "04/11",
+                  "hour": "20:30",
+                  "year": "2026"
+                },
+                "time": "20:30",
+                "defaultSector": "4583657",
+                "midnightMessage": null,
+                "siteURL": "https://checkout.ingresso.com/?sessionId=87103409&partnership=www&ing_source=api&ing_medium=link-checkout&ing_campaign=www&ing_content=rammstein-live-in-mexico-city",
+                "nationalSiteURL": null,
+                "appCheckoutUrl": "",
+                "hasSeatSelection": true,
+                "driveIn": false,
+                "streaming": false,
+                "isNewCheckout": true,
+                "maxTicketsPerCar": 0,
+                "enabled": true,
+                "blockMessage": ""
+              }
+            ]
+          }
+        ],
+        "sessionTypes": null,
+        "ratingDetails": {
+          "id": 61,
+          "name": "Verifique a Classificação",
+          "label": "?",
+          "displayName": "?",
+          "description": "Consulte a classificação",
+          "color": "#666"
+        }
+      }
+    ]
+  },
+  {
+    "date": "2026-12-15",
+    "dateFormatted": "15/12",
+    "dayOfWeek": "terça-feira",
+    "isToday": false,
+    "movies": [
+      {
+        "id": "31537",
+        "b2BId": null,
+        "type": "Filme",
+        "title": "Duna - Parte 3",
+        "originalTitle": "Dune: Part Three",
+        "movieIdUrl": "",
+        "inPreSale": true,
+        "isReexhibition": false,
+        "duration": "167",
+        "contentRating": "Verifique a Classificação",
+        "distributor": "Warner Bros",
+        "urlKey": "duna-parte-3",
+        "siteURL": "https://www.ingresso.com/filme/duna-parte-3?city=campinas&partnership=www&ing_source=api&ing_medium=link-filme&ing_campaign=www&ing_content=duna-parte-3",
+        "nationalSiteURL": "https://www.ingresso.com/filme/duna-parte-3?city=campinas&partnership=www&ing_source=api&ing_medium=link-filme&ing_campaign=www&ing_content=duna-parte-3",
+        "siteURLByTheater": "https://www.ingresso.com/filme/duna-parte-3?city=campinas&partnership=www&ing_source=api&ing_medium=link-cinema-filme&ing_campaign=www&ing_content=duna-parte-3#cinema=kinoplex-dom-pedro",
+        "nationalSiteURLByTheater": "https://www.ingresso.com/filme/duna-parte-3?city=campinas&partnership=www&ing_source=api&ing_medium=link-cinema-filme&ing_campaign=www&ing_content=duna-parte-3#cinema=kinoplex-dom-pedro",
+        "ancineId": "",
+        "releaseYear": 2026,
+        "images": [
+          {
+            "url": "https://ingresso-a.akamaihd.net/prd/img/movie/duna-parte-3/c09230e8-87e0-4389-9a7d-6e93b0705618.webp",
+            "type": "PosterPortrait"
+          },
+          {
+            "url": "https://ingresso-a.akamaihd.net/prd/img/movie/duna-parte-3/3f9ea33e-0d78-4a1c-b7e1-f551bd2c25cf.webp",
+            "type": "PosterHorizontal"
+          }
+        ],
+        "trailers": [
+          {
+            "type": "YouTube",
+            "url": "https://www.youtube.com/watch?v=EyqIQoeZ8oc",
+            "embeddedUrl": "//www.youtube.com/embed/EyqIQoeZ8oc"
+          },
+          {
+            "type": "YouTube",
+            "url": "https://www.youtube.com/watch?v=CBooJPJpFHE",
+            "embeddedUrl": "//www.youtube.com/embed/CBooJPJpFHE"
+          }
+        ],
+        "genres": [
+          "Aventura",
+          "Ficção Científica"
+        ],
+        "ratingDescriptors": [],
+        "accessibilityHubs": [],
+        "tags": [],
+        "completeTags": [],
+        "rooms": [
+          {
+            "name": "Sala 7",
+            "type": null,
+            "sessions": [
+              {
+                "id": "86893223",
+                "boxOfficeId": "a1159a5b-d26f-45a2-8bbd-6f367daa50ce",
+                "eventBoxOfficeId": "30996",
+                "price": 68.39,
+                "room": "Sala 7",
+                "type": [
+                  "IMAX",
+                  "Legendado"
+                ],
+                "types": [
+                  {
+                    "id": 16,
+                    "name": "IMAX",
+                    "alias": "IMAX",
+                    "display": true,
+                    "typeDescriptions": {
+                      "detailedImage": "https://ingresso-a.akamaihd.net/prd/img/sessiontype/"
+                    }
+                  },
+                  {
+                    "id": 0,
+                    "name": "Legendado",
+                    "alias": "LEG",
+                    "display": true,
+                    "typeDescriptions": {
+                      "detailedImage": "https://ingresso-a.akamaihd.net/prd/img/copytype/"
+                    }
+                  }
+                ],
+                "date": {
+                  "localDate": "2026-12-15T14:00:00-03:00",
+                  "isToday": false,
+                  "dayOfWeek": "terça-feira",
+                  "dayAndMonth": "15/12",
+                  "hour": "14:00",
+                  "year": "2026"
+                },
+                "realDate": {
+                  "localDate": "2026-12-15T14:00:00-03:00",
+                  "isToday": false,
+                  "dayOfWeek": "terça-feira",
+                  "dayAndMonth": "15/12",
+                  "hour": "14:00",
+                  "year": "2026"
+                },
+                "time": "14:00",
+                "defaultSector": "4583688",
+                "midnightMessage": null,
+                "siteURL": "https://checkout.ingresso.com/?sessionId=86893223&partnership=www&ing_source=api&ing_medium=link-checkout&ing_campaign=www&ing_content=duna-parte-3",
+                "nationalSiteURL": null,
+                "appCheckoutUrl": "",
+                "hasSeatSelection": true,
+                "driveIn": false,
+                "streaming": false,
+                "isNewCheckout": true,
+                "maxTicketsPerCar": 0,
+                "enabled": true,
+                "blockMessage": ""
+              },
+              {
+                "id": "86893199",
+                "boxOfficeId": "1cc1c157-0e0d-4804-8079-5582b8afdfe8",
+                "eventBoxOfficeId": "30996",
+                "price": 68.39,
+                "room": "Sala 7",
+                "type": [
+                  "IMAX",
+                  "Legendado"
+                ],
+                "types": [
+                  {
+                    "id": 16,
+                    "name": "IMAX",
+                    "alias": "IMAX",
+                    "display": true,
+                    "typeDescriptions": {
+                      "detailedImage": "https://ingresso-a.akamaihd.net/prd/img/sessiontype/"
+                    }
+                  },
+                  {
+                    "id": 0,
+                    "name": "Legendado",
+                    "alias": "LEG",
+                    "display": true,
+                    "typeDescriptions": {
+                      "detailedImage": "https://ingresso-a.akamaihd.net/prd/img/copytype/"
+                    }
+                  }
+                ],
+                "date": {
+                  "localDate": "2026-12-15T20:40:00-03:00",
+                  "isToday": false,
+                  "dayOfWeek": "terça-feira",
+                  "dayAndMonth": "15/12",
+                  "hour": "20:40",
+                  "year": "2026"
+                },
+                "realDate": {
+                  "localDate": "2026-12-15T20:40:00-03:00",
+                  "isToday": false,
+                  "dayOfWeek": "terça-feira",
+                  "dayAndMonth": "15/12",
+                  "hour": "20:40",
+                  "year": "2026"
+                },
+                "time": "20:40",
+                "defaultSector": "4583688",
+                "midnightMessage": null,
+                "siteURL": "https://checkout.ingresso.com/?sessionId=86893199&partnership=www&ing_source=api&ing_medium=link-checkout&ing_campaign=www&ing_content=duna-parte-3",
+                "nationalSiteURL": null,
+                "appCheckoutUrl": "",
+                "hasSeatSelection": true,
+                "driveIn": false,
+                "streaming": false,
+                "isNewCheckout": true,
+                "maxTicketsPerCar": 0,
+                "enabled": true,
+                "blockMessage": ""
+              }
+            ]
+          }
+        ],
+        "sessionTypes": null,
+        "ratingDetails": {
+          "id": 61,
+          "name": "Verifique a Classificação",
+          "label": "?",
+          "displayName": "?",
+          "description": "Consulte a classificação",
+          "color": "#666"
+        }
+      }
+    ]
+  }
+]
