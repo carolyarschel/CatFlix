@@ -6,7 +6,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: t.$space-8 t.$gutter;
+  padding: calc(#{t.$space-8} + env(safe-area-inset-top, 0px)) t.$gutter calc(#{t.$space-8} + env(safe-area-inset-bottom, 0px));
   overflow-x: clip;
 }
 

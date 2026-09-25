@@ -17,7 +17,7 @@
   width: 262px;
   max-width: 82vw;
   height: 100dvh;
-  padding: t.$space-8 0 calc(#{t.$space-8} + env(safe-area-inset-bottom, 0px));
+  padding: calc(#{t.$space-8} + env(safe-area-inset-top, 0px)) 0 calc(#{t.$space-8} + env(safe-area-inset-bottom, 0px));
   border: 1px solid t.$border;
   border-right: none;
   border-radius: t.$radius-lg 0 0 t.$radius-lg;
