@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import { z } from 'zod';
 import { ValidationError } from '../../shared/errors';
 import { perfilDaRequisicao } from '../users/users.middleware';
-import { detalheDoTitulo, listarTitulos, montarHome } from './catalog.queries';
+import { detalheDoTitulo, listarTitulos, montarHome, programacaoDoDia } from './catalog.queries';
 import type { TagFiltrada } from './catalog.queries';
 
 const disponibilidades = z.enum(['em_cartaz', 'pre_estreia', 'em_breve']);
@@ -96,4 +96,12 @@ export async function getTitle(req: Request, res: Response): Promise<void> {
   }
 
   res.json(await detalheDoTitulo(id));
+}
+
+/**
+ * Tudo o que passa num dia, nos cinemas acompanhados: `?date=AAAA-MM-DD`.
+ * Sem data, hoje (ou o próximo dia com sessão, se hoje já acabou).
+ */
+export async function getProgramacao(req: Request, res: Response): Promise<void> {
+  res.json(await programacaoDoDia(texto(req.query.date) ?? texto(req.query.dia)));
 }

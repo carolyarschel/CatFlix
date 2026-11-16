@@ -132,3 +132,41 @@ export interface DetalheDoTitulo {
    */
   ingressoUrl: string | null;
 }
+
+/** Um filme na programação de um dia: o que passa, onde e a que horas. */
+export interface FilmeDoDia {
+  id: string;
+  titulo: string;
+  posterUrl: string | null;
+  ano: number | null;
+  orfao: boolean;
+  imdb: string | null;
+  rt: string | null;
+  duracaoMinutos: number | null;
+  generos: string[];
+  marcadoPor: MarcaDeUsuario[];
+  /** só as sessões DESTE dia, agrupadas por cinema */
+  sessoes: SessoesPorCinema[];
+  totalDeSessoes: number;
+}
+
+/** Um dia que tem grade publicada — alimenta o seletor de data. */
+export interface DiaComSessao {
+  /** `AAAA-MM-DD`, no fuso da cidade */
+  dia: string;
+  filmes: number;
+}
+
+export interface ProgramacaoDoDia {
+  /** o dia respondido, `AAAA-MM-DD` no fuso da cidade */
+  dia: string;
+  /** "hoje" no fuso da cidade — o frontend não deve adivinhar pelo relógio do aparelho */
+  hoje: string;
+  /** todos os dias com sessão futura, de hoje em diante */
+  dias: DiaComSessao[];
+  /** os cinemas que aparecem no dia, para o filtro */
+  cinemas: Array<{ id: string; nome: string; rede: string | null }>;
+  filmes: FilmeDoDia[];
+  totalDeSessoes: number;
+  dados: { idadeEmHoras: number | null; degradado: boolean };
+}

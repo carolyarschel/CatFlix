@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
 import { IconeIngresso, IconeVoltar } from '../../shared/components/Icones';
 import { RatingBadges } from '../../shared/components/RatingBadges';
+import { SessaoBotao } from '../../shared/components/SessaoBotao';
+import { formatarDuracao } from '../../shared/formatos';
 import { useApi } from '../../shared/hooks/useApi';
 import { useEstadoDoTitulo } from '../../shared/hooks/useEstadoDoTitulo';
 import { TagsManuais } from '../tags/TagsManuais';
@@ -400,51 +402,6 @@ function Cabecalho({ aoVoltar }: { aoVoltar: () => void }) {
   );
 }
 
-/**
- * Uma sessão.
- *
- * Vira link quando há URL de compra e um `span` quando não há — um botão que
- * não faz nada é pior do que um horário que só informa.
- *
- * ⚠️ **O tipo da sessão não aparece de propósito.** `sessionKind` sai de
- * `inPreSale`, que no ingresso é pré-venda e não pré-estreia: 434 das 504
- * sessões futuras estão marcadas como `pre_estreia`, inclusive as de filme que
- * já estreou (pendência 1 do README). Carimbar "Pré-estreia" em tudo seria pior
- * do que não dizer nada.
- */
-function SessaoBotao({ sessao }: { sessao: SessaoDoDia }) {
-  const detalhes = [sessao.sala, sessao.is3d ? '3D' : null, sessao.audioRotulo]
-    .filter(Boolean)
-    .join(' · ');
-
-  const conteudo = (
-    <>
-      <span className={styles.hora}>{sessao.horario}</span>
-      {detalhes ? <span className={styles.detalhes}>{detalhes}</span> : null}
-    </>
-  );
-
-  if (!sessao.urlCompra) {
-    return (
-      <span className={`${styles.sessao} ${styles.sessaoSemLink}`} title="Sem link de compra">
-        {conteudo}
-      </span>
-    );
-  }
-
-  return (
-    <a
-      className={styles.sessao}
-      href={sessao.urlCompra}
-      target="_blank"
-      rel="noreferrer noopener"
-      aria-label={`Comprar ingresso para a sessão das ${sessao.horario}${detalhes ? `, ${detalhes}` : ''}`}
-    >
-      {conteudo}
-    </a>
-  );
-}
-
 function Ficha({
   diretores,
   elenco,
@@ -504,14 +461,6 @@ function agruparPorDia(sessoes: SessaoDoDia[]): Array<[string, SessaoDoDia[]]> {
     porDia.set(sessao.dia, lista);
   }
   return [...porDia.entries()];
-}
-
-/** "2h18" — minuto puro ("138 min") obriga a pessoa a fazer a conta. */
-function formatarDuracao(minutos: number): string {
-  const horas = Math.floor(minutos / 60);
-  const resto = minutos % 60;
-  if (horas === 0) return `${resto} min`;
-  return resto === 0 ? `${horas}h` : `${horas}h${String(resto).padStart(2, '0')}`;
 }
 
 /**

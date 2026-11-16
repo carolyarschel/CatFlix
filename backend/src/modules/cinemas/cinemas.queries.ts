@@ -1,4 +1,4 @@
-import type { AudioType, SessionKind } from '@prisma/client';
+import type { AudioType, Prisma, SessionKind } from '@prisma/client';
 import { prisma } from '../../shared/prisma';
 import { ValidationError } from '../../shared/errors';
 // só formatação; não cria ciclo porque `catalog.format` não importa o catálogo
@@ -57,7 +57,7 @@ function deslocamentoEmMinutos(referencia: Date, fuso: string): number {
 }
 
 /** Meia-noite local de um dia `YYYY-MM-DD`, como instante UTC. */
-function inicioDoDia(dia: string, fuso: string): Date {
+export function inicioDoDia(dia: string, fuso: string): Date {
   const casado = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dia);
   if (!casado) {
     throw new ValidationError(`Data inválida: "${dia}". Use o formato AAAA-MM-DD.`);
@@ -85,42 +85,33 @@ function partesNoFuso(data: Date, fuso: string): Record<string, string> {
   return Object.fromEntries(formatador.formatToParts(data).map((p) => [p.type, p.value]));
 }
 
-export async function listarSessoes(opcoes: {
-  titleId?: string;
-  cinemaId?: string;
-  /** dia no fuso da cidade, AAAA-MM-DD */
-  dia?: string;
-}): Promise<SessoesPorCinema[]> {
-  if (!opcoes.titleId && !opcoes.cinemaId) {
-    throw new ValidationError('Informe titleId ou cinemaId.');
-  }
+/** O dia de um instante no fuso da cidade, `AAAA-MM-DD`. */
+export function diaNoFuso(data: Date, fuso: string): string {
+  const p = partesNoFuso(data, fuso);
+  return `${p.year}-${p.month}-${p.day}`;
+}
 
-  const fuso = await fusoDaCidade();
+/** O que toda leitura de sessão precisa do banco para virar `SessaoDoDia`. */
+export const SELECAO_DE_SESSAO = {
+  id: true,
+  titleId: true,
+  startsAt: true,
+  roomType: true,
+  roomName: true,
+  audio: true,
+  is3d: true,
+  sessionKind: true,
+  purchaseUrl: true,
+  cinema: { select: { id: true, name: true, chain: true } },
+} as const;
 
-  const inicio = opcoes.dia ? inicioDoDia(opcoes.dia, fuso) : new Date();
-  const fim = opcoes.dia ? new Date(inicio.getTime() + 86_400_000) : null;
+type SessaoCrua = Prisma.SessionGetPayload<{ select: typeof SELECAO_DE_SESSAO }>;
 
-  const sessoes = await prisma.session.findMany({
-    where: {
-      active: true,
-      ...(opcoes.titleId ? { titleId: opcoes.titleId } : {}),
-      ...(opcoes.cinemaId ? { cinemaId: opcoes.cinemaId } : {}),
-      startsAt: fim ? { gte: inicio, lt: fim } : { gte: inicio },
-    },
-    orderBy: [{ startsAt: 'asc' }],
-    select: {
-      id: true,
-      startsAt: true,
-      roomType: true,
-      roomName: true,
-      audio: true,
-      is3d: true,
-      sessionKind: true,
-      purchaseUrl: true,
-      cinema: { select: { id: true, name: true, chain: true } },
-    },
-  });
-
+/**
+ * Agrupa por cinema, preservando a ordem cronológica de entrada, e ordena os
+ * cinemas por nome.
+ */
+export function agruparPorCinema(sessoes: SessaoCrua[], fuso: string): SessoesPorCinema[] {
   const porCinema = new Map<string, SessoesPorCinema>();
 
   for (const sessao of sessoes) {
@@ -152,6 +143,35 @@ export async function listarSessoes(opcoes: {
   }
 
   return [...porCinema.values()].sort((a, b) => a.cinema.localeCompare(b.cinema, 'pt-BR'));
+}
+
+export async function listarSessoes(opcoes: {
+  titleId?: string;
+  cinemaId?: string;
+  /** dia no fuso da cidade, AAAA-MM-DD */
+  dia?: string;
+}): Promise<SessoesPorCinema[]> {
+  if (!opcoes.titleId && !opcoes.cinemaId) {
+    throw new ValidationError('Informe titleId ou cinemaId.');
+  }
+
+  const fuso = await fusoDaCidade();
+
+  const inicio = opcoes.dia ? inicioDoDia(opcoes.dia, fuso) : new Date();
+  const fim = opcoes.dia ? new Date(inicio.getTime() + 86_400_000) : null;
+
+  const sessoes = await prisma.session.findMany({
+    where: {
+      active: true,
+      ...(opcoes.titleId ? { titleId: opcoes.titleId } : {}),
+      ...(opcoes.cinemaId ? { cinemaId: opcoes.cinemaId } : {}),
+      startsAt: fim ? { gte: inicio, lt: fim } : { gte: inicio },
+    },
+    orderBy: [{ startsAt: 'asc' }],
+    select: SELECAO_DE_SESSAO,
+  });
+
+  return agruparPorCinema(sessoes, fuso);
 }
 
 /** Cinemas ativos da cidade — alimenta o filtro por cinema do painel de tags. */

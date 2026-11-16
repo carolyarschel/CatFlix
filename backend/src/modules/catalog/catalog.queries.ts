@@ -1,12 +1,18 @@
 import { Prisma } from '@prisma/client';
 import type { AvailabilityStatus, TagFacet, UserTitleStatus } from '@prisma/client';
-import { NotFoundError } from '../../shared/errors';
+import { NotFoundError, ValidationError } from '../../shared/errors';
 import { prisma } from '../../shared/prisma';
 // Importado do arquivo do serviço, e não do barril `../cinemas`, de propósito:
 // o barril exporta as rotas, e rota importando catálogo importando rota fecharia
 // um ciclo de módulos.
 import { fusoDaCidade, idadeDosDadosEmHoras } from '../cinemas/cinemas.service';
-import { listarSessoes } from '../cinemas/cinemas.queries';
+import {
+  SELECAO_DE_SESSAO,
+  agruparPorCinema,
+  diaNoFuso,
+  inicioDoDia,
+  listarSessoes,
+} from '../cinemas/cinemas.queries';
 import {
   formatarEstreia,
   formatarNotaImdb,
@@ -20,8 +26,11 @@ import {
 import type {
   CardDeTitulo,
   DetalheDoTitulo,
+  DiaComSessao,
+  FilmeDoDia,
   Home,
   MarcaDeUsuario,
+  ProgramacaoDoDia,
   TituloDaLista,
   TrilhaDaHome,
 } from './catalog.types';
@@ -709,5 +718,167 @@ export async function detalheDoTitulo(id: string): Promise<DetalheDoTitulo> {
     })),
     sessoes,
     ingressoUrl: titulo.externalIds[0]?.sourceUrl ?? null,
+  };
+}
+
+// ─────────────────────────────────────────────────────────────
+// PROGRAMAÇÃO DO DIA — "o que dá para ver neste dia, nos cinemas acompanhados"
+// ─────────────────────────────────────────────────────────────
+
+/**
+ * Valida um `AAAA-MM-DD` de verdade, não só o formato.
+ *
+ * `Date.UTC` aceita 2026-02-31 e devolve 3 de março sem reclamar; uma data
+ * impossível que virasse outra em silêncio mostraria a grade do dia errado
+ * com a cara do dia pedido.
+ */
+export function validarDia(dia: string): string {
+  const casado = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dia);
+  const data = casado ? new Date(Date.UTC(Number(casado[1]), Number(casado[2]) - 1, Number(casado[3]))) : null;
+
+  if (!casado || !data || data.toISOString().slice(0, 10) !== dia) {
+    throw new ValidationError(`Data inválida: "${dia}". Use o formato AAAA-MM-DD.`);
+  }
+
+  return dia;
+}
+
+/** O dia seguinte no calendário, sem passar por fuso nenhum. */
+function diaSeguinte(dia: string): string {
+  const [ano, mes, data] = dia.split('-').map(Number) as [number, number, number];
+  return new Date(Date.UTC(ano, mes - 1, data + 1)).toISOString().slice(0, 10);
+}
+
+/**
+ * Dias com sessão futura, de hoje em diante, e quantos filmes cada um tem.
+ *
+ * Mesmos filtros da programação: sessão ativa, cinema ativo e título visível.
+ * Se a contagem do seletor e a lista do dia usassem filtros diferentes, o
+ * chip "Sáb · 12 filmes" abriria uma tela com 11.
+ */
+async function diasComSessao(fuso: string): Promise<DiaComSessao[]> {
+  return prisma.$queryRaw<DiaComSessao[]>`
+    SELECT to_char(s.starts_at AT TIME ZONE ${fuso}, 'YYYY-MM-DD') AS dia,
+           count(DISTINCT s.title_id)::int AS filmes
+    FROM sessions s
+    JOIN cinemas c ON c.id = s.cinema_id
+    JOIN titles t ON t.id = s.title_id
+    WHERE s.active = true
+      AND c.active = true
+      AND s.starts_at >= now()
+      AND t.status::text IN (${Prisma.join([...STATUS_VISIVEIS])})
+    GROUP BY 1
+    ORDER BY 1
+  `;
+}
+
+/**
+ * Tudo o que passa num dia, filme a filme, com os horários por cinema.
+ *
+ * Sem `dia`, responde **hoje** — ou, se hoje não sobrou sessão (fim da noite),
+ * o primeiro dia que tem: abrir a tela e dar de cara com "nada" às 23h30 não
+ * responde a pergunta de quem abriu.
+ *
+ * Hoje mostra só o que ainda não começou: sessão das 14h às 19h não é sessão
+ * que dá para ver.
+ *
+ * Cinema inativo fica de fora (`cinema.active`): é o que garante que a tela
+ * fala dos cinemas acompanhados (`INGRESSO_THEATER_IDS`) e não de um que saiu
+ * da lista e ainda tem sessão velha marcada como ativa.
+ */
+export async function programacaoDoDia(diaPedido?: string): Promise<ProgramacaoDoDia> {
+  const fuso = await fusoDaCidade();
+  const agora = new Date();
+  const hoje = diaNoFuso(agora, fuso);
+
+  const [dias, idade] = await Promise.all([diasComSessao(fuso), idadeDosDadosEmHoras()]);
+
+  const dia = diaPedido
+    ? validarDia(diaPedido)
+    : dias.some((d) => d.dia === hoje)
+      ? hoje
+      : (dias[0]?.dia ?? hoje);
+
+  const inicio = inicioDoDia(dia, fuso);
+  const fim = inicioDoDia(diaSeguinte(dia), fuso);
+
+  const sessoes = await prisma.session.findMany({
+    where: {
+      active: true,
+      cinema: { active: true },
+      title: { status: { in: [...STATUS_VISIVEIS] } },
+      startsAt: { gte: inicio > agora ? inicio : agora, lt: fim },
+    },
+    orderBy: [{ startsAt: 'asc' }],
+    select: SELECAO_DE_SESSAO,
+  });
+
+  const porTitulo = new Map<string, typeof sessoes>();
+  for (const sessao of sessoes) {
+    const lista = porTitulo.get(sessao.titleId) ?? [];
+    lista.push(sessao);
+    porTitulo.set(sessao.titleId, lista);
+  }
+
+  const ids = [...porTitulo.keys()];
+
+  const [titulos, marcas] = await Promise.all([
+    prisma.title.findMany({
+      where: { id: { in: ids } },
+      select: {
+        id: true,
+        title: true,
+        year: true,
+        status: true,
+        posterUrl: true,
+        imdbRating: true,
+        rtRating: true,
+        runtimeMinutes: true,
+        genres: { select: { genre: { select: { name: true } } }, take: 2 },
+      },
+    }),
+    marcasDosUsuarios(ids),
+  ]);
+
+  const filmes: FilmeDoDia[] = titulos
+    .map((t) => {
+      const doTitulo = porTitulo.get(t.id) ?? [];
+      return {
+        id: t.id,
+        titulo: t.title,
+        posterUrl: t.posterUrl,
+        ano: t.year,
+        orfao: t.status === 'orphan',
+        imdb: formatarNotaImdb(t.imdbRating === null ? null : Number(t.imdbRating)),
+        rt: formatarNotaRt(t.rtRating),
+        duracaoMinutos: t.runtimeMinutes,
+        generos: t.genres.map((g) => g.genre.name),
+        marcadoPor: marcas.get(t.id) ?? [],
+        sessoes: agruparPorCinema(doTitulo, fuso),
+        totalDeSessoes: doTitulo.length,
+      };
+    })
+    // mais sessões primeiro, como na home: é o filme que cabe em qualquer horário
+    .sort(
+      (a, b) =>
+        b.totalDeSessoes - a.totalDeSessoes || a.titulo.localeCompare(b.titulo, 'pt-BR'),
+    );
+
+  const cinemas = new Map<string, { id: string; nome: string; rede: string | null }>();
+  for (const { cinema } of sessoes) {
+    cinemas.set(cinema.id, { id: cinema.id, nome: cinema.name, rede: cinema.chain });
+  }
+
+  return {
+    dia,
+    hoje,
+    dias,
+    cinemas: [...cinemas.values()].sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR')),
+    filmes,
+    totalDeSessoes: sessoes.length,
+    dados: {
+      idadeEmHoras: idade === null ? null : Math.round(idade * 10) / 10,
+      degradado: idade !== null && idade > LIMITE_DE_DEGRADACAO_EM_HORAS,
+    },
   };
 }

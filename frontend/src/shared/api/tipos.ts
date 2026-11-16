@@ -236,3 +236,40 @@ export interface DetalheDoTitulo {
   /** página do filme no ingresso.com; `null` some com o botão (§1) */
   ingressoUrl: string | null;
 }
+
+// ── Programação do dia ───────────────────────────────────────
+
+/** Um filme num dia: o que passa, onde e a que horas. */
+export interface FilmeDoDia {
+  id: string;
+  titulo: string;
+  posterUrl: string | null;
+  ano: number | null;
+  orfao: boolean;
+  imdb: string | null;
+  rt: string | null;
+  duracaoMinutos: number | null;
+  generos: string[];
+  marcadoPor: MarcaDeUsuario[];
+  /** só as sessões DESTE dia, agrupadas por cinema */
+  sessoes: SessoesPorCinema[];
+  totalDeSessoes: number;
+}
+
+export interface DiaComSessao {
+  /** `AAAA-MM-DD`, no fuso da cidade */
+  dia: string;
+  filmes: number;
+}
+
+export interface ProgramacaoDoDia {
+  dia: string;
+  /** "hoje" segundo o fuso da cidade, não o relógio do aparelho */
+  hoje: string;
+  /** os dias com grade publicada, de hoje em diante — é o seletor de data */
+  dias: DiaComSessao[];
+  cinemas: Array<{ id: string; nome: string; rede: string | null }>;
+  filmes: FilmeDoDia[];
+  totalDeSessoes: number;
+  dados: { idadeEmHoras: number | null; degradado: boolean };
+}

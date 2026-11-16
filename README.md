@@ -244,6 +244,7 @@ As telas do passo 10 consomem estas rotas, acrescentadas junto com a home:
 | `GET /api/titles` | lista com filtros: `availability`, `tag` (repetível), `cinema`, `user`, `status`, `q` |
 | `GET /api/titles/:id` | detalhe completo, com sessões agrupadas por cinema |
 | `GET /api/sessions?titleId=&date=` | sessões por cinema, no fuso da cidade |
+| `GET /api/programacao?date=AAAA-MM-DD` | tudo o que passa num dia, filme a filme, com horários por cinema — acréscimo ao §10 |
 | `GET /api/cinemas` | cinemas ativos |
 | `GET /api/tags?emCartaz=1` | facetas com contagem, agrupadas e com `id` qualificado (`sala:imax`) |
 | `GET /api/users`, `GET /api/users/:id` | os dois perfis e suas cores |
@@ -260,6 +261,7 @@ O filtro por cinema é **por id do ingresso, nunca por nome** (§3): existe um
 | revisar | pronta — fila, filtro por motivo e as resoluções |
 | painel de tags | pronta — desliza da direita, seleção múltipla, grade de resultados |
 | detalhe | pronta — metadata, sessões por cinema e dia, botão do ingresso.com |
+| programação por data | pronta — todos os filmes de um dia, horários por cinema, filtro de cinema |
 | perfis | pronta — notificações, passo a passo do iOS e estado do sync |
 
 **Decisão de 23/09/2026 (§3):** o desktop segue o mobile. O card horizontal de
@@ -327,6 +329,38 @@ campo continua no tipo do frontend, com o aviso escrito nele.
 grade e um filme popular chega a 160 sessões futuras — despejadas de uma vez,
 empurram sinopse, tags e elenco para depois de uns quinze scrolls. Três dias
 cobrem "vou hoje, amanhã ou no fim de semana?".
+
+#### Programação por data
+
+A home responde "o que está em cartaz" e o detalhe "onde passa este filme".
+Faltava a pergunta de quem escolheu o **dia** antes do filme: "sábado, o que dá
+para ver?". Rota `/programacao/AAAA-MM-DD`, aberta pelo ícone de calendário no
+cabeçalho da home — no cabeçalho, e não como pill, porque não é filtro da home
+e porque como quinta pill nascia fora da tela do celular.
+
+A tela lista **todos os filmes do dia nos cinemas acompanhados**, cada um com os
+horários agrupados por cinema e os mesmos botões de sessão do detalhe (o
+`SessaoBotao`, que saiu do detalhe para `shared/components`). Pills de cinema
+filtram a lista; tocar no filme abre o detalhe.
+
+Decisões:
+
+- **O seletor de data são os dias com grade publicada**, com quantos filmes cada
+  um tem, e não um calendário livre: o ingresso publica cerca de duas semanas, e
+  qualquer outro dia só responderia "nada". Um dia pedido pela URL sem sessão
+  entra na faixa assim mesmo, marcado, com o vazio explicado.
+- **"Hoje" é o do fuso da cidade**, vindo do backend (`hoje` na resposta), e o
+  dia é cortado na meia-noite local, não em UTC — uma sessão às 23h30 é do dia
+  dela, e não do seguinte. Coberto por teste.
+- **Hoje mostra só o que ainda não começou.** Sem data, a rota responde hoje; se
+  hoje já acabou, o primeiro dia que tem sessão.
+- **Mesmos filtros nos dois lados:** sessão ativa, cinema ativo e título visível
+  (`matched` e `orphan`; ópera e show marcados `not_a_film` ficam de fora). A
+  contagem do chip do dia tem de ser o número de filmes da lista.
+- **Trocar de dia substitui a URL** em vez de empilhar: senão o voltar do
+  Android passearia pelos dias antes de sair da tela.
+
+Coberto por `modules/catalog/catalog.programacao.integracao.test.ts`.
 
 #### Lista completa de uma trilha
 

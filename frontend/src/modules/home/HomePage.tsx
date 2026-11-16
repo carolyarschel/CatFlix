@@ -2,11 +2,17 @@ import { useMemo, useState } from 'react';
 import { Badge } from '../../shared/components/Badge';
 import { BottomNav } from '../../shared/components/BottomNav';
 import { HeroCard } from '../../shared/components/HeroCard';
-import { IconeBusca, IconeRevisar, IconeSeta } from '../../shared/components/Icones';
+import {
+  IconeBusca,
+  IconeAgenda,
+  IconeRevisar,
+  IconeSeta,
+} from '../../shared/components/Icones';
 import { PillFilter } from '../../shared/components/PillFilter';
 import { Trilha } from '../../shared/components/Trilha';
 import { useApi } from '../../shared/hooks/useApi';
 import { useSincronizacao } from '../../shared/hooks/useSincronizacao';
+import { formatarIdade } from '../../shared/formatos';
 import type {
   ContagemDaRevisao,
   Home,
@@ -131,6 +137,19 @@ export function HomePage({
         </div>
 
         <div className={styles.acoes}>
+          {/* A programação de um dia: "sábado, o que tem?". Fica no cabeçalho e
+              não nas pills porque não é filtro da home — e porque, como quinta
+              pill, nascia fora da tela do celular. */}
+          <button
+            type="button"
+            className={styles.acao}
+            aria-label="Programação por data"
+            title="Programação por data"
+            onClick={() => aoNavegar('/programacao')}
+          >
+            <IconeAgenda />
+          </button>
+
           <button
             type="button"
             className={styles.acao}
@@ -312,17 +331,4 @@ export function HomePage({
 function contarResultados(total: number): string {
   if (total === 0) return 'Nenhum filme';
   return total === 1 ? '1 filme' : `${total} filmes`;
-}
-
-/** "3 horas", "2 dias" — o aviso do modo degradado não precisa de precisão decimal. */
-function formatarIdade(horas: number | null): string {
-  if (horas === null) return 'um tempo';
-  if (horas < 1) return 'menos de uma hora';
-  if (horas < 24) {
-    const inteiras = Math.round(horas);
-    return inteiras === 1 ? '1 hora' : `${inteiras} horas`;
-  }
-
-  const dias = Math.round(horas / 24);
-  return dias === 1 ? '1 dia' : `${dias} dias`;
 }

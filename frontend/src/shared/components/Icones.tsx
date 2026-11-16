@@ -54,6 +54,15 @@ export const IconeCalendario = (p: Props) => (
   </Svg>
 );
 
+/** Calendário com um dia marcado: "escolher a data", diferente do "Em breve". */
+export const IconeAgenda = (p: Props) => (
+  <Svg {...p}>
+    <rect x="3" y="5" width="18" height="16" rx="2" />
+    <path d="M3 10h18M8 3v4M16 3v4" />
+    <rect x="13" y="13.5" width="4" height="4" rx="1" />
+  </Svg>
+);
+
 export const IconeMarcador = (p: Props) => (
   <Svg {...p}>
     <path d="M6 3h12v18l-6-4.5L6 21z" />

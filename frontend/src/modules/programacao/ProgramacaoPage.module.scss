@@ -1,0 +1,322 @@
+@use '../../shared/styles/tokens' as t;
+
+.tela {
+  position: relative;
+  min-height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: calc(#{t.$space-10} + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-7;
+  overflow-x: clip;
+
+  // o desktop segue o mobile (§3): a mesma coluna, mais larga
+  @media (min-width: t.$bp-desktop) {
+    max-width: 720px;
+  }
+}
+
+.ambiente {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 220px;
+  background: linear-gradient(to bottom, t.$ambient 0%, t.$bg 100%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.cabecalho {
+  padding: t.$space-7 t.$gutter 0;
+  display: flex;
+  align-items: center;
+  gap: t.$space-4;
+}
+
+.voltar {
+  width: t.$touch-target;
+  height: t.$touch-target;
+  margin-left: -#{t.$space-4};
+  border-radius: t.$radius-lg;
+  color: t.$text;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.titulos {
+  min-width: 0;
+}
+
+.titulo {
+  margin: 0;
+  font-size: t.$fs-xxl;
+}
+
+.contagem {
+  color: t.$text-label;
+  font-size: t.$fs-sm;
+}
+
+.degradado {
+  margin: 0 t.$gutter;
+  padding: t.$space-3 t.$space-5;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border-strong;
+  background: t.$surface-chip;
+  color: t.$text-support;
+  font-size: t.$fs-xs;
+}
+
+// ── Seletor de dia ───────────────────────────────────────────
+// Faixa que rola de lado, como as pills da home: duas semanas de grade não
+// cabem na largura do celular, e quebrar em linhas empurraria a lista para baixo.
+
+.dias {
+  display: flex;
+  gap: t.$space-3;
+  padding: 0 t.$gutter;
+  overflow-x: auto;
+  scroll-padding-inline: t.$gutter;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.dia {
+  flex-shrink: 0;
+  min-width: 68px;
+  min-height: 72px;
+  padding: t.$space-3 t.$space-4;
+  border-radius: t.$radius-lg;
+  border: 1px solid t.$border-strong;
+  background: t.$surface-card;
+  color: t.$text;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.diaAtivo {
+  border-color: t.$accent;
+  background: t.$accent-soft;
+  color: t.$accent-on-soft;
+
+  .quantos {
+    color: t.$accent-on-soft;
+  }
+}
+
+.semana {
+  font-size: t.$fs-xs;
+  font-weight: t.$fw-semibold;
+}
+
+.data {
+  font-family: t.$font-display;
+  font-size: t.$fs-md;
+  font-weight: t.$fw-semibold;
+  line-height: t.$lh-tight;
+  white-space: nowrap;
+}
+
+.quantos {
+  color: t.$text-label;
+  font-size: t.$fs-3xs;
+  white-space: nowrap;
+}
+
+// ── Filtro de cinema ─────────────────────────────────────────
+
+.cinemas {
+  display: flex;
+  gap: t.$space-3;
+  padding: 0 t.$gutter;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.pill {
+  min-height: t.$touch-target;
+  flex-shrink: 0;
+  padding: 0 t.$space-7;
+  border-radius: t.$radius-pill;
+  border: 1px solid rgba(244, 241, 248, 0.18);
+  background: rgba(244, 241, 248, 0.1);
+  color: t.$text;
+  font-size: t.$fs-sm;
+  font-weight: t.$fw-medium;
+  white-space: nowrap;
+}
+
+.pillAtiva {
+  border-color: t.$accent;
+  background: t.$accent-soft;
+  color: t.$accent-on-soft;
+}
+
+// ── Lista de filmes ──────────────────────────────────────────
+
+.lista {
+  padding: 0 t.$gutter;
+  display: flex;
+  flex-direction: column;
+  transition: opacity 0.15s ease;
+
+  &[data-carregando] {
+    opacity: 0.5;
+  }
+}
+
+.filme {
+  display: flex;
+  gap: t.$space-6;
+  padding: t.$space-8 0;
+
+  & + & {
+    border-top: 1px solid t.$border-subtle;
+  }
+}
+
+.poster {
+  position: relative;
+  width: 76px;
+  flex-shrink: 0;
+  align-self: flex-start;
+  aspect-ratio: #{t.$poster-ratio};
+  border-radius: t.$radius-poster;
+  overflow: hidden;
+  background: t.$surface-chip;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imagem {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.semPoster {
+  padding: t.$space-2;
+  color: t.$text-group-label;
+  font-size: t.$fs-3xs;
+  text-align: center;
+}
+
+.marcas {
+  position: absolute;
+  top: t.$space-1;
+  right: t.$space-1;
+  display: flex;
+  gap: 2px;
+}
+
+.marca {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  color: #17131e;
+  font-size: t.$fs-4xs;
+  font-weight: t.$fw-bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.corpo {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: t.$space-2;
+}
+
+.nome {
+  font-family: t.$font-display;
+  font-size: t.$fs-lg;
+  font-weight: t.$fw-semibold;
+  line-height: t.$lh-title;
+  letter-spacing: t.$ls-title;
+  color: t.$text;
+  text-align: left;
+}
+
+.meta {
+  color: t.$text-support;
+  font-size: t.$fs-sm;
+}
+
+.pendente {
+  color: t.$text-label;
+  font-style: italic;
+}
+
+.cinema {
+  width: 100%;
+  margin-top: t.$space-3;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-3;
+}
+
+.nomeDoCinema {
+  font-size: t.$fs-2xs;
+  letter-spacing: t.$ls-label;
+  text-transform: uppercase;
+  color: t.$text-group-label;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.horarios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: t.$space-3;
+}
+
+// ── Estados ──────────────────────────────────────────────────
+
+.aviso {
+  margin: t.$space-10 auto;
+  padding: 0 t.$gutter;
+  color: t.$text-support;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: t.$space-5;
+}
+
+.erro {
+  margin: 0 t.$gutter;
+  color: t.$text-support;
+  font-size: t.$fs-sm;
+}
+
+.tentar {
+  min-height: t.$touch-target;
+  padding: 0 t.$space-8;
+  border-radius: t.$radius-md;
+  background: t.$accent-soft;
+  border: 1px solid t.$accent;
+  color: t.$accent-on-soft;
+  font-weight: t.$fw-semibold;
+}

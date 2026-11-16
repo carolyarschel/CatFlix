@@ -1,0 +1,31 @@
+@use '../styles/tokens' as t;
+
+.sessao {
+  min-height: t.$touch-target;
+  padding: t.$space-2 t.$space-6;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border-strong;
+  background: t.$surface-card;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1px;
+}
+
+.semLink {
+  opacity: 0.6;
+}
+
+.hora {
+  font-family: t.$font-display;
+  font-size: t.$fs-md;
+  font-weight: t.$fw-semibold;
+  line-height: 1.1;
+}
+
+.detalhes {
+  color: t.$text-label;
+  font-size: t.$fs-3xs;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}

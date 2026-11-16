@@ -2,6 +2,7 @@ import { HomePage } from './modules/home/HomePage';
 import { ListaPage } from './modules/home/ListaPage';
 import { LoginPage } from './modules/profile/LoginPage';
 import { PerfilPage } from './modules/profile/PerfilPage';
+import { ProgramacaoPage } from './modules/programacao/ProgramacaoPage';
 import { RevisarPage } from './modules/review/RevisarPage';
 import { FilmePage } from './modules/title-detail/FilmePage';
 import { useProfile } from './shared/hooks/useProfile';
@@ -43,6 +44,19 @@ export function App() {
         key={rota.parametro}
         trilhaId={rota.parametro}
         perfil={perfil}
+        aoVoltar={voltar}
+        aoAbrir={(idDoFilme) => navegar(`/filme/${idDoFilme}`)}
+      />
+    );
+  }
+
+  if (rota.caminho === '/programacao') {
+    // o parâmetro é o dia (`/programacao/2026-11-21`); sem ele, o backend
+    // responde hoje. A tela troca o dia na própria URL com `replaceState`,
+    // então não há `key` aqui: remontar a cada dia perderia o filtro de cinema
+    return (
+      <ProgramacaoPage
+        diaInicial={rota.parametro}
         aoVoltar={voltar}
         aoAbrir={(idDoFilme) => navegar(`/filme/${idDoFilme}`)}
       />
