@@ -3,6 +3,7 @@ import { IconeIngresso, IconeVoltar } from '../../shared/components/Icones';
 import { RatingBadges } from '../../shared/components/RatingBadges';
 import { SessaoBotao } from '../../shared/components/SessaoBotao';
 import { formatarDuracao } from '../../shared/formatos';
+import { filtrarPorSala, salasDasSessoes } from '../../shared/salas';
 import { useApi } from '../../shared/hooks/useApi';
 import { useEstadoDoTitulo } from '../../shared/hooks/useEstadoDoTitulo';
 import { TagsManuais } from '../tags/TagsManuais';
@@ -39,15 +40,6 @@ const APELIDO_DO_PAR: Record<string, string> = {
  * "Marcado" é o do botão do §12 e quer dizer *combinamos de ir* — por isso o
  * rótulo dele é o apelido da outra pessoa, e não "marcado".
  */
-/**
- * Rótulo da sala sem formato.
- *
- * O backend manda `sala: null` para sala comum, porque no detalhe escrever
- * "Normal" em cada horário só ocuparia espaço. No filtro ela precisa de nome:
- * "só as comuns" é justamente o que se pede para não pagar VIP.
- */
-const SALA_COMUM = 'Comum';
-
 const ESTADOS: Array<{ id: StatusDeUsuario; rotulo: string }> = [
   { id: 'quero_ver', rotulo: 'Quero ver' },
   { id: 'marcado', rotulo: 'Marcado' },
@@ -121,40 +113,13 @@ function Conteudo({
 
   const totalDeSessoes = dados.sessoes.reduce((n, c) => n + c.sessoes.length, 0);
 
-  /**
-   * As salas que ESTE filme tem, na ordem em que aparecem.
-   *
-   * Sai das sessões do próprio filme, não da lista global de formatos: oferecer
-   * "IMAX" num filme que não passa em IMAX seria um filtro que só sabe devolver
-   * vazio. Sala comum entra como "Comum" porque ela é uma escolha — quem não
-   * quer pagar VIP precisa conseguir pedir só as normais.
-   */
-  const salas = useMemo(() => {
-    const vistas = new Map<string, string>();
-    for (const cinema of dados.sessoes) {
-      for (const sessao of cinema.sessoes) {
-        const chave = sessao.sala ?? SALA_COMUM;
-        if (!vistas.has(chave)) vistas.set(chave, chave);
-        if (sessao.is3d && !vistas.has('3D')) vistas.set('3D', '3D');
-      }
-    }
-    return [...vistas.keys()];
-  }, [dados.sessoes]);
+  // as salas que ESTE filme tem — ver `shared/salas.ts`
+  const salas = useMemo(() => salasDasSessoes(dados.sessoes), [dados.sessoes]);
 
-  const sessoesFiltradas = useMemo(() => {
-    if (!sala) return dados.sessoes;
-
-    return dados.sessoes
-      .map((cinema) => ({
-        ...cinema,
-        sessoes: cinema.sessoes.filter((s) =>
-          sala === '3D' ? s.is3d : (s.sala ?? SALA_COMUM) === sala,
-        ),
-      }))
-      // cinema sem nenhuma sessão do formato escolhido sai da lista: um nome de
-      // cinema com nada embaixo parece defeito
-      .filter((cinema) => cinema.sessoes.length > 0);
-  }, [dados.sessoes, sala]);
+  const sessoesFiltradas = useMemo(
+    () => filtrarPorSala(dados.sessoes, sala),
+    [dados.sessoes, sala],
+  );
 
   const totalFiltrado = sessoesFiltradas.reduce((n, c) => n + c.sessoes.length, 0);
 

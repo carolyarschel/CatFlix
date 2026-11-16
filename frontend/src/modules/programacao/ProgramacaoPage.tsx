@@ -4,6 +4,7 @@ import { RatingBadges } from '../../shared/components/RatingBadges';
 import { SessaoBotao } from '../../shared/components/SessaoBotao';
 import { useApi } from '../../shared/hooks/useApi';
 import { formatarDuracao, formatarIdade } from '../../shared/formatos';
+import { SALA_3D, SALA_COMUM, filtrarPorSala, salasDasSessoes } from '../../shared/salas';
 import type { DiaComSessao, FilmeDoDia, ProgramacaoDoDia } from '../../shared/api/tipos';
 import styles from './ProgramacaoPage.module.scss';
 
@@ -34,6 +35,7 @@ export function ProgramacaoPage({
 }) {
   const [dia, setDia] = useState<string | null>(diaInicial);
   const [cinema, setCinema] = useState<string | null>(null);
+  const [sala, setSala] = useState<string | null>(null);
 
   const query = useMemo(() => (dia ? { date: dia } : {}), [dia]);
   const programacao = useApi<ProgramacaoDoDia>('/programacao', { query });
@@ -49,7 +51,7 @@ export function ProgramacaoPage({
   // um motivo que a tela não mostra
   const cinemaAtivo = dados?.cinemas.some((c) => c.id === cinema) ? cinema : null;
 
-  const filmes = useMemo(() => {
+  const doCinema = useMemo(() => {
     if (!dados) return [];
     if (!cinemaAtivo) return dados.filmes;
 
@@ -60,6 +62,28 @@ export function ProgramacaoPage({
       }))
       .filter((filme) => filme.sessoes.length > 0);
   }, [dados, cinemaAtivo]);
+
+  /**
+   * As salas que existem no dia — e no cinema escolhido, quando há um: com
+   * "Cinemark" ligado, oferecer IMAX (que só o Kinoplex tem) seria um filtro que
+   * só sabe devolver vazio. Por isso as opções saem do recorte de cinema, e a
+   * combinação dos dois filtros nunca dá lista vazia.
+   */
+  const salas = useMemo(
+    () => ordenarSalas(salasDasSessoes(doCinema.flatMap((f) => f.sessoes))),
+    [doCinema],
+  );
+
+  // mesma regra do cinema: a sala escolhida só vale se existe no recorte atual
+  const salaAtiva = sala && salas.includes(sala) ? sala : null;
+
+  const filmes = useMemo(() => {
+    if (!salaAtiva) return doCinema;
+
+    return doCinema
+      .map((filme) => ({ ...filme, sessoes: filtrarPorSala(filme.sessoes, salaAtiva) }))
+      .filter((filme) => filme.sessoes.length > 0);
+  }, [doCinema, salaAtiva]);
 
   const totalDeSessoes = filmes.reduce(
     (n, f) => n + f.sessoes.reduce((m, c) => m + c.sessoes.length, 0),
@@ -114,7 +138,7 @@ export function ProgramacaoPage({
 
           {/* um cinema só não é escolha */}
           {dados.cinemas.length > 1 ? (
-            <div className={styles.cinemas} role="group" aria-label="Filtrar por cinema">
+            <div className={styles.filtro} role="group" aria-label="Filtrar por cinema">
               <button
                 type="button"
                 className={!cinemaAtivo ? `${styles.pill} ${styles.pillAtiva}` : styles.pill}
@@ -136,6 +160,27 @@ export function ProgramacaoPage({
                     onClick={() => setCinema(ativa ? null : c.id)}
                   >
                     {c.rede ?? c.nome}
+                  </button>
+                );
+              })}
+            </div>
+          ) : null}
+
+          {/* uma sala só não é escolha; sem "Todas": tocar na ativa desliga, como
+              no filtro de sala do detalhe do filme */}
+          {salas.length > 1 ? (
+            <div className={styles.filtro} role="group" aria-label="Filtrar por tipo de sala">
+              {salas.map((opcao) => {
+                const ativa = salaAtiva === opcao;
+                return (
+                  <button
+                    key={opcao}
+                    type="button"
+                    className={ativa ? `${styles.pill} ${styles.pillAtiva}` : styles.pill}
+                    aria-pressed={ativa}
+                    onClick={() => setSala(ativa ? null : opcao)}
+                  >
+                    {opcao}
                   </button>
                 );
               })}
@@ -289,6 +334,18 @@ function LinhaDoFilme({ filme, aoAbrir }: { filme: FilmeDoDia; aoAbrir: (id: str
       </div>
     </article>
   );
+}
+
+/**
+ * Comum primeiro, formatos em ordem alfabética, 3D por último.
+ *
+ * No detalhe a ordem é a de aparição, porque é um filme só. Aqui as sessões
+ * vêm de muitos filmes, e a ordem de aparição mudaria a cada dia — a pill de
+ * IMAX pulando de lugar entre sexta e sábado.
+ */
+function ordenarSalas(salas: string[]): string[] {
+  const peso = (s: string) => (s === SALA_COMUM ? 0 : s === SALA_3D ? 2 : 1);
+  return [...salas].sort((a, b) => peso(a) - peso(b) || a.localeCompare(b, 'pt-BR'));
 }
 
 function mensagemDeVazio(dados: ProgramacaoDoDia): string {

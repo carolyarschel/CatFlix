@@ -135,9 +135,9 @@
   white-space: nowrap;
 }
 
-// ── Filtro de cinema ─────────────────────────────────────────
+// ── Filtros de cinema e de sala ──────────────────────────────
 
-.cinemas {
+.filtro {
   display: flex;
   gap: t.$space-3;
   padding: 0 t.$gutter;

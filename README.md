@@ -340,8 +340,14 @@ e porque como quinta pill nascia fora da tela do celular.
 
 A tela lista **todos os filmes do dia nos cinemas acompanhados**, cada um com os
 horários agrupados por cinema e os mesmos botões de sessão do detalhe (o
-`SessaoBotao`, que saiu do detalhe para `shared/components`). Pills de cinema
-filtram a lista; tocar no filme abre o detalhe.
+`SessaoBotao`, que saiu do detalhe para `shared/components`). Pills de cinema e
+de tipo de sala filtram a lista; tocar no filme abre o detalhe.
+
+**As salas oferecidas são as do recorte atual** — do dia e, com um cinema
+escolhido, só as dele: com "Cinemark" ligado, oferecer IMAX (que só o Kinoplex
+tem) seria um filtro que só sabe devolver vazio. Assim a combinação dos dois
+filtros nunca dá lista vazia. A regra de "Comum" e "3D" é a mesma do detalhe e
+mora num lugar só, `shared/salas.ts`.
 
 Decisões:
 
