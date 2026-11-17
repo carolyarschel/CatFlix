@@ -115,7 +115,7 @@ const envSchema = z
      * código ir para produção antes de o client existir no Portão.
      */
     PORTAO_ISSUER: z.string().url().optional(),
-    PORTAO_CLIENT_ID: z.string().optional(),
+    PORTAO_CLIENT_KEY: z.string().optional(),
     PORTAO_CLIENT_SECRET: z.string().optional(),
     /** Origem pública do Cineon (https://cineon.gatourso.com; em dev, http://localhost:5174). */
     PORTAO_URL_DO_APP: z.string().url().optional(),
@@ -244,7 +244,7 @@ export function configDoPortao(): ConfigDoPortao | null {
   if (!env.PORTAO_ISSUER) return null;
 
   const faltando = (
-    ['PORTAO_CLIENT_ID', 'PORTAO_CLIENT_SECRET', 'PORTAO_URL_DO_APP', 'PORTAO_SEGREDO'] as const
+    ['PORTAO_CLIENT_KEY', 'PORTAO_CLIENT_SECRET', 'PORTAO_URL_DO_APP', 'PORTAO_SEGREDO'] as const
   ).filter((chave) => !env[chave]);
   if (faltando.length > 0) {
     throw new Error(`PORTAO_ISSUER definido, mas faltam: ${faltando.join(', ')}`);
@@ -252,7 +252,7 @@ export function configDoPortao(): ConfigDoPortao | null {
 
   return {
     issuer: env.PORTAO_ISSUER,
-    clientId: env.PORTAO_CLIENT_ID!,
+    clientId: env.PORTAO_CLIENT_KEY!,
     clientSecret: env.PORTAO_CLIENT_SECRET!,
     urlDoApp: env.PORTAO_URL_DO_APP!,
     segredo: env.PORTAO_SEGREDO!,

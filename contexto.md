@@ -365,7 +365,7 @@ AUTH_SESSION_DAYS=30
 
 # login pelo Portão de Gatur (17/11/2026) — com PORTAO_ISSUER, substitui as AUTH_* acima
 PORTAO_ISSUER=               # https://gate.gatourso.com/api/auth
-PORTAO_CLIENT_ID=            # do `npm run app:registrar` do Portão
+PORTAO_CLIENT_KEY=           # do `npm run client:create -- "Cineon"` do Portão
 PORTAO_CLIENT_SECRET=
 PORTAO_URL_DO_APP=           # https://cineon.gatourso.com
 PORTAO_SEGREDO=              # 32+ caracteres, só deste app
