@@ -41,6 +41,14 @@ App pessoal para acompanhar cinema na cidade da Carol: filmes em cartaz em cada 
   **Tudo fica atrás do login** — não há rota pública além de `/api/health` e `/api/auth/*`. `?user=` só é aceito quando bate com o perfil da sessão: sem isso, trocar um parâmetro na URL mostraria a home do outro.
 
   ⚠️ **Sem `AUTH_SECRET` e senha configuradas, o backend recusa subir em produção** (em desenvolvimento, avisa e usa segredo efêmero). Não há senha padrão de fábrica de propósito.
+
+  ✅ **Atualizado em 17/11/2026: login pelo Portão de Gatur.** O Cineon é um client OAuth do [Portão](https://gate.gatourso.com) via pacote [`gatur-portao-client`](https://github.com/carolyarschel/GatursGateClient) (instalado do GitHub, tag `v0.1.0`). **Com `PORTAO_ISSUER` definido, o Portão substitui o login por senha**; sem ele, tudo acima continua valendo — foi o que permitiu publicar o código antes de o client existir no Portão.
+  - **Papel vira perfil**, fixo: `CAT` → `catflix`, `BEAR` → `hburso` (`users.portao.ts`). O resto do app continua lendo `req.perfil`; nenhum dado mudou de dono.
+  - Rotas públicas novas: `/api/portao/{entrar,callback,eu,sair,backchannel-logout}` (montadas antes do `exigirPerfil`). `/api/auth/sessao` passou a dizer `modoLogin: 'portao' | 'senha'`; `/api/auth/login` responde **410** no modo Portão.
+  - Sessão do app na tabela `portao_sessoes` (migration aditiva `portao_sessoes`), janela de 12 h renovada por redirect silencioso ao Portão; o token do cookie `cineon.sessao` é guardado só como SHA-256. Sessões vencidas são apagadas a cada 6 h (`server.ts`).
+  - Frontend: sem sessão, `useSessao` vai direto ao Portão; recusa (papel sem acesso) ou erro de login caem na `PortaoPage`; "Sair" encerra o Cineon **e** o Portão (que avisa os outros apps por back-channel). O service worker não atrapalha: tudo em `/api/` passa direto para a rede.
+  - **Dev:** o Vite do Cineon passou para a porta **5174** (a 5173 é do Portão em dev).
+  - Depois que o Portão estiver valendo em produção, as variáveis `AUTH_*` podem ser removidas (o backend não as exige mais no modo Portão).
 - ~~**Canal de alerta dos canaries:**~~ ✅ **Resolvido em 22/09/2026: notificação pelo PWA do próprio app** (Web Push). A interface `Notifier` continua valendo, com três implementações: log (sempre ligada, é o piso), webhook genérico (fica, mas sem uso) e **Web Push para os dispositivos inscritos**.
 
   ⚠️ **Restrição do iOS, e ela afeta a Carol:** o Safari só entrega Web Push se o PWA estiver **instalado na tela de início** (iOS 16.4+). Aberto pelo navegador, não chega nada.
@@ -354,6 +362,14 @@ AUTH_PASSWORD=               # padrão para os dois perfis
 AUTH_PASSWORD_CATFLIX=       # ganha do padrão, quando definida
 AUTH_PASSWORD_HBURSO=
 AUTH_SESSION_DAYS=30
+
+# login pelo Portão de Gatur (17/11/2026) — com PORTAO_ISSUER, substitui as AUTH_* acima
+PORTAO_ISSUER=               # https://gate.gatourso.com/api/auth
+PORTAO_CLIENT_ID=            # do `npm run app:registrar` do Portão
+PORTAO_CLIENT_SECRET=
+PORTAO_URL_DO_APP=           # https://cineon.gatourso.com
+PORTAO_SEGREDO=              # 32+ caracteres, só deste app
+PORTAO_DEV=false             # só dev: aceita X-Dev-Papel
 
 # acrescentadas em 22/09/2026, ver CONTRATO.md §2 e §9
 INGRESSO_PARTNERSHIP=www     # obrigatório na API e não documentado; muda o resultado

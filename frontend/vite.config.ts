@@ -11,7 +11,8 @@ const PROXY_DA_API = {
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 5173,
+    // 5174: a 5173 é do Portão de Gatur em dev (os apps começam em 5174)
+    port: 5174,
     // O frontend nunca fala com o ingresso.com direto (§5.1): só com o backend.
     // O proxy evita CORS em dev e mantém o mesmo caminho /api em produção.
     proxy: PROXY_DA_API,

@@ -1,6 +1,7 @@
 import type { NextFunction, Request, Response } from 'express';
 import { AppError } from '../../shared/errors';
 import { NOME_DO_COOKIE, lerCookie, lerToken } from './users.sessao';
+import { PERFIL_DO_PAPEL, portao } from './users.portao';
 
 /**
  * O middleware de autenticação isolado que o §3 pediu.
@@ -25,8 +26,29 @@ export class NaoAutenticadoError extends AppError {
   readonly code = 'NAO_AUTENTICADO';
 }
 
-/** Anexa `req.perfil` quando há sessão válida. Nunca bloqueia. */
-export function lerSessao(req: Request, _res: Response, next: NextFunction): void {
+/** Login por senha com o Portão ligado: o caminho agora é `/api/portao/entrar`. */
+export class LoginPeloPortaoError extends AppError {
+  readonly statusCode = 410;
+  readonly code = 'LOGIN_PELO_PORTAO';
+}
+
+/**
+ * Anexa `req.perfil` quando há sessão válida. Nunca bloqueia.
+ *
+ * Com o Portão ligado, a sessão é a do `gatur-portao-client` e o papel vira o
+ * perfil (`PERFIL_DO_PAPEL`); o cookie antigo, de senha, deixa de valer. Sem o
+ * Portão, segue o cookie assinado de antes.
+ */
+export function lerSessao(req: Request, res: Response, next: NextFunction): void {
+  if (portao) {
+    portao.lerSessao(req, res, (erro?: unknown) => {
+      if (erro) return next(erro);
+      if (req.usuario) req.perfil = PERFIL_DO_PAPEL[req.usuario.papel];
+      next();
+    });
+    return;
+  }
+
   const token = lerCookie(req.headers.cookie, NOME_DO_COOKIE);
   const perfil = lerToken(token);
   if (perfil) req.perfil = perfil;

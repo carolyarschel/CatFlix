@@ -106,6 +106,24 @@ const envSchema = z
     /** Quantos dias a sessão dura. É um app de casal no celular, não um banco. */
     AUTH_SESSION_DAYS: z.coerce.number().int().positive().max(365).default(30),
 
+    /**
+     * Login pelo Portão de Gatur (OAuth 2.1 / OIDC, pacote `gatur-portao-client`).
+     *
+     * Com `PORTAO_ISSUER` definido, o Portão **substitui** o login por senha:
+     * as variáveis `AUTH_*` deixam de ser usadas e `/api/auth/login` é recusado.
+     * Sem ele, o app segue com o login por senha de antes — é isso que deixa o
+     * código ir para produção antes de o client existir no Portão.
+     */
+    PORTAO_ISSUER: z.string().url().optional(),
+    PORTAO_CLIENT_ID: z.string().optional(),
+    PORTAO_CLIENT_SECRET: z.string().optional(),
+    /** Origem pública do Cineon (https://cineon.gatourso.com; em dev, http://localhost:5174). */
+    PORTAO_URL_DO_APP: z.string().url().optional(),
+    /** Cifra o cookie temporário do login. 32+ caracteres, só deste app. */
+    PORTAO_SEGREDO: z.string().min(32, 'PORTAO_SEGREDO precisa de 32+ caracteres').optional(),
+    /** Só em dev: aceita `X-Dev-Papel: CAT|BEAR` sem login. Proibido em produção. */
+    PORTAO_DEV: z.string().optional(),
+
     // matching (§7.2) — limiares em configuração, nunca hardcoded
     MATCH_AUTO_THRESHOLD: z.coerce.number().min(0).max(1).default(0.92),
     MATCH_REVIEW_THRESHOLD: z.coerce.number().min(0).max(1).default(0.75),
@@ -206,6 +224,40 @@ export function senhaDoPerfil(perfil: string): string | null {
  */
 export function authConfigurada(): boolean {
   return Boolean(env.AUTH_SECRET && (senhaDoPerfil('catflix') || senhaDoPerfil('hburso')));
+}
+
+export interface ConfigDoPortao {
+  issuer: string;
+  clientId: string;
+  clientSecret: string;
+  urlDoApp: string;
+  segredo: string;
+  modoDev: boolean;
+}
+
+/**
+ * Configuração do login pelo Portão, ou `null` se ele não estiver ligado
+ * (`PORTAO_ISSUER` vazio). Ligado pela metade é erro: melhor não subir do que
+ * subir com um login que quebra no primeiro acesso.
+ */
+export function configDoPortao(): ConfigDoPortao | null {
+  if (!env.PORTAO_ISSUER) return null;
+
+  const faltando = (
+    ['PORTAO_CLIENT_ID', 'PORTAO_CLIENT_SECRET', 'PORTAO_URL_DO_APP', 'PORTAO_SEGREDO'] as const
+  ).filter((chave) => !env[chave]);
+  if (faltando.length > 0) {
+    throw new Error(`PORTAO_ISSUER definido, mas faltam: ${faltando.join(', ')}`);
+  }
+
+  return {
+    issuer: env.PORTAO_ISSUER,
+    clientId: env.PORTAO_CLIENT_ID!,
+    clientSecret: env.PORTAO_CLIENT_SECRET!,
+    urlDoApp: env.PORTAO_URL_DO_APP!,
+    segredo: env.PORTAO_SEGREDO!,
+    modoDev: env.PORTAO_DEV === 'true',
+  };
 }
 
 /**

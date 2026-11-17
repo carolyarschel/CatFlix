@@ -2,6 +2,7 @@ import { HomePage } from './modules/home/HomePage';
 import { ListaPage } from './modules/home/ListaPage';
 import { LoginPage } from './modules/profile/LoginPage';
 import { PerfilPage } from './modules/profile/PerfilPage';
+import { PortaoPage } from './modules/profile/PortaoPage';
 import { ProgramacaoPage } from './modules/programacao/ProgramacaoPage';
 import { RevisarPage } from './modules/review/RevisarPage';
 import { FilmePage } from './modules/title-detail/FilmePage';
@@ -17,14 +18,16 @@ import { useSessao } from './shared/hooks/useSessao';
  * seja público, então não há rota pública.
  */
 export function App() {
-  const { perfil, carregando } = useSessao();
+  const { perfil, carregando, modoLogin } = useSessao();
   const { rota, navegar, voltar } = useRota();
 
   // o tema segue quem está logado
   useProfile(perfil?.id ?? null);
 
   if (carregando) return null;
-  if (!perfil) return <LoginPage />;
+  // modo Portão: sem perfil aqui = o Portão recusou ou o login falhou (no caminho
+  // feliz o app já foi ao Portão e voltou logado); modo senha: tela de login
+  if (!perfil) return modoLogin === 'portao' ? <PortaoPage /> : <LoginPage />;
 
   // `/health` é para onde o Web Push dos canaries aponta (`pwa-push.notifier`).
   // O §11 previa uma tela própria de estado do sync; ela acabou dentro da de

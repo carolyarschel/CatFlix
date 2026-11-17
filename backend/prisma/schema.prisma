@@ -733,3 +733,28 @@ model ReviewItem {
   @@index([reason])
   @@map("review_items")
 }
+
+// ─────────────────────────────────────────────────────────────
+// LOGIN PELO PORTÃO DE GATUR
+// ─────────────────────────────────────────────────────────────
+
+/// Sessão do Cineon criada pelo login no Portão de Gatur (pacote gatur-portao-client).
+/// O id é o SHA-256 do token do cookie: o token em si nunca é gravado. Cada sessão vale
+/// uma janela curta (12 h) e é renovada pelo Portão; o back-channel logout apaga pelo sid.
+model PortaoSessao {
+  id        String   @id
+  /// `sub` do Portão
+  usuarioId String   @map("usuario_id")
+  /// UsuarioPortao: { id, papel, username, nome, apelido, cor }
+  usuario   Json
+  /// sessão do Portão que originou esta (para o back-channel logout)
+  sid       String?
+  idToken   String   @map("id_token")
+  criadaEm  DateTime @map("criada_em") @db.Timestamptz(3)
+  expiraEm  DateTime @map("expira_em") @db.Timestamptz(3)
+
+  @@index([sid])
+  @@index([usuarioId])
+  @@index([expiraEm])
+  @@map("portao_sessoes")
+}

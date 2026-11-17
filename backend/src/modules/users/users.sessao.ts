@@ -30,6 +30,11 @@ export const NOME_DO_COOKIE = 'filmes_sessao';
 const segredo = (() => {
   if (env.AUTH_SECRET) return env.AUTH_SECRET;
 
+  // Com o Portão ligado, este cookie não é lido nem emitido (lerSessao e
+  // postLogin desviam antes). Um segredo efêmero basta, e exigir AUTH_SECRET
+  // impediria de remover as variáveis do login por senha depois da migração.
+  if (env.PORTAO_ISSUER) return randomBytes(32).toString('hex');
+
   if (isProduction) {
     throw new Error(
       'AUTH_SECRET é obrigatória em produção: sem ela, reiniciar o servidor desloga os dois.',

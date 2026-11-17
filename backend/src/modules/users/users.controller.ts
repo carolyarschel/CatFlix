@@ -2,7 +2,8 @@ import type { Request, Response } from 'express';
 import { z } from 'zod';
 import { ValidationError } from '../../shared/errors';
 import { logger } from '../../shared/logger';
-import { NaoAutenticadoError } from './users.middleware';
+import { LoginPeloPortaoError, NaoAutenticadoError } from './users.middleware';
+import { portao } from './users.portao';
 import { NOME_DO_COOKIE, criarToken, opcoesDoCookie, senhaConfere } from './users.sessao';
 import { buscarPerfil, listarPerfis } from './users.service';
 
@@ -51,6 +52,10 @@ function registrarFalha(perfil: string): void {
 }
 
 export async function postLogin(req: Request, res: Response): Promise<void> {
+  if (portao) {
+    throw new LoginPeloPortaoError('O login agora é pelo Portão de Gatur: /api/portao/entrar.');
+  }
+
   const corpo = corpoDeLogin.safeParse(req.body);
   if (!corpo.success) {
     throw new ValidationError('Informe o perfil e a senha.', { details: corpo.error.issues });
@@ -104,5 +109,7 @@ export async function getSessao(req: Request, res: Response): Promise<void> {
   res.json({
     perfil: req.perfil ? await buscarPerfil(req.perfil) : null,
     perfis: await listarPerfis(),
+    // o frontend decide entre a tela de senha e ir ao Portão
+    modoLogin: portao ? 'portao' : 'senha',
   });
 }

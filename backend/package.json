@@ -24,6 +24,7 @@
     "@prisma/client": "^6.19.3",
     "dotenv": "^18.0.2",
     "express": "^5.2.1",
+    "gatur-portao-client": "github:carolyarschel/GatursGateClient#v0.1.0",
     "node-cron": "^4.6.0",
     "web-push": "^3.6.7",
     "zod": "^4.6.5"

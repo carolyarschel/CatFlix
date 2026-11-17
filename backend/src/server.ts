@@ -1,6 +1,7 @@
 import { createApp } from './app';
 import { env, missingOptionalKeys } from './config/env';
 import { iniciarAgendador, pararAgendador } from './modules/sync';
+import { limparSessoesVencidas, portao } from './modules/users';
 import { disconnectPrisma } from './shared/prisma';
 import { logger } from './shared/logger';
 
@@ -13,6 +14,17 @@ const server = app.listen(env.PORT, () => {
 
   const agendador = iniciarAgendador();
   log.info('agendador', agendador);
+
+  // Sessões do Portão vencidas só somem quando alguém tenta usá-las; a cada
+  // 6 h, apaga as que ficaram para trás (fora do agendador do sync: não é sync).
+  if (portao) {
+    const limpar = () =>
+      void limparSessoesVencidas()
+        .then((n) => n > 0 && log.info('sessões do Portão vencidas apagadas', { n }))
+        .catch((erro) => log.warn('falha ao limpar sessões do Portão', { erro }));
+    limpar();
+    setInterval(limpar, 6 * 60 * 60 * 1000).unref();
+  }
 
   const faltando = missingOptionalKeys();
   if (faltando.length > 0) {

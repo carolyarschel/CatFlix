@@ -6,7 +6,7 @@ import { cinemasRoutes } from './modules/cinemas';
 import { reviewRoutes } from './modules/review';
 import { syncRoutes } from './modules/sync';
 import { tagsRoutes } from './modules/tags';
-import { authRoutes, exigirPerfil, lerSessao, usersRoutes } from './modules/users';
+import { authRoutes, exigirPerfil, lerSessao, portao, usersRoutes } from './modules/users';
 import { authConfigurada, isProduction } from './config/env';
 import { prisma } from './shared/prisma';
 import { logger } from './shared/logger';
@@ -67,7 +67,13 @@ export function createApp(): Express {
   app.use(lerSessao);
   app.use('/api', authRoutes);
 
-  if (!authConfigurada()) {
+  // Login pelo Portão de Gatur (quando PORTAO_ISSUER está definido): monta as
+  // rotas públicas /api/portao/{entrar,callback,eu,sair,backchannel-logout}.
+  // Sem ele, vale o login por senha — e só aí as variáveis AUTH_* são exigidas.
+  if (portao) {
+    app.use(portao.router);
+    log.info('login pelo Portão de Gatur ligado');
+  } else if (!authConfigurada()) {
     const recado =
       'Login sem configuração: defina AUTH_SECRET e AUTH_PASSWORD (ou AUTH_PASSWORD_CATFLIX / AUTH_PASSWORD_HBURSO) no .env.';
     if (isProduction) throw new Error(recado);

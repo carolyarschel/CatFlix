@@ -1,0 +1,78 @@
+@use '../../shared/styles/tokens' as t;
+
+// Mesmo estilo da tela de senha (LoginPage): fundo escuro, faixa de ambiente,
+// título display, alvo de toque de 44 px.
+
+.tela {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(#{t.$space-8} + env(safe-area-inset-top, 0px)) t.$gutter calc(#{t.$space-8} + env(safe-area-inset-bottom, 0px));
+  overflow-x: clip;
+}
+
+.ambiente {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, t.$ambient 0%, t.$bg 70%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.conteudo {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-9;
+}
+
+.cabecalho {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-2;
+  text-align: center;
+}
+
+.titulo {
+  margin: 0;
+  font-size: t.$fs-hero;
+  font-weight: 800;
+  letter-spacing: t.$ls-display;
+}
+
+.subtitulo {
+  color: t.$text-support;
+  font-size: t.$fs-md;
+}
+
+.aviso {
+  padding: t.$space-6 t.$space-7;
+  border-radius: t.$radius-lg;
+  border: 1px solid t.$border-strong;
+  background: t.$surface-chip;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-4;
+  color: t.$text;
+  font-size: t.$fs-base;
+}
+
+.dica {
+  color: t.$text-support;
+  font-size: t.$fs-sm;
+}
+
+.botao {
+  align-self: flex-start;
+  min-height: t.$touch-target;
+  padding: 0 t.$space-7;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$accent;
+  background: t.$accent-soft;
+  color: t.$accent-on-soft;
+  font-size: t.$fs-base;
+  font-weight: t.$fw-semibold;
+}
