@@ -1,4 +1,5 @@
 import type { Prisma, PrismaClient, TitleStatus } from '@prisma/client';
+import { tmdbConfig } from '../../config/metadata';
 import { prisma } from '../../shared/prisma';
 import { logger } from '../../shared/logger';
 import type { MetadataNormalizada } from '../tmdb';
@@ -161,6 +162,7 @@ export async function upsertPorTmdbId(
   await sincronizarGeneros(tx, titleId, metadata);
   await sincronizarEstudios(tx, titleId, metadata);
   await sincronizarCreditos(tx, titleId, metadata);
+  await sincronizarProvedores(tx, titleId, metadata);
 
   return titleId;
 }
@@ -354,6 +356,48 @@ async function sincronizarCreditos(
       },
     });
   }
+}
+
+/**
+ * Onde assistir (cineon-expansao §6): reescreve os provedores do país
+ * configurado com o que o TMDB mandou agora.
+ *
+ * Só quando o bloco veio (`provedores !== null`): uma metadata sem ele não diz
+ * nada sobre streaming, e apagar seria afirmar que o filme saiu de todos os
+ * serviços. Lista vazia, ao contrário, é resposta — e marca a leitura.
+ */
+async function sincronizarProvedores(
+  tx: ClientePrisma,
+  titleId: string,
+  metadata: MetadataNormalizada,
+): Promise<void> {
+  if (metadata.provedores === null) return;
+
+  await tx.titleProvider.deleteMany({ where: { titleId, region: tmdbConfig.region } });
+
+  for (const p of metadata.provedores) {
+    await tx.streamingProvider.upsert({
+      where: { id: p.tmdbId },
+      update: { name: p.nome, logoUrl: p.logoUrl },
+      create: { id: p.tmdbId, name: p.nome, logoUrl: p.logoUrl },
+    });
+  }
+
+  if (metadata.provedores.length > 0) {
+    await tx.titleProvider.createMany({
+      data: metadata.provedores.map((p) => ({
+        titleId,
+        providerId: p.tmdbId,
+        region: tmdbConfig.region,
+        type: p.tipo,
+        displayPriority: p.prioridade,
+      })),
+      // o mesmo serviço pode vir repetido no mesmo tipo; uma linha basta
+      skipDuplicates: true,
+    });
+  }
+
+  await tx.title.update({ where: { id: titleId }, data: { providersUpdatedAt: new Date() } });
 }
 
 /** Atualiza só as notas, sem tocar no resto (§5.3). */

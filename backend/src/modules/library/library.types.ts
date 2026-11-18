@@ -16,6 +16,13 @@ export interface ResultadoDaBusca {
   titleId: string | null;
 }
 
+export interface GrupoDeProvedores {
+  tipo: 'flatrate' | 'free' | 'ads' | 'rent' | 'buy';
+  /** "Assinatura", "Grátis", "Com anúncios", "Aluguel", "Compra" */
+  rotulo: string;
+  itens: Array<{ id: number; nome: string; logoUrl: string | null }>;
+}
+
 /** O que cada pessoa tem com o filme. Tudo derivado, nada gravado como status (§3.3). */
 export interface SituacaoDaPessoa {
   pessoa: Pessoa;
@@ -46,6 +53,12 @@ export interface DetalheDoAcervo extends Omit<DetalheDoTitulo, 'elenco'> {
    * busca do JustWatch pelo título quando ainda não há link.
    */
   ondeAssistirUrl: string;
+  /**
+   * Onde o filme está disponível no Brasil (§6), agrupado por tipo — assinatura,
+   * grátis, com anúncios, aluguel, compra. Dado do JustWatch: a tela atribui.
+   * Vazio quando o TMDB não conhece serviço nenhum (ou ainda não foi lido).
+   */
+  provedores: GrupoDeProvedores[];
   /** em cartaz ou em pré-estreia: a tela mostra o bloco de sessões (§7.12) */
   emCartaz: boolean;
   /** quem está logado */

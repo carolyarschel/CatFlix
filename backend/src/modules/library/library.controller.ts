@@ -12,6 +12,7 @@ import {
   darNota,
   definirJustwatchUrl,
   detalheDoAcervo,
+  ondeAssistir,
   registrarQueAssistimos,
   removerDoCatalogo,
   restaurarNoCatalogo,
@@ -89,6 +90,11 @@ export async function postRestaurarTitulo(req: Request, res: Response): Promise<
 export async function postVisualizacao(req: Request, res: Response): Promise<void> {
   const dados = lerCorpo(esquemaDaVisualizacao, req.body);
   res.status(201).json(await registrarQueAssistimos(idDaRota(req), dados));
+}
+
+/** `GET /titles/:id/where-to-watch` — link e provedores (§6 e §9). */
+export async function getOndeAssistir(req: Request, res: Response): Promise<void> {
+  res.json(await ondeAssistir(idDaRota(req)));
 }
 
 /** `PUT /titles/:id/rating { nota }` — da pessoa logada, e só se ela assistiu. */

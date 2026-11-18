@@ -37,8 +37,14 @@ vi.mock('../../shared/raw-payload', () => ({
 import semSinopsePt from './__fixtures__/movie-sem-sinopse-pt.json';
 import semSinopseEn from './__fixtures__/movie-sem-sinopse-reserva-en.json';
 import dunaReexibicao from './__fixtures__/movie-duna-parte-2-reexibicao.json';
+import provedoresDuna from './__fixtures__/watch-providers-duna-parte-2.json';
 import { TmdbClient } from './tmdb.client';
-import { estreiaNoBrasil, normalizarMetadata, precisaAtualizarMetadata } from './tmdb.parse';
+import {
+  estreiaNoBrasil,
+  normalizarMetadata,
+  normalizarProvedores,
+  precisaAtualizarMetadata,
+} from './tmdb.parse';
 import { tmdbMovieSchema } from './tmdb.schemas';
 
 function resposta(corpo: unknown): Response {
@@ -184,5 +190,28 @@ describe('cadência do refresh de metadata (§5.3)', () => {
   it('nunca atualizado vence sempre', () => {
     const filme = { releaseDate: dias(3000), productionStatus: 'Released', metadataUpdatedAt: null };
     expect(precisaAtualizarMetadata(filme, config, agora)).toBe(true);
+  });
+});
+
+describe('onde assistir (cineon-expansao §6)', () => {
+  // resposta real de /movie/693134/watch/providers em 18/11/2026, só BR e US
+  const comProvedores = (results: unknown) =>
+    tmdbMovieSchema.parse({ ...dunaReexibicao, 'watch/providers': { results } });
+
+  it('lê os serviços do país configurado, por tipo', () => {
+    const provedores = normalizarProvedores(comProvedores(provedoresDuna.results));
+
+    expect(provedores?.filter((p) => p.tipo === 'flatrate').map((p) => p.nome)).toEqual([
+      'HBO Max',
+      'HBO Max Amazon Channel',
+      'Universal+ Amazon Channel',
+    ]);
+    expect(provedores?.filter((p) => p.tipo === 'rent').map((p) => p.nome)).toContain('Apple TV Store');
+    expect(provedores?.[0]?.logoUrl).toMatch(/^https:\/\/image\.tmdb\.org\/t\/p\/w185\//);
+  });
+
+  it('país sem serviço é lista vazia; sem o bloco, é "não sei" (null)', () => {
+    expect(normalizarProvedores(comProvedores({ US: provedoresDuna.results.US }))).toEqual([]);
+    expect(normalizarProvedores(tmdbMovieSchema.parse(dunaReexibicao))).toBeNull();
   });
 });

@@ -74,6 +74,7 @@ function metadata(tmdbId: number, parcial: Partial<MetadataNormalizada> = {}): M
     posterUrl: null,
     backdropUrl: null,
     genres: [],
+    provedores: null,
     companies: [],
     credits: [{ tmdbId: tmdbId + 1, name: `${PREFIXO} Diretora`, profileUrl: null, role: 'director', character: null, order: null }],
     ...parcial,

@@ -77,6 +77,16 @@ export function MaisPage({
           <h2 id="sobre" className={styles.rotulo}>
             Sobre
           </h2>
+          <a
+            className={styles.logoTmdb}
+            href="https://www.themoviedb.org"
+            target="_blank"
+            rel="noreferrer noopener"
+            aria-label="TMDB"
+          >
+            {/* o logo oficial, da página de atribuição do TMDB */}
+            <img src="/tmdb-logo.svg" alt="The Movie Database (TMDB)" />
+          </a>
           <p>
             Este produto usa a API do TMDB, mas não é endossado nem certificado pelo TMDB. Metadados, elenco,
             pôsteres e a busca de filmes vêm do{' '}
@@ -84,6 +94,13 @@ export function MaisPage({
               TMDB
             </a>
             .
+          </p>
+          <p>
+            Onde assistir: dados de streaming do{' '}
+            <a href="https://www.justwatch.com/br" target="_blank" rel="noreferrer noopener">
+              JustWatch
+            </a>
+            , pelo TMDB.
           </p>
           <p>Notas do IMDb e do Rotten Tomatoes: OMDb. Sessões e cinemas: ingresso.com.</p>
         </section>

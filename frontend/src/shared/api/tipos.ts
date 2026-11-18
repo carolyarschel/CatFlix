@@ -340,6 +340,13 @@ export interface RespostaDaVisualizacao {
   removidosDaLista: Array<{ id: string; pessoa: Pessoa }>;
 }
 
+export interface GrupoDeProvedores {
+  tipo: 'flatrate' | 'free' | 'ads' | 'rent' | 'buy';
+  /** "Assinatura", "Grátis", "Com anúncios", "Aluguel", "Compra" */
+  rotulo: string;
+  itens: Array<{ id: number; nome: string; logoUrl: string | null }>;
+}
+
 /** O que cada pessoa tem com o filme — tudo calculado no backend, nada gravado. */
 export interface SituacaoDaPessoa {
   pessoa: Pessoa;
@@ -363,6 +370,8 @@ export interface DetalheDoAcervo extends DetalheDoTitulo {
   justwatchUrl: string | null;
   /** o link salvo do JustWatch, ou a busca dele pelo título */
   ondeAssistirUrl: string;
+  /** onde está disponível no Brasil, por tipo — dado do JustWatch */
+  provedores: GrupoDeProvedores[];
   /** em cartaz ou em pré-estreia: mostra o bloco de sessões */
   emCartaz: boolean;
   eu: Pessoa;

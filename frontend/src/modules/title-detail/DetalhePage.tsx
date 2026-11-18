@@ -514,6 +514,30 @@ function Conteudo({
           </>
         ) : null}
 
+        {/* §6: onde está disponível no Brasil. Dado do JustWatch — a atribuição é
+            obrigatória (§5.4), sob pena de o TMDB revogar o acesso à API */}
+        {dados.provedores.length > 0 ? (
+          <Secao rotulo="Onde assistir">
+            {dados.provedores.map((grupo) => (
+              <div key={grupo.tipo} className={styles.provedores}>
+                <span className={styles.tipoDeProvedor}>{grupo.rotulo}</span>
+                <ul className={styles.logos}>
+                  {grupo.itens.map((p) => (
+                    <li key={p.id} title={p.nome}>
+                      {p.logoUrl ? (
+                        <img className={styles.logo} src={p.logoUrl} alt={p.nome} loading="lazy" decoding="async" />
+                      ) : (
+                        <span className={`${styles.logo} ${styles.logoTexto}`}>{p.nome}</span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+            <p className={styles.atribuicao}>Dados de streaming: JustWatch</p>
+          </Secao>
+        ) : null}
+
         {/* 13. ações */}
         {erro && !registrando ? (
           <p className={styles.erro} role="alert">

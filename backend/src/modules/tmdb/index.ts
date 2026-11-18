@@ -7,7 +7,8 @@ export {
   normalizarCandidato,
   normalizarCreditos,
   normalizarMetadata,
+  normalizarProvedores,
   precisaAtualizarMetadata,
 } from './tmdb.parse';
-export type { CandidatoTmdb, CreditoNormalizado, MetadataNormalizada } from './tmdb.types';
+export type { CandidatoTmdb, CreditoNormalizado, MetadataNormalizada, ProvedorNormalizado } from './tmdb.types';
 export type { TmdbMovie, TmdbSearchResponse, TmdbSearchResult } from './tmdb.schemas';

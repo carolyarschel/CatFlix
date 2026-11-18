@@ -573,6 +573,7 @@ Telas no ar (em desenvolvimento): "+" (`/adicionar`), detalhe novo (`/filme/:id`
 | `PUT`/`DELETE /api/titles/:id/watchlist` | `{"interesse":4,"paraOsDois":true}` / tirar da sua lista |
 | `POST /api/watchlist/restaurar` | `{"ids":[…]}`: o desfazer do "Removido da sua lista" |
 | `PUT`/`DELETE /api/titles/:id/rating` | `{"nota":8.5}`: só quem assistiu |
+| `GET /api/titles/:id/where-to-watch` | link do "Onde assistir" (JustWatch salvo ou busca) e provedores do Brasil por tipo |
 
 A pessoa é sempre a da sessão (`CAT`/`BEAR`, por `users.papel`), nunca um
 parâmetro. Assistido e "quero assistir" são sempre calculados, nunca gravados

@@ -53,6 +53,14 @@ export const tmdbCrewSchema = personSchema.extend({
   department: z.string().nullish(),
 });
 
+/** Um serviço dentro de `watch/providers`. */
+export const tmdbProviderSchema = z.object({
+  provider_id: z.number().int(),
+  provider_name: z.string(),
+  logo_path: z.string().nullish(),
+  display_priority: z.number().int().nullish(),
+});
+
 export const tmdbMovieSchema = z.object({
   id: z.number().int(),
   title: z.string(),
@@ -99,6 +107,28 @@ export const tmdbMovieSchema = z.object({
             release_dates: z
               .array(z.object({ release_date: z.string(), type: z.number().int().nullish() }))
               .nullish(),
+          }),
+        )
+        .nullish(),
+    })
+    .nullish(),
+  /**
+   * Onde assistir, por país (do `append_to_response`, chave `watch/providers`;
+   * conferido na API real em 18/11/2026). Dado do JustWatch: quem mostra
+   * precisa atribuir (cineon-expansao §5.4).
+   */
+  'watch/providers': z
+    .object({
+      results: z
+        .record(
+          z.string(),
+          z.object({
+            link: z.string().nullish(),
+            flatrate: z.array(tmdbProviderSchema).nullish(),
+            free: z.array(tmdbProviderSchema).nullish(),
+            ads: z.array(tmdbProviderSchema).nullish(),
+            rent: z.array(tmdbProviderSchema).nullish(),
+            buy: z.array(tmdbProviderSchema).nullish(),
           }),
         )
         .nullish(),

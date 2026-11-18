@@ -10,7 +10,8 @@ export const tmdbConfig = {
   region: env.TMDB_REGION,
   /** §5.2: "elenco principal (primeiros N do cast)" */
   castLimit: 12,
-  appendToResponse: 'credits,external_ids,release_dates',
+  // `watch/providers`: onde assistir (cineon-expansao §6), no mesmo pedido
+  appendToResponse: 'credits,external_ids,release_dates,watch/providers',
   /**
    * Cadência do refresh de metadata (cineon-expansao §5.3), no lugar dos 30
    * dias do contexto original — pensados para o cinema, e desperdiçados num

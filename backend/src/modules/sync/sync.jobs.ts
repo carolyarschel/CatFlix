@@ -284,7 +284,14 @@ export async function jobMetadataTmdb(ctx: ContextoDoJob): Promise<void> {
     select: {
       externalId: true,
       titleId: true,
-      title: { select: { releaseDate: true, productionStatus: true, metadataUpdatedAt: true } },
+      title: {
+        select: {
+          releaseDate: true,
+          productionStatus: true,
+          metadataUpdatedAt: true,
+          providersUpdatedAt: true,
+        },
+      },
     },
   });
 
@@ -296,7 +303,10 @@ export async function jobMetadataTmdb(ctx: ContextoDoJob): Promise<void> {
         // metadata gravada antes das colunas do acervo existirem: sem isto, um
         // filme refrescado na véspera do deploy passaria até 90 dias sem a
         // estreia do Brasil separada e apareceria como "Estreia (mundial)"
-        (c.title.metadataUpdatedAt !== null && c.title.metadataUpdatedAt < COLUNAS_DO_ACERVO_DESDE),
+        (c.title.metadataUpdatedAt !== null && c.title.metadataUpdatedAt < COLUNAS_DO_ACERVO_DESDE) ||
+        // provedores de streaming nunca lidos (passo 7): uma leitura por filme
+        // depois do deploy, sem esperar o filme vencer
+        c.title.providersUpdatedAt === null,
     )
     .sort(
       (a, b) =>

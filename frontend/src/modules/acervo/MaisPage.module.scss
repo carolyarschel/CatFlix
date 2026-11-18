@@ -118,3 +118,15 @@
   text-transform: uppercase;
   color: t.$text-group-label;
 }
+
+// o logo do TMDB (§5.4), na proporção do arquivo oficial (273 × 35)
+.logoTmdb {
+  align-self: flex-start;
+  display: block;
+
+  img {
+    display: block;
+    width: 160px;
+    height: auto;
+  }
+}

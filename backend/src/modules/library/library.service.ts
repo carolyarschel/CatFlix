@@ -24,7 +24,8 @@ import {
   restaurarListaDoTitulo,
   tirarDaListaDe,
 } from '../watchlist/watchlist.service';
-import type { DetalheDoAcervo, SituacaoDaPessoa } from './library.types';
+import type { DetalheDoAcervo, GrupoDeProvedores, SituacaoDaPessoa } from './library.types';
+import { tmdbConfig } from '../../config/metadata';
 
 /**
  * O orquestrador do acervo do casal (cineon-expansao §9).
@@ -101,6 +102,7 @@ export async function detalheDoAcervo(titleId: string, eu: Pessoa): Promise<Deta
     quemQuerOTitulo(titleId),
     notasDoTitulo(titleId),
   ]);
+  const provedores = await provedoresDoTitulo(titleId);
 
   // `detalheDoTitulo` já lança NotFound; isto só satisfaz o tipo
   if (!extra) throw new NotFoundError(`Título "${titleId}" não existe.`);
@@ -131,6 +133,7 @@ export async function detalheDoAcervo(titleId: string, eu: Pessoa): Promise<Deta
     estreia: data ? { data: data.toISOString().slice(0, 10), mundial: !dataBr } : null,
     statusProducao: extra.productionStatus,
     justwatchUrl: extra.justwatchUrl,
+    provedores,
     // Sem link salvo, a busca do JustWatch pelo título em português: a busca do
     // site é textual, e acrescentar o ano atrapalha mais do que ajuda.
     ondeAssistirUrl: extra.justwatchUrl ?? `${env.JUSTWATCH_SEARCH_URL}${encodeURIComponent(base.titulo)}`,
@@ -138,6 +141,59 @@ export async function detalheDoAcervo(titleId: string, eu: Pessoa): Promise<Deta
     eu,
     pessoas,
     visualizacoes,
+  };
+}
+
+// ── onde assistir (§6) ──────────────────────────────────────
+
+const ROTULO_DO_PROVEDOR: Record<GrupoDeProvedores['tipo'], string> = {
+  flatrate: 'Assinatura',
+  free: 'Grátis',
+  ads: 'Com anúncios',
+  rent: 'Aluguel',
+  buy: 'Compra',
+};
+
+/**
+ * Os serviços em que o filme está no país configurado, agrupados por tipo,
+ * na ordem em que se responde "onde assistir?": primeiro o que já se paga
+ * (assinatura), depois o que é de graça, e só então alugar e comprar.
+ */
+export async function provedoresDoTitulo(titleId: string): Promise<GrupoDeProvedores[]> {
+  const linhas = await prisma.titleProvider.findMany({
+    where: { titleId, region: tmdbConfig.region },
+    orderBy: [{ displayPriority: 'asc' }, { providerId: 'asc' }],
+    select: { type: true, provider: { select: { id: true, name: true, logoUrl: true } } },
+  });
+
+  return (Object.keys(ROTULO_DO_PROVEDOR) as Array<GrupoDeProvedores['tipo']>)
+    .map((tipo) => ({
+      tipo,
+      rotulo: ROTULO_DO_PROVEDOR[tipo],
+      itens: linhas
+        .filter((l) => l.type === tipo)
+        .map((l) => ({ id: l.provider.id, nome: l.provider.name, logoUrl: l.provider.logoUrl })),
+    }))
+    .filter((g) => g.itens.length > 0);
+}
+
+/**
+ * `GET /titles/:id/where-to-watch` (§9): para onde o botão leva e os
+ * provedores, sem o detalhe inteiro.
+ */
+export async function ondeAssistir(
+  titleId: string,
+): Promise<{ url: string; justwatchUrl: string | null; provedores: GrupoDeProvedores[] }> {
+  const titulo = await prisma.title.findUnique({
+    where: { id: titleId },
+    select: { title: true, justwatchUrl: true },
+  });
+  if (!titulo) throw new NotFoundError(`Título "${titleId}" não existe.`);
+
+  return {
+    url: titulo.justwatchUrl ?? `${env.JUSTWATCH_SEARCH_URL}${encodeURIComponent(titulo.title)}`,
+    justwatchUrl: titulo.justwatchUrl,
+    provedores: await provedoresDoTitulo(titleId),
   };
 }
 

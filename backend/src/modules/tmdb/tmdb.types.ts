@@ -14,6 +14,14 @@ export interface CreditoNormalizado {
   order: number | null;
 }
 
+export interface ProvedorNormalizado {
+  tmdbId: number;
+  nome: string;
+  logoUrl: string | null;
+  tipo: 'flatrate' | 'free' | 'ads' | 'rent' | 'buy';
+  prioridade: number | null;
+}
+
 export interface MetadataNormalizada {
   tmdbId: number;
   /** ponte para o OMDb; null significa "sem notas possíveis" */
@@ -50,6 +58,12 @@ export interface MetadataNormalizada {
   backdropUrl: string | null;
 
   genres: Array<{ tmdbId: number; name: string }>;
+  /**
+   * Onde assistir no país configurado (`TMDB_REGION`). `null` quando a
+   * resposta não trouxe o bloco `watch/providers` (pedido sem o append) —
+   * diferente de `[]`, que é "o TMDB diz que não está em serviço nenhum".
+   */
+  provedores: ProvedorNormalizado[] | null;
   companies: Array<{ tmdbId: number; name: string; logoUrl: string | null; originCountry: string | null }>;
   credits: CreditoNormalizado[];
 }

@@ -5,6 +5,7 @@ import {
   deleteTitulo,
   getAssistidos,
   getBusca,
+  getOndeAssistir,
   getTitulo,
   patchTitulo,
   postRestaurarTitulo,
@@ -27,4 +28,5 @@ libraryRoutes.post('/library/titles/:id/restaurar', asyncHandler(postRestaurarTi
 
 libraryRoutes.post('/titles/:id/watches', asyncHandler(postVisualizacao));
 libraryRoutes.put('/titles/:id/rating', asyncHandler(putNota));
+libraryRoutes.get('/titles/:id/where-to-watch', asyncHandler(getOndeAssistir));
 libraryRoutes.delete('/titles/:id/rating', asyncHandler(deleteNota));

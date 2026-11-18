@@ -242,7 +242,8 @@ A tabela `user_title_states` **não é apagada** nesta fase. Depois que a migra�
 | Home sem o "marcado" | ✅ Selo do pôster = quem quer assistir, com o rosto do gato/urso; trilha "Na lista de vocês"; botão "Quero assistir" no destaque. |
 | 6.3–6.4 Abas e navegação do §8 | ✅ Barra de baixo com Cinema / Assistidos / Quero assistir / Mais. Assistidos (`GET /assistidos`): um card por filme, filtros de quem, local, ano, gênero, diretor, nota e título, paginado. Quero assistir: as quatro trilhas e o filtro minha / dele / dos dois. Mais: perfil, Revisar (com badge), programação por data e "Sobre". Testado no navegador. |
 | 6.5 Selo "Na sua lista" | ✅ Coberto pelos rostos no pôster (quem quer assistir) e pela trilha "Na lista de vocês" na home. |
-| 7. Onde assistir e "Sobre" | parcial: o botão já leva ao JustWatch e o "Sobre" tem o aviso do TMDB; faltam o logo do TMDB e os provedores de streaming |
+| 7. Onde assistir e "Sobre" | ✅ Provedores de streaming do Brasil no detalhe, por tipo, com "Dados de streaming: JustWatch"; `GET /titles/:id/where-to-watch`; logo oficial do TMDB e as atribuições no "Sobre". Migration `provedores_de_streaming`. |
+| §3.5 Filme fora do TMDB | próximo: migration que deixa a fila Revisar aceitar pendência sem evento do ingresso |
 
 Medido depois do refresh de metadata no banco de desenvolvimento: dos 112 filmes casados, 100 com sinopse em pt-BR, 11 em en-US e 1 sem sinopse em idioma nenhum (antes: 20 sem sinopse). Status de produção vistos: Released 86, Post Production 21, In Production 3, Planned 2.
 
@@ -300,3 +301,11 @@ Medido depois do refresh de metadata no banco de desenvolvimento: dos 112 filmes
 - **Filtro de nota = "algum de vocês deu nota ≥ X".** O §8 não diz de quem; esta é a leitura que não esconde filme bem avaliado por um dos dois.
 - **Ano, gênero, nota e diretor ficam em "Mais filtros"**, para não empurrar a grade para baixo. Os anos e os gêneros oferecidos são só os que existem nos assistidos.
 - **A home se chama "Cinema"**, o nome da aba.
+
+**Decisões do passo 7:**
+
+- **Os provedores vêm no mesmo pedido de detalhe** (`append_to_response=…,watch/providers`), sem chamada a mais. São reescritos a cada refresh de metadata e guardados em `streaming_providers` e `title_providers`, as tabelas opcionais do §3.1.
+- **"Não sei" é diferente de "em nenhum serviço".** Sem o bloco na resposta, os provedores ficam como estavam; com o bloco vazio, a lista é esvaziada. `providers_updated_at` nulo faz o job ler os provedores de todo filme uma vez depois do deploy.
+- **Ordem na tela:** assinatura, grátis, com anúncios, aluguel, compra — primeiro o que já se paga.
+- **O logo do TMDB** é o arquivo oficial da página de atribuição (versão curta, SVG), em `frontend/public/tmdb-logo.svg`.
+- **Medido no banco de desenvolvimento em 18/11/2026:** 112 filmes lidos, 30 disponíveis em algum serviço no Brasil (os outros estão em cartaz ou não lançaram). Os mais comuns: Amazon Video, Apple TV, Claro tv+, Netflix, Disney+.

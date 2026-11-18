@@ -114,3 +114,12 @@ o que devem e o INSERT rodado duas vezes produz uma linha só.
 > --to-schema-datamodel prisma/schema.prisma --script` dentro de uma pasta
 > nova em `prisma/migrations/`, complete à mão e aplique com
 > `npx prisma migrate deploy`.
+
+## Provedores de streaming (`20261118200000_provedores_de_streaming`)
+
+Passo 7 da expansão (§3.1 e §6): `streaming_providers`, `title_providers` e
+`titles.providers_updated_at`. Só soma; o SQL gerado pelo Prisma não precisou
+de nada à mão. Os provedores vêm no mesmo pedido de detalhe do TMDB
+(`append_to_response=…,watch/providers`) e são reescritos a cada refresh de
+metadata. `providers_updated_at` nulo quer dizer "nunca lido", e é isso que faz
+o job de metadata ler os provedores de todo filme uma vez depois do deploy.

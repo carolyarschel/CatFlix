@@ -332,6 +332,9 @@ model Title {
   productionStatus    String?   @map("production_status")
   /// página do filme no JustWatch, colada à mão (expansão §6)
   justwatchUrl        String?   @map("justwatch_url")
+  /// quando os provedores de streaming foram lidos do TMDB pela última vez —
+  /// inclusive quando a resposta veio vazia (filme em nenhum serviço)
+  providersUpdatedAt  DateTime? @map("providers_updated_at") @db.Timestamptz(3)
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
@@ -339,6 +342,7 @@ model Title {
   watches   Watch[]
   watchlist WatchlistEntry[]
   ratings   Rating[]
+  providers TitleProvider[]
 
   externalIds    TitleExternalId[]
   credits        TitleCredit[]
@@ -880,4 +884,51 @@ model Rating {
   @@unique([titleId, pessoa])
   @@index([updatedAt]) // nota mudou → o feed reenvia as visualizações do filme
   @@map("ratings")
+}
+
+// ─────────────────────────────────────────────────────────────
+// ONDE ASSISTIR (cineon-expansao §3.1 e §6)
+//
+// Vem do `watch/providers` do TMDB, que é dado do JustWatch: a tela que mostra
+// isto precisa dizer "Dados de streaming: JustWatch" (§5.4), ou o TMDB revoga
+// o acesso à API.
+// ─────────────────────────────────────────────────────────────
+
+/// Como o filme está num serviço: assinatura, grátis, com anúncio, aluguel, compra.
+enum ProviderType {
+  flatrate
+  free
+  ads
+  rent
+  buy
+}
+
+/// Um serviço de streaming (Netflix, Max…), pelo `provider_id` do TMDB.
+model StreamingProvider {
+  id        Int      @id // provider_id do TMDB
+  name      String
+  logoUrl   String?  @map("logo_url")
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  titles TitleProvider[]
+
+  @@map("streaming_providers")
+}
+
+/// Onde um filme está disponível num país. Reescrito a cada refresh de metadata.
+model TitleProvider {
+  titleId         String            @map("title_id")
+  title           Title             @relation(fields: [titleId], references: [id], onDelete: Cascade)
+  providerId      Int               @map("provider_id")
+  provider        StreamingProvider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  /// país (TMDB_REGION): "BR"
+  region          String
+  type            ProviderType
+  /// a ordem em que o JustWatch mostra os serviços
+  displayPriority Int?              @map("display_priority")
+  updatedAt       DateTime          @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@id([titleId, providerId, region, type])
+  @@index([titleId, region])
+  @@map("title_providers")
 }

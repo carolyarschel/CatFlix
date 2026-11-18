@@ -580,3 +580,44 @@
   color: t.$accent-on-soft;
   font-weight: t.$fw-semibold;
 }
+
+// ── onde assistir (§6) ──────────────────────────────────────
+
+.provedores {
+  display: flex;
+  align-items: center;
+  gap: t.$space-5;
+}
+
+.tipoDeProvedor {
+  width: 92px;
+  flex-shrink: 0;
+  color: t.$text-support;
+  font-size: t.$fs-xs;
+}
+
+.logos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: t.$space-3;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+  border-radius: t.$radius-md;
+  object-fit: cover;
+  background: t.$surface-chip;
+  border: 1px solid t.$border;
+}
+
+// serviço sem logo no TMDB: o nome, pequeno, no lugar
+.logoTexto {
+  width: auto;
+  min-width: 40px;
+  padding: 0 t.$space-3;
+  color: t.$text-secondary;
+  font-size: t.$fs-3xs;
+  display: flex;
+  align-items: center;
+}

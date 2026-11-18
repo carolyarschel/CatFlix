@@ -1,5 +1,10 @@
 import { tmdbConfig, urlDeImagemTmdb } from '../../config/metadata';
-import type { CandidatoTmdb, CreditoNormalizado, MetadataNormalizada } from './tmdb.types';
+import type {
+  CandidatoTmdb,
+  CreditoNormalizado,
+  MetadataNormalizada,
+  ProvedorNormalizado,
+} from './tmdb.types';
 import type { TmdbMovie, TmdbSearchResult } from './tmdb.schemas';
 
 /** "2024-02-27" → Date. Vazio, "" ou lixo → null. */
@@ -141,6 +146,33 @@ export function estreiaNoBrasil(filme: TmdbMovie): Date | null {
   return maisAntigaDoTipo(LANCAMENTO_EM_CINEMA) ?? maisAntigaDoTipo(LANCAMENTO_LIMITADO);
 }
 
+const TIPOS_DE_PROVEDOR = ['flatrate', 'free', 'ads', 'rent', 'buy'] as const;
+
+/**
+ * Onde assistir no país configurado (`TMDB_REGION`), do bloco
+ * `watch/providers` (cineon-expansao §6). É dado do JustWatch.
+ *
+ * `null` quando o bloco nem veio — o pedido não tinha o append, e não dá para
+ * dizer nada; `[]` quando veio e o país não tem serviço nenhum.
+ */
+export function normalizarProvedores(filme: TmdbMovie): ProvedorNormalizado[] | null {
+  const bloco = filme['watch/providers'];
+  if (!bloco) return null;
+
+  const pais = bloco.results?.[tmdbConfig.region];
+  if (!pais) return [];
+
+  return TIPOS_DE_PROVEDOR.flatMap((tipo) =>
+    (pais[tipo] ?? []).map((p) => ({
+      tmdbId: p.provider_id,
+      nome: p.provider_name,
+      logoUrl: urlDeImagemTmdb(p.logo_path, 'logo'),
+      tipo,
+      prioridade: p.display_priority ?? null,
+    })),
+  );
+}
+
 export function normalizarMetadata(filme: TmdbMovie): MetadataNormalizada {
   const estreiaBr = estreiaNoBrasil(filme);
 
@@ -166,6 +198,7 @@ export function normalizarMetadata(filme: TmdbMovie): MetadataNormalizada {
     backdropUrl: urlDeImagemTmdb(filme.backdrop_path, 'backdrop'),
 
     genres: (filme.genres ?? []).map((g) => ({ tmdbId: g.id, name: g.name })),
+    provedores: normalizarProvedores(filme),
     companies: (filme.production_companies ?? []).map((c) => ({
       tmdbId: c.id,
       name: c.name,

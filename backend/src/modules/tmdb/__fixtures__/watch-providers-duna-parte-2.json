@@ -1,0 +1,155 @@
+{
+  "id": 693134,
+  "results": {
+    "BR": {
+      "link": "https://www.themoviedb.org/movie/693134-dune-part-two/watch?locale=BR",
+      "buy": [
+        {
+          "logo_path": "/qdEGArH3lKfFnAtYXMkSYk5wxuG.png",
+          "provider_id": 2,
+          "provider_name": "Apple TV Store",
+          "display_priority": 11
+        },
+        {
+          "logo_path": "/jn6TLbtaTZntTRX9UYucHJvpQx1.png",
+          "provider_id": 10,
+          "provider_name": "Amazon Video",
+          "display_priority": 15
+        }
+      ],
+      "flatrate": [
+        {
+          "logo_path": "/skypuy7SXuugIQeYg0IglmzoKaS.png",
+          "provider_id": 1899,
+          "provider_name": "HBO Max",
+          "display_priority": 10
+        },
+        {
+          "logo_path": "/64fLWeSyZ1KQZhIdvTdy4QHeWty.png",
+          "provider_id": 1825,
+          "provider_name": "HBO Max Amazon Channel",
+          "display_priority": 49
+        },
+        {
+          "logo_path": "/j3Q750FwRyIejO5MrNu25Kia57.png",
+          "provider_id": 1889,
+          "provider_name": "Universal+ Amazon Channel",
+          "display_priority": 82
+        }
+      ],
+      "rent": [
+        {
+          "logo_path": "/qdEGArH3lKfFnAtYXMkSYk5wxuG.png",
+          "provider_id": 2,
+          "provider_name": "Apple TV Store",
+          "display_priority": 11
+        },
+        {
+          "logo_path": "/jn6TLbtaTZntTRX9UYucHJvpQx1.png",
+          "provider_id": 10,
+          "provider_name": "Amazon Video",
+          "display_priority": 15
+        }
+      ]
+    },
+    "US": {
+      "link": "https://www.themoviedb.org/movie/693134-dune-part-two/watch?locale=US",
+      "rent": [
+        {
+          "logo_path": "/jn6TLbtaTZntTRX9UYucHJvpQx1.png",
+          "provider_id": 10,
+          "provider_name": "Amazon Video",
+          "display_priority": 11
+        },
+        {
+          "logo_path": "/qdEGArH3lKfFnAtYXMkSYk5wxuG.png",
+          "provider_id": 2,
+          "provider_name": "Apple TV Store",
+          "display_priority": 12
+        },
+        {
+          "logo_path": "/aZRENwYILujqs0RVOZutTh0BVGV.png",
+          "provider_id": 3,
+          "provider_name": "Google Play Movies",
+          "display_priority": 25
+        },
+        {
+          "logo_path": "/5Maob4o5w8oZnNeYpCDyVFD3M7X.png",
+          "provider_id": 192,
+          "provider_name": "YouTube",
+          "display_priority": 26
+        },
+        {
+          "logo_path": "/wpOt6x0dRxTrIzuBosto4LGd7E9.png",
+          "provider_id": 7,
+          "provider_name": "Fandango At Home",
+          "display_priority": 42
+        },
+        {
+          "logo_path": "/6qPtM96UZkt3Bu4ZFPsDeHFWUZ2.png",
+          "provider_id": 486,
+          "provider_name": "Spectrum On Demand",
+          "display_priority": 124
+        },
+        {
+          "logo_path": "/blAEhvx3XX8sV0fFVFk88FFjubs.png",
+          "provider_id": 538,
+          "provider_name": "Plex",
+          "display_priority": 129
+        }
+      ],
+      "flatrate": [
+        {
+          "logo_path": "/64fLWeSyZ1KQZhIdvTdy4QHeWty.png",
+          "provider_id": 1825,
+          "provider_name": "HBO Max Amazon Channel",
+          "display_priority": 15
+        },
+        {
+          "logo_path": "/48bVXEIyCLSL9pZUQ7gB9ToyWto.png",
+          "provider_id": 2528,
+          "provider_name": "YouTube TV",
+          "display_priority": 43
+        },
+        {
+          "logo_path": "/skypuy7SXuugIQeYg0IglmzoKaS.png",
+          "provider_id": 1899,
+          "provider_name": "HBO Max",
+          "display_priority": 155
+        }
+      ],
+      "buy": [
+        {
+          "logo_path": "/jn6TLbtaTZntTRX9UYucHJvpQx1.png",
+          "provider_id": 10,
+          "provider_name": "Amazon Video",
+          "display_priority": 11
+        },
+        {
+          "logo_path": "/qdEGArH3lKfFnAtYXMkSYk5wxuG.png",
+          "provider_id": 2,
+          "provider_name": "Apple TV Store",
+          "display_priority": 12
+        },
+        {
+          "logo_path": "/aZRENwYILujqs0RVOZutTh0BVGV.png",
+          "provider_id": 3,
+          "provider_name": "Google Play Movies",
+          "display_priority": 25
+        },
+        {
+          "logo_path": "/5Maob4o5w8oZnNeYpCDyVFD3M7X.png",
+          "provider_id": 192,
+          "provider_name": "YouTube",
+          "display_priority": 26
+        },
+        {
+          "logo_path": "/wpOt6x0dRxTrIzuBosto4LGd7E9.png",
+          "provider_id": 7,
+          "provider_name": "Fandango At Home",
+          "display_priority": 42
+        }
+      ]
+    }
+  }
+}

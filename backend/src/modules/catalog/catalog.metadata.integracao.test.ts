@@ -53,6 +53,7 @@ function metadata(parcial: Partial<MetadataNormalizada> = {}): MetadataNormaliza
     posterUrl: null,
     backdropUrl: null,
     genres: [],
+    provedores: null,
     companies: [],
     credits: [],
     ...parcial,
@@ -118,5 +119,33 @@ describe('upsertPorTmdbId — campos da expansão', () => {
     const t = await lerTitle(id);
     expect(t.overview).toBe('Uma sinopse.');
     expect(t.overviewLanguage).toBe('pt-BR');
+  });
+});
+
+describe('upsertPorTmdbId — provedores de streaming (§6)', () => {
+  const hbo = { tmdbId: 1899, nome: 'HBO Max', logoUrl: null, tipo: 'flatrate' as const, prioridade: 1 };
+  const apple = { tmdbId: 2, nome: 'Apple TV Store', logoUrl: null, tipo: 'rent' as const, prioridade: 3 };
+
+  async function provedores(id: string) {
+    return (
+      await prisma.titleProvider.findMany({ where: { titleId: id }, orderBy: { providerId: 'asc' } })
+    ).map((p) => `${p.providerId}:${p.type}`);
+  }
+
+  it('grava, mantém quando o bloco não veio, e esvazia quando veio vazio', async ({ skip }) => {
+    if (!temBanco) skip('sem Postgres');
+
+    const id = await prisma.$transaction((tx) => upsertPorTmdbId(tx, metadata({ provedores: [hbo, apple] })));
+    expect(await provedores(id)).toEqual(['2:rent', '1899:flatrate']);
+    const lido = (await prisma.title.findUniqueOrThrow({ where: { id } })).providersUpdatedAt;
+    expect(lido).not.toBeNull();
+
+    // matching sem o bloco: não diz nada sobre streaming, não apaga
+    await prisma.$transaction((tx) => upsertPorTmdbId(tx, metadata({ provedores: null })));
+    expect(await provedores(id)).toEqual(['2:rent', '1899:flatrate']);
+
+    // o TMDB diz que saiu de tudo: aí sim esvazia, e marca a leitura
+    await prisma.$transaction((tx) => upsertPorTmdbId(tx, metadata({ provedores: [] })));
+    expect(await provedores(id)).toEqual([]);
   });
 });
