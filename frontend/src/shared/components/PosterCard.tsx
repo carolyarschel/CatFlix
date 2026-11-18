@@ -1,5 +1,6 @@
 import type { CardDeTitulo } from '../api/tipos';
 import { RatingBadges } from './RatingBadges';
+import { SeloDePessoa } from './SeloDePessoa';
 import styles from './PosterCard.module.scss';
 
 /**
@@ -51,18 +52,16 @@ export function PosterCard({
           {/* §2: nenhum filme some. Sem metadata, o card avisa em vez de sumir. */}
           {titulo.orfao ? <span className={styles.pendente}>metadata pendente</span> : null}
 
-          {/* os dois podem marcar o mesmo filme: as iniciais se enfileiram */}
+          {/* quem quer assistir (lista de cada um): os dois rostos se enfileiram */}
           {titulo.marcadoPor.length > 0 ? (
             <span className={styles.marcas}>
               {titulo.marcadoPor.map((marca) => (
-                <span
+                <SeloDePessoa
                   key={marca.userId}
-                  className={styles.marca}
-                  style={{ background: marca.acento }}
-                  title={`Marcado por ${marca.userId}`}
-                >
-                  {marca.inicial}
-                </span>
+                  perfilId={marca.userId}
+                  acento={marca.acento}
+                  rotulo={`Na lista de ${marca.nome}`}
+                />
               ))}
             </span>
           ) : null}

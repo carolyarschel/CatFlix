@@ -5,11 +5,13 @@ import { HeroCard } from '../../shared/components/HeroCard';
 import {
   IconeBusca,
   IconeAgenda,
+  IconeMais,
   IconeRevisar,
   IconeSeta,
 } from '../../shared/components/Icones';
 import { PillFilter } from '../../shared/components/PillFilter';
 import { Trilha } from '../../shared/components/Trilha';
+import { api } from '../../shared/api/client';
 import { useApi } from '../../shared/hooks/useApi';
 import { useSincronizacao } from '../../shared/hooks/useSincronizacao';
 import { formatarIdade } from '../../shared/formatos';
@@ -91,6 +93,29 @@ export function HomePage({
 
   const abrirFilme = (idDoFilme: string) => aoNavegar(`/filme/${idDoFilme}`);
 
+  // O botão "Quero assistir" do destaque. O estado vem dos rostos do pôster
+  // (quem quer assistir), com uma troca otimista enquanto o servidor responde.
+  const [listaOtimista, setListaOtimista] = useState<boolean | null>(null);
+  const [salvandoLista, setSalvandoLista] = useState(false);
+  const naListaPeloServidor = Boolean(dados?.hero?.marcadoPor.some((m) => m.userId === perfil.id));
+  const naMinhaLista = listaOtimista ?? naListaPeloServidor;
+
+  async function alternarLista(titleId: string) {
+    const querer = !naMinhaLista;
+    setListaOtimista(querer);
+    setSalvandoLista(true);
+    try {
+      if (querer) await api.put(`/titles/${titleId}/watchlist`, {});
+      else await api.delete(`/titles/${titleId}/watchlist`);
+      home.recarregar();
+    } catch {
+      // falhou: volta ao que o servidor diz, em vez de mostrar um estado falso
+    } finally {
+      setListaOtimista(null);
+      setSalvandoLista(false);
+    }
+  }
+
   function irPara(destino: string) {
     setSecaoAtiva(destino);
 
@@ -137,6 +162,17 @@ export function HomePage({
         </div>
 
         <div className={styles.acoes}>
+          {/* cineon-expansao §4.1: adicionar um filme ao acervo do casal */}
+          <button
+            type="button"
+            className={styles.acao}
+            aria-label="Adicionar filme"
+            title="Adicionar filme"
+            onClick={() => aoNavegar('/adicionar')}
+          >
+            <IconeMais />
+          </button>
+
           {/* A programação de um dia: "sábado, o que tem?". Fica no cabeçalho e
               não nas pills porque não é filtro da home — e porque, como quinta
               pill, nascia fora da tela do celular. */}
@@ -204,13 +240,13 @@ export function HomePage({
         <div className={styles.heroArea}>
           <HeroCard
             hero={dados.hero}
-            perfil={dados.perfil.id}
+            naMinhaLista={naMinhaLista}
+            salvando={salvandoLista}
             aoVerSessoes={abrirFilme}
-            // Marcar leva ao detalhe em vez de escrever daqui: lá a pessoa vê
-            // os três estados do §6, o que já está marcado e como desmarcar. Um
-            // toque que grava direto da home tornaria "marquei sem querer" um
-            // beco sem saída — o hero não tem onde mostrar o desfazer.
-            aoMarcar={abrirFilme}
+            // "Quero assistir" grava direto daqui (decisão de 18/11/2026). O
+            // "marquei sem querer" tem volta no mesmo botão: tocar de novo tira
+            // da lista, e o rótulo muda para dizer em que estado está.
+            aoAlternarLista={(id) => void alternarLista(id)}
           />
         </div>
       ) : null}

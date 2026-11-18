@@ -1,30 +1,29 @@
 import type { HeroDaHome } from '../api/tipos';
+import { SeloDePessoa } from './SeloDePessoa';
 import styles from './HeroCard.module.scss';
 
 /**
  * Destaque do topo da home (§12): pôster alto, título grande, linha de
  * taxonomia com separadores e dois botões de largura total.
  *
- * O rótulo do botão secundário é o apelido do OUTRO perfil — "Marcar com o
- * Urso" na tela da Carol, "Marcar com a Gata" na dele. É o que os dois modelos
- * mobile mostram, e a graça do app é justamente combinar de ir junto.
+ * O secundário era "Marcar com o Urso / com a Gata". O "marcado" saiu do app
+ * (decisão de 18/11/2026) e o botão virou **"Quero assistir"**: põe o filme na
+ * lista de quem está logado, direto da home, e tocar de novo tira. Os rostos
+ * no canto do pôster dizem quem já quer.
  */
-
-const APELIDO_DO_PAR: Record<string, string> = {
-  catflix: 'Marcar com o Urso',
-  hburso: 'Marcar com a Gata',
-};
-
 export function HeroCard({
   hero,
-  perfil,
+  naMinhaLista,
+  salvando = false,
   aoVerSessoes,
-  aoMarcar,
+  aoAlternarLista,
 }: {
   hero: HeroDaHome;
-  perfil: string;
+  /** o filme está na lista "quero assistir" de quem está logado */
+  naMinhaLista: boolean;
+  salvando?: boolean;
   aoVerSessoes?: (id: string) => void;
-  aoMarcar?: (id: string) => void;
+  aoAlternarLista?: (id: string) => void;
 }) {
   return (
     <section className={styles.hero}>
@@ -36,9 +35,13 @@ export function HeroCard({
         {hero.marcadoPor.length > 0 ? (
           <span className={styles.marcas}>
             {hero.marcadoPor.map((marca) => (
-              <span key={marca.userId} className={styles.marca} style={{ background: marca.acento }}>
-                {marca.inicial}
-              </span>
+              <SeloDePessoa
+                key={marca.userId}
+                perfilId={marca.userId}
+                acento={marca.acento}
+                tamanho={30}
+                rotulo={`Na lista de ${marca.nome}`}
+              />
             ))}
           </span>
         ) : null}
@@ -67,10 +70,11 @@ export function HeroCard({
         <button
           type="button"
           className={styles.secundario}
-          onClick={() => aoMarcar?.(hero.id)}
-          disabled={!aoMarcar}
+          onClick={() => aoAlternarLista?.(hero.id)}
+          disabled={!aoAlternarLista || salvando}
+          aria-pressed={naMinhaLista}
         >
-          {APELIDO_DO_PAR[perfil] ?? 'Marcar'}
+          {naMinhaLista ? 'Na sua lista ✓' : 'Quero assistir'}
         </button>
       </div>
     </section>

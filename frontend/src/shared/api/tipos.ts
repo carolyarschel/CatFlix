@@ -14,6 +14,8 @@ export interface MarcaDeUsuario {
   userId: string;
   inicial: string;
   acento: string;
+  /** "CatFlix" / "HBUrso" */
+  nome: string;
 }
 
 export interface CardDeTitulo {
@@ -191,6 +193,8 @@ export interface SessoesPorCinema {
 export interface PessoaDoTitulo {
   nome: string;
   personagem: string | null;
+  /** foto do TMDB; sem foto, a tela mostra as iniciais */
+  fotoUrl: string | null;
 }
 
 export interface TagDoTitulo {
@@ -272,4 +276,96 @@ export interface ProgramacaoDoDia {
   filmes: FilmeDoDia[];
   totalDeSessoes: number;
   dados: { idadeEmHoras: number | null; degradado: boolean };
+}
+
+// ── Acervo do casal (cineon-expansao) ────────────────────────
+
+/** As duas pessoas, como o ecossistema Gatur as chama. */
+export type Pessoa = 'CAT' | 'BEAR';
+
+/** Um resultado da busca do "+" (`GET /tmdb/search`). */
+export interface ResultadoDaBusca {
+  tmdbId: number;
+  titulo: string;
+  /** só quando difere do título em português */
+  tituloOriginal: string | null;
+  ano: number | null;
+  posterUrl: string | null;
+  /** pode vir vazio: filme não lançado, ou o TMDB não respondeu a tempo */
+  diretores: string[];
+  /** o filme já está no catálogo (entrou pelo cinema ou pelo "+") */
+  titleId: string | null;
+}
+
+export interface CinemaDaLista {
+  id: string;
+  ingressoId: string;
+  nome: string;
+  rede: string | null;
+}
+
+export type LocalDaVisualizacao = 'CASA' | 'CINEMA';
+export type PrecisaoDaData = 'DIA' | 'MES' | 'ANO';
+
+/** O corpo de `POST /titles/:id/watches`. */
+export interface DadosDaVisualizacao {
+  /** `AAAA-MM-DD`, `AAAA-MM` ou `AAAA`: a precisão sai do formato */
+  data: string;
+  local: LocalDaVisualizacao;
+  participantes: Pessoa[];
+  cinemaId?: string | null;
+  cinemaNomeLivre?: string | null;
+  tipoSala?: string | null;
+  observacao?: string | null;
+}
+
+export interface VisualizacaoDoTitulo {
+  id: string;
+  titleId: string;
+  data: string;
+  precisao: PrecisaoDaData;
+  local: LocalDaVisualizacao;
+  participantes: Pessoa[];
+  cinemaId: string | null;
+  /** nome do cinema da base, ou o nome livre */
+  cinema: string | null;
+  tipoSala: string | null;
+  observacao: string | null;
+  atualizadoEm: string;
+}
+
+export interface RespostaDaVisualizacao {
+  visualizacao: VisualizacaoDoTitulo;
+  /** linhas que saíram da lista "quero assistir" — o que o "Desfazer" devolve */
+  removidosDaLista: Array<{ id: string; pessoa: Pessoa }>;
+}
+
+/** O que cada pessoa tem com o filme — tudo calculado no backend, nada gravado. */
+export interface SituacaoDaPessoa {
+  pessoa: Pessoa;
+  assistiu: boolean;
+  querAssistir: boolean;
+  /** 1–5, quando está na lista */
+  interesse: number | null;
+  nota: number | null;
+  /** só dá nota quem participou de alguma visualização */
+  podeDarNota: boolean;
+}
+
+/** `GET /library/titles/:id` — o detalhe do filme da expansão (§7). */
+export interface DetalheDoAcervo extends DetalheDoTitulo {
+  /** idioma da sinopse: "pt-BR", ou o de reserva ("en-US") */
+  sinopseIdioma: string | null;
+  /** `AAAA-MM-DD`; `mundial` quando não há data do Brasil */
+  estreia: { data: string; mundial: boolean } | null;
+  /** Released, Post Production, Planned… */
+  statusProducao: string | null;
+  justwatchUrl: string | null;
+  /** o link salvo do JustWatch, ou a busca dele pelo título */
+  ondeAssistirUrl: string;
+  /** em cartaz ou em pré-estreia: mostra o bloco de sessões */
+  emCartaz: boolean;
+  eu: Pessoa;
+  pessoas: SituacaoDaPessoa[];
+  visualizacoes: VisualizacaoDoTitulo[];
 }

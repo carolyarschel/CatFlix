@@ -141,30 +141,44 @@ async function horizonteDeSessoes(): Promise<Date | null> {
 }
 
 /**
- * Quem marcou cada título. Só `marcado` vira círculo no pôster: "quero ver" é
- * intenção e "visto" é passado — nenhum dos dois é o que o modelo mostra.
+ * Quem quer assistir cada título — o rosto do gato ou do urso no canto do
+ * pôster.
+ *
+ * Vinha do `marcado` do `UserTitleState`, que saiu do app em 18/11/2026; desde
+ * então é a lista "quero assistir" de cada um (`watchlist_entries` ativas), o
+ * mesmo sinal do selo "Na sua lista" da expansão (§4.3). A pessoa vira perfil
+ * por `users.papel`.
  */
 async function marcasDosUsuarios(titleIds: string[]): Promise<Map<string, MarcaDeUsuario[]>> {
   if (titleIds.length === 0) return new Map();
 
-  const estados = await prisma.userTitleState.findMany({
-    where: { titleId: { in: titleIds }, status: 'marcado' },
-    select: {
-      titleId: true,
-      user: { select: { id: true, initial: true, accent: true } },
-    },
-    orderBy: { userId: 'asc' },
-  });
+  const [entradas, usuarios] = await Promise.all([
+    prisma.watchlistEntry.findMany({
+      where: { titleId: { in: titleIds }, removedAt: null },
+      select: { titleId: true, pessoa: true },
+      // CAT antes de BEAR: a ordem dos rostos é a mesma em todo card
+      orderBy: { pessoa: 'asc' },
+    }),
+    prisma.user.findMany({
+      where: { papel: { not: null } },
+      select: { id: true, papel: true, initial: true, accent: true, displayName: true },
+    }),
+  ]);
 
+  const daPessoa = new Map(usuarios.map((u) => [u.papel, u]));
   const porTitulo = new Map<string, MarcaDeUsuario[]>();
-  for (const estado of estados) {
-    const lista = porTitulo.get(estado.titleId) ?? [];
+
+  for (const entrada of entradas) {
+    const usuario = daPessoa.get(entrada.pessoa);
+    if (!usuario) continue;
+    const lista = porTitulo.get(entrada.titleId) ?? [];
     lista.push({
-      userId: estado.user.id,
-      inicial: estado.user.initial,
-      acento: estado.user.accent,
+      userId: usuario.id,
+      inicial: usuario.initial,
+      acento: usuario.accent,
+      nome: usuario.displayName,
     });
-    porTitulo.set(estado.titleId, lista);
+    porTitulo.set(entrada.titleId, lista);
   }
 
   return porTitulo;
@@ -312,6 +326,43 @@ async function contextoPara(titleIds: string[]): Promise<ContextoDoCard> {
   return { sessoes, marcas, emPreEstreia, horizonte, fuso, agora: new Date() };
 }
 
+/**
+ * A trilha "Na lista de vocês": filmes da lista "quero assistir" que dá para
+ * ver no cinema agora (em cartaz ou em pré-estreia) — o "aparece primeiro" do
+ * §4.3 da expansão.
+ *
+ * Os que os DOIS querem vêm antes (é o programa de casal), depois o que entrou
+ * na lista por último. É só consulta: nada é gravado quando o filme entra em
+ * cartaz.
+ */
+async function idsNaListaEmCartaz(): Promise<string[]> {
+  const entradas = await prisma.watchlistEntry.findMany({
+    where: {
+      removedAt: null,
+      title: {
+        status: { in: [...STATUS_VISIVEIS] },
+        availabilities: {
+          some: { source: 'cinema', status: { in: ['em_cartaz', 'pre_estreia'] }, endedAt: null },
+        },
+      },
+    },
+    select: { titleId: true, addedAt: true },
+  });
+
+  const porTitulo = new Map<string, { pessoas: number; ultima: number }>();
+  for (const e of entradas) {
+    const atual = porTitulo.get(e.titleId) ?? { pessoas: 0, ultima: 0 };
+    porTitulo.set(e.titleId, {
+      pessoas: atual.pessoas + 1,
+      ultima: Math.max(atual.ultima, e.addedAt.getTime()),
+    });
+  }
+
+  return [...porTitulo.entries()]
+    .sort(([, a], [, b]) => b.pessoas - a.pessoas || b.ultima - a.ultima)
+    .map(([id]) => id);
+}
+
 /** Ids com disponibilidade aberta numa fonte/estado — a base de cada trilha. */
 async function idsComDisponibilidade(status: AvailabilityStatus): Promise<string[]> {
   const linhas = await prisma.availability.findMany({
@@ -346,20 +397,14 @@ export async function montarHome(
     throw new NotFoundError(`Perfil "${userId}" não existe.`);
   }
 
-  const [emCartaz, preEstreia, emBreve, marcados] = await Promise.all([
+  const [emCartaz, preEstreia, emBreve, naLista] = await Promise.all([
     idsComDisponibilidade('em_cartaz'),
     idsComDisponibilidade('pre_estreia'),
     idsComDisponibilidade('em_breve'),
-    prisma.userTitleState
-      .findMany({
-        where: { status: 'marcado', title: { status: { in: [...STATUS_VISIVEIS] } } },
-        orderBy: { statusChangedAt: 'desc' },
-        select: { titleId: true },
-      })
-      .then((linhas) => [...new Set(linhas.map((l) => l.titleId))]),
+    idsNaListaEmCartaz(),
   ]);
 
-  const todos = [...new Set([...emCartaz, ...preEstreia, ...emBreve, ...marcados])];
+  const todos = [...new Set([...emCartaz, ...preEstreia, ...emBreve, ...naLista])];
 
   const [titulos, contexto, idade] = await Promise.all([
     prisma.title.findMany({ where: { id: { in: todos } }, select: SELECAO_DE_CARD }),
@@ -416,8 +461,9 @@ export async function montarHome(
     { id: 'em-cartaz', titulo: 'Em cartaz agora', itens: cards(emCartaz).sort(porQuantidadeDeSessoes) },
     { id: 'pre-estreias', titulo: 'Pré-estreias', itens: cards(preEstreia).sort(porProximaSessao) },
     { id: 'em-breve', titulo: 'Em breve', itens: cards(emBreve).sort(porEstreia) },
-    // já vem ordenada pelo banco (marcação mais recente primeiro)
-    { id: 'marcados', titulo: 'Já marcados por vocês', itens: cards(marcados) },
+    // era "Já marcados por vocês" (o `marcado` saiu em 18/11/2026); já vem na
+    // ordem certa de `idsNaListaEmCartaz`
+    { id: 'na-lista', titulo: 'Na lista de vocês', itens: cards(naLista) },
   ]
     // o total é contado ANTES do corte: é ele que diz à home que há mais
     .map((t) => ({ ...t, total: t.itens.length, itens: t.itens.slice(0, limite) }))
@@ -526,7 +572,10 @@ export interface TagFiltrada {
 }
 
 export interface FiltrosDeTitulos {
-  availability?: AvailabilityStatus;
+  /** várias somam (OU): `em_cartaz` ou `pre_estreia` */
+  availability?: AvailabilityStatus | AvailabilityStatus[];
+  /** só o que está na lista "quero assistir" de alguém (trilha "Na lista de vocês") */
+  naLista?: boolean;
   /** tags; várias tags somam (E), não alternam (OU) */
   tags?: TagFiltrada[];
   /** id do cinema NO INGRESSO — filtrar por nome é proibido (§3) */
@@ -543,13 +592,20 @@ export async function listarTitulos(filtros: FiltrosDeTitulos): Promise<TituloDa
     ...(filtros.availability
       ? {
           availabilities: {
-            some: { source: 'cinema', status: filtros.availability, endedAt: null },
+            some: {
+              source: 'cinema',
+              status: Array.isArray(filtros.availability)
+                ? { in: filtros.availability }
+                : filtros.availability,
+              endedAt: null,
+            },
           },
         }
       : {}),
     ...(filtros.cinema
       ? { sessions: { some: { active: true, cinema: { ingressoId: filtros.cinema } } } }
       : {}),
+    ...(filtros.naLista ? { watchlist: { some: { removedAt: null } } } : {}),
     ...(filtros.user || filtros.status
       ? {
           userStates: {

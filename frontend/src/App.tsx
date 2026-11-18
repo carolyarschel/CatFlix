@@ -1,3 +1,4 @@
+import { AdicionarPage } from './modules/acervo/AdicionarPage';
 import { HomePage } from './modules/home/HomePage';
 import { ListaPage } from './modules/home/ListaPage';
 import { LoginPage } from './modules/profile/LoginPage';
@@ -5,7 +6,7 @@ import { PerfilPage } from './modules/profile/PerfilPage';
 import { PortaoPage } from './modules/profile/PortaoPage';
 import { ProgramacaoPage } from './modules/programacao/ProgramacaoPage';
 import { RevisarPage } from './modules/review/RevisarPage';
-import { FilmePage } from './modules/title-detail/FilmePage';
+import { DetalhePage } from './modules/title-detail/DetalhePage';
 import { useProfile } from './shared/hooks/useProfile';
 import { useRota } from './shared/hooks/useRota';
 import { useSessao } from './shared/hooks/useSessao';
@@ -41,6 +42,17 @@ export function App() {
     return <RevisarPage aoVoltar={voltar} />;
   }
 
+  // o "+" do cabeçalho (cineon-expansao §4.1)
+  if (rota.caminho === '/adicionar') {
+    return (
+      <AdicionarPage
+        perfil={perfil}
+        aoVoltar={voltar}
+        aoAbrir={(idDoFilme) => navegar(`/filme/${idDoFilme}`)}
+      />
+    );
+  }
+
   if (rota.caminho === '/lista' && rota.parametro) {
     return (
       <ListaPage
@@ -71,7 +83,13 @@ export function App() {
     // a partir deste reaproveitaria o estado do anterior e a página apareceria
     // com os dados do filme errado até a resposta chegar
     return (
-      <FilmePage key={rota.parametro} id={rota.parametro} perfil={perfil} aoVoltar={voltar} />
+      <DetalhePage
+        key={rota.parametro}
+        id={rota.parametro}
+        perfil={perfil}
+        aoVoltar={voltar}
+        aoNavegar={navegar}
+      />
     );
   }
 

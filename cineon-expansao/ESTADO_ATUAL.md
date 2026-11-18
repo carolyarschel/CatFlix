@@ -237,7 +237,10 @@ A tabela `user_title_states` **não é apagada** nesta fase. Depois que a migra�
 | 3. Módulo `tmdb` | ✅ `TmdbClient.obterMetadata` (sinopse no idioma de reserva), estreia BR pela regra do §5.1, status de produção, `TMDB_LANGUAGE`/`TMDB_FALLBACK_LANGUAGE`/`TMDB_REGION`. Testes com respostas reais salvas em `__fixtures__`. |
 | 4. `watches`, `watchlist`, `ratings`, `library` | ✅ Rotas do §9 (menos `where-to-watch`, que é do passo 7). 11 testes de integração e o fluxo inteiro percorrido pelo HTTP com o TMDB real. |
 | 5. Job de metadata e notas do acervo | ✅ Metadata: lançamento (sem estreia ou com até 90 dias) a cada 7 dias, o resto a cada 90, no máximo 300 por execução, os mais velhos antes. Notas: mensal para filme com mais de 1 ano; cota diária (`OMDB_DAILY_QUOTA`, padrão 900) contada pelas chamadas das últimas 24 h. |
-| 6. Frontend | próximo — depende das perguntas 3 a 5 da seção 6 |
+| 6.1 Fluxo do "+" | ✅ Página `/adicionar`, aberta pelo "+" do cabeçalho da home: busca com debounce (400 ms, a partir de 2 letras), Já assistimos (formulário reutilizável `FormularioDeVisualizacao`), Quero assistir, Eu e o outro queremos, Só abrir o filme. Testado no navegador com o TMDB real. |
+| 6.2 Detalhe novo | ✅ `/filme/:id` agora é o detalhe do acervo (`DetalhePage`), na ordem do print, numa coluna (720 px no desktop). O detalhe antigo (`FilmePage`) e o hook do "marcado" saíram; o bloco de sessões virou `SessoesDoFilme`. Testado no navegador, celular e desktop. |
+| Home sem o "marcado" | ✅ Selo do pôster = quem quer assistir, com o rosto do gato/urso; trilha "Na lista de vocês"; botão "Quero assistir" no destaque. |
+| 6.3–6.4 Abas Assistidos e Quero assistir, navegação do §8 | próximo |
 
 Medido depois do refresh de metadata no banco de desenvolvimento: dos 112 filmes casados, 100 com sinopse em pt-BR, 11 em en-US e 1 sem sinopse em idioma nenhum (antes: 20 sem sinopse). Status de produção vistos: Released 86, Post Production 21, In Production 3, Planned 2.
 
@@ -262,3 +265,27 @@ Medido depois do refresh de metadata no banco de desenvolvimento: dos 112 filmes
 - **Quando a cota não dá para todos:** primeiro o que está em cartaz ou em pré-estreia, depois o que nunca foi consultado, depois a consulta mais antiga. Assim um acervo recém-importado não deixa o filme que estreou ontem sem nota.
 - **Filme sem data:** se o status for "Released", é acervo (90 dias); se for anunciado ou em produção, é lançamento (7 dias).
 - **Medido no banco de desenvolvimento em 18/11/2026:** metadata 0 vencidos de 112 (refrescados no mesmo dia); notas 109 consultadas dentro da cota, 108 com resposta e 1 que o OMDb não conhece. Rodando de novo, o job viu as 109 chamadas na cota e não tinha nada vencido.
+
+**Decisões do passo 6.1:**
+
+- **O "+" é uma página, não uma janela por cima:** assim o voltar do Android desfaz um passo (resultado → busca) em vez de fechar o app.
+- **Busca enquanto digita, com 400 ms de espera e a partir de 2 letras.** A tela de "trocar filme" da Revisão busca só ao apertar o botão; aqui o documento pede debounce, e o backend já guarda o diretor em cache.
+- **"Assistimos" começa com as duas pessoas marcadas:** quem viu sozinho desmarca a outra.
+- **Data com precisão:** Dia / Mês / Só o ano, que viram os formatos que o backend entende.
+- **"Só abrir o filme" ainda abre o detalhe antigo** (`/filme/:id`), até o detalhe novo existir.
+- **O "+" está só na home por enquanto.** As outras telas ganham o botão quando a navegação nova do §8 entrar (6.3–6.4).
+- **O link "Não encontrei o filme" (§3.5) não aparece** enquanto a fila Revisar não aceitar pendência sem evento do ingresso.
+
+**Respostas de 18/11/2026 (perguntas 3 a 5 e o layout do detalhe):**
+
+- **Detalhe no desktop:** a mesma coluna do celular, mais larga. O elenco quebra em linhas em vez de rolar de lado.
+- **Botão do destaque:** "Quero assistir", que grava direto da home; tocar de novo tira da lista, e o rótulo vira "Na sua lista ✓".
+- **Selo do pôster:** em vez da inicial, o **rosto do gato ou do urso** (Icons.png da Carol, redesenhado em SVG para pegar a cor do perfil). O urso sai no roxo do HBUrso, não no azul do PNG: o §7 proíbe uma terceira cor. *Assumido:* o selo mostra **quem quer assistir**, a recomendação da pergunta, que a resposta não contradisse.
+- **Trilha da home:** "Já marcados por vocês" virou **"Na lista de vocês"**: filmes da lista que estão em cartaz ou em pré-estreia, primeiro os que os dois querem.
+
+**Decisões do passo 6.2:**
+
+- **O "Onde assistir" já funciona**, pelo campo `ondeAssistirUrl` do detalhe: o link salvo do JustWatch ou a busca dele pelo título (`JUSTWATCH_SEARCH_URL`). A rota própria `GET /titles/:id/where-to-watch` e os provedores de streaming continuam no passo 7.
+- **Estrelas antes de assistir, notas depois.** Marcar estrelas põe o filme na lista; tocar na estrela que já está marcada apaga as estrelas, mas mantém na lista; "tirar" tira da lista. A nota é um seletor de 0 a 10 em meio ponto, só para quem assistiu.
+- **Remover do catálogo** pede confirmação e oferece "Desfazer" até a página recarregar; ao remover, some o "Desfazer" da lista, que não faria mais sentido.
+- **"Editar"** abre o link do JustWatch e as tags manuais ("De bisnaguinha", "De crédito"), que aparecem como chips no topo.

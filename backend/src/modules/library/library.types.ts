@@ -41,6 +41,11 @@ export interface DetalheDoAcervo extends Omit<DetalheDoTitulo, 'elenco'> {
   estreia: { data: string; mundial: boolean } | null;
   statusProducao: string | null;
   justwatchUrl: string | null;
+  /**
+   * Para onde o botão "Onde assistir" leva (§6): o `justwatchUrl` salvo, ou a
+   * busca do JustWatch pelo título quando ainda não há link.
+   */
+  ondeAssistirUrl: string;
   /** em cartaz ou em pré-estreia: a tela mostra o bloco de sessões (§7.12) */
   emCartaz: boolean;
   /** quem está logado */

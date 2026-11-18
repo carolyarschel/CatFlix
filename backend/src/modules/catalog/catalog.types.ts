@@ -6,6 +6,8 @@ export interface MarcaDeUsuario {
   userId: string;
   inicial: string;
   acento: string;
+  /** "CatFlix" / "HBUrso" — para o "Na lista de …" do selo */
+  nome: string;
 }
 
 /**

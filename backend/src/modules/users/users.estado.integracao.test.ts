@@ -116,19 +116,39 @@ describe('UserTitleState', () => {
     expect(await limparEstado('catflix', t.id)).toBe(false);
   });
 
-  it('a marcação aparece no card e na trilha "Já marcados por vocês"', async ({ skip }) => {
+  // Era "a marcação aparece na trilha 'Já marcados por vocês'". O `marcado`
+  // saiu do app em 18/11/2026: o selo do pôster e a trilha agora vêm da lista
+  // "quero assistir" (watchlist_entries), e a trilha virou "Na lista de vocês".
+  it('"marcado" não aparece mais na home; a lista "quero assistir" sim', async ({ skip }) => {
     if (!temBanco) skip('sem Postgres');
 
-    const t = await titulo('-na-home');
-    await definirEstado('catflix', t.id, 'marcado');
+    const marcado = await titulo('-marcado-antigo');
+    const naLista = await titulo('-na-lista');
+    const foraDeCartaz = await titulo('-na-lista-sem-cartaz');
+    await definirEstado('catflix', marcado.id, 'marcado');
+    await prisma.watchlistEntry.createMany({
+      data: [
+        { titleId: naLista.id, pessoa: 'CAT' },
+        { titleId: naLista.id, pessoa: 'BEAR' },
+        { titleId: foraDeCartaz.id, pessoa: 'CAT' },
+      ],
+    });
+    await marcarDisponibilidade([marcado.id, naLista.id], 'em_cartaz');
 
     const home = await montarHome('catflix', { limitePorTrilha: Number.MAX_SAFE_INTEGER });
-    const trilha = home.trilhas.find((x) => x.id === 'marcados');
-    const card = trilha?.itens.find((i) => i.id === t.id);
+    const trilha = home.trilhas.find((x) => x.id === 'na-lista');
+    const ids = trilha?.itens.map((i) => i.id) ?? [];
 
-    expect(card, 'o filme marcado não entrou na trilha de marcados').toBeDefined();
-    // o círculo com a inicial no canto do pôster (§12)
-    expect(card?.marcadoPor.map((m) => m.userId)).toEqual(['catflix']);
+    expect(ids).toContain(naLista.id);
+    // a trilha é do que dá para ver no cinema agora
+    expect(ids).not.toContain(foraDeCartaz.id);
+    expect(home.trilhas.some((x) => x.id === 'marcados')).toBe(false);
+
+    // o selo do pôster: quem quer assistir, CAT antes de BEAR
+    const card = trilha?.itens.find((i) => i.id === naLista.id);
+    expect(card?.marcadoPor.map((m) => m.userId)).toEqual(['catflix', 'hburso']);
+    const cardMarcado = home.trilhas.flatMap((x) => x.itens).find((i) => i.id === marcado.id);
+    expect(cardMarcado?.marcadoPor).toEqual([]);
   });
 
   it('o filtro por estado da lista responde ao que foi marcado', async ({ skip }) => {

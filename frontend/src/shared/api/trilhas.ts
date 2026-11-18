@@ -10,7 +10,10 @@ import type { StatusDeDisponibilidade, StatusDeUsuario } from './tipos';
  */
 export interface FonteDaTrilha {
   titulo: string;
-  availability?: StatusDeDisponibilidade;
+  /** várias somam (OU) e vão juntas no `?availability=` */
+  availability?: StatusDeDisponibilidade | StatusDeDisponibilidade[];
+  /** só o que está na lista "quero assistir" de alguém */
+  naLista?: boolean;
   status?: StatusDeUsuario;
   /** `?user=` é obrigatório para as trilhas que dependem de quem está logado */
   porUsuario?: boolean;
@@ -20,7 +23,12 @@ export const FONTES_DAS_TRILHAS: Record<string, FonteDaTrilha> = {
   'em-cartaz': { titulo: 'Em cartaz agora', availability: 'em_cartaz' },
   'pre-estreias': { titulo: 'Pré-estreias', availability: 'pre_estreia' },
   'em-breve': { titulo: 'Em breve', availability: 'em_breve' },
-  'marcados': { titulo: 'Já marcados por vocês', status: 'marcado', porUsuario: true },
+  // era "Já marcados por vocês"; o `marcado` saiu em 18/11/2026
+  'na-lista': {
+    titulo: 'Na lista de vocês',
+    availability: ['em_cartaz', 'pre_estreia'],
+    naLista: true,
+  },
 };
 
 export function fonteDaTrilha(id: string): FonteDaTrilha | null {

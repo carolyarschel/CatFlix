@@ -1,0 +1,582 @@
+@use '../../shared/styles/tokens' as t;
+
+// Detalhe do filme (cineon-expansao §7). Uma coluna só, como no celular; no
+// desktop, a mesma coluna mais larga (decisão de 18/11/2026).
+
+.tela {
+  position: relative;
+  min-height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: calc(#{t.$space-10} + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-7;
+  overflow-x: clip;
+
+  @media (min-width: t.$bp-desktop) {
+    max-width: 720px;
+  }
+}
+
+// backdrop do filme sob um gradiente que mantém o texto legível
+.ambiente {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 340px;
+  background-size: cover;
+  background-position: center 20%;
+  z-index: -1;
+  pointer-events: none;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(11, 10, 15, 0.55) 0%,
+      rgba(11, 10, 15, 0.82) 55%,
+      t.$bg 100%
+    );
+  }
+}
+
+.cabecalho {
+  padding: t.$space-7 t.$gutter 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.voltar {
+  width: t.$touch-target;
+  height: t.$touch-target;
+  border-radius: t.$radius-lg;
+  background: rgba(18, 16, 25, 0.7);
+  backdrop-filter: blur(8px);
+  color: t.$text;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:first-child {
+    margin-left: -#{t.$space-4};
+  }
+
+  &:last-child {
+    margin-right: -#{t.$space-4};
+  }
+}
+
+// ── capa: pôster, estado, título e direção ──────────────────
+
+.capa {
+  padding: 0 t.$gutter;
+  display: flex;
+  gap: t.$space-7;
+  align-items: flex-start;
+}
+
+.poster {
+  width: 120px;
+  flex-shrink: 0;
+  aspect-ratio: #{t.$poster-ratio};
+  border-radius: t.$radius-lg;
+  border: 1px solid t.$border;
+  background: t.$surface-card;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (min-width: t.$bp-desktop) {
+    width: 160px;
+  }
+}
+
+.imagem {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.semPoster {
+  color: t.$text-group-label;
+  font-size: t.$fs-2xs;
+}
+
+.identidade {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-3;
+}
+
+.titulo {
+  margin: 0;
+  font-size: t.$fs-xxl;
+  line-height: t.$lh-tight;
+  letter-spacing: t.$ls-display;
+}
+
+.original {
+  color: t.$text-label;
+  font-size: t.$fs-sm;
+  font-style: italic;
+}
+
+.direcao {
+  color: t.$text-support;
+  font-size: t.$fs-sm;
+}
+
+// ── chips (estado, estúdios, gêneros) ───────────────────────
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: t.$space-2;
+}
+
+.chip {
+  padding: t.$space-1 t.$space-4;
+  border-radius: t.$radius-pill;
+  border: 1px solid t.$border-strong;
+  background: t.$surface-chip;
+  color: t.$text-secondary;
+  font-size: t.$fs-xs;
+  font-weight: t.$fw-medium;
+}
+
+.chipTipo {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: t.$fs-3xs;
+  font-weight: t.$fw-bold;
+}
+
+.chipEstado {
+  border-color: t.$accent;
+  background: t.$accent-soft;
+  color: t.$accent-on-soft;
+}
+
+// ── faixas de aviso (metadata pendente, desfazer) ───────────
+
+.faixa,
+.faixaInterna {
+  padding: t.$space-3 t.$space-3 t.$space-3 t.$space-6;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border-strong;
+  background: t.$surface-chip;
+  color: t.$text-support;
+  font-size: t.$fs-sm;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: t.$space-4;
+  min-height: t.$touch-target;
+}
+
+.faixa {
+  margin: 0 t.$gutter;
+}
+
+.desfazer {
+  min-height: 36px;
+  padding: 0 t.$space-6;
+  border-radius: t.$radius-md;
+  color: t.$accent-on-soft;
+  font-weight: t.$fw-semibold;
+}
+
+// ── corpo ───────────────────────────────────────────────────
+
+.corpo {
+  padding: 0 t.$gutter;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-9;
+}
+
+.secao {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-4;
+}
+
+// os rótulos em caixa alta do print: ESTÚDIOS, SINOPSE, ELENCO PRINCIPAL…
+.rotulo {
+  margin: 0;
+  font-family: t.$font-text;
+  font-size: t.$fs-2xs;
+  font-weight: t.$fw-medium;
+  letter-spacing: t.$ls-label;
+  text-transform: uppercase;
+  color: t.$text-group-label;
+}
+
+.sinopse {
+  color: t.$text-secondary;
+  font-size: t.$fs-base;
+  line-height: t.$lh-body;
+}
+
+.seloIdioma {
+  align-self: flex-start;
+  padding: 2px t.$space-3;
+  border-radius: t.$radius-sm;
+  background: t.$surface-chip;
+  color: t.$text-label;
+  font-size: t.$fs-3xs;
+  letter-spacing: 0.04em;
+}
+
+.vazio {
+  color: t.$text-label;
+  font-size: t.$fs-sm;
+}
+
+// ── elenco: rola de lado no celular, quebra em linhas no desktop ──
+
+.elenco {
+  margin: 0 -#{t.$gutter};
+  padding: 0 t.$gutter t.$space-2;
+  display: flex;
+  gap: t.$space-6;
+  overflow-x: auto;
+  scrollbar-width: thin;
+
+  @media (min-width: t.$bp-desktop) {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+}
+
+.pessoa {
+  width: 76px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: t.$space-1;
+  text-align: center;
+}
+
+.foto {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: t.$surface-chip;
+  border: 1px solid t.$border;
+}
+
+.iniciais {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: t.$text-support;
+  font-family: t.$font-display;
+  font-weight: t.$fw-semibold;
+}
+
+.nomeDaPessoa {
+  margin-top: t.$space-1;
+  font-size: t.$fs-2xs;
+  font-weight: t.$fw-bold;
+  color: t.$text;
+  line-height: 1.25;
+}
+
+.personagem {
+  font-size: t.$fs-3xs;
+  color: t.$text-label;
+  line-height: 1.25;
+}
+
+// ── estreia e notas da crítica ──────────────────────────────
+
+.linhaDeFatos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: t.$space-3 t.$space-7;
+}
+
+.estreia {
+  color: t.$text-support;
+  font-size: t.$fs-sm;
+}
+
+// ── interesse e notas do casal ──────────────────────────────
+
+.interesse {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: t.$space-3 t.$space-6;
+}
+
+.estrelas {
+  display: flex;
+}
+
+.estrela {
+  width: 40px;
+  height: t.$touch-target;
+  color: t.$text-group-label;
+  font-size: 26px;
+  line-height: 1;
+}
+
+.estrelaAcesa {
+  color: t.$accent;
+}
+
+.link {
+  min-height: t.$touch-target;
+  color: t.$accent-on-soft;
+  font-size: t.$fs-sm;
+  font-weight: t.$fw-medium;
+}
+
+.dica {
+  color: t.$text-label;
+  font-size: t.$fs-xs;
+}
+
+.notas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: t.$space-4 t.$space-9;
+}
+
+.notaDaPessoa {
+  display: flex;
+  align-items: center;
+  gap: t.$space-4;
+}
+
+.valorDaNota {
+  color: t.$text;
+  font-family: t.$font-display;
+  font-size: t.$fs-lg;
+  font-weight: t.$fw-semibold;
+}
+
+.seletorDeNota {
+  min-height: t.$touch-target;
+  padding: 0 t.$space-5;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$accent;
+  background: t.$accent-soft;
+  color: t.$accent-on-soft;
+  font-family: t.$font-display;
+  font-size: t.$fs-md;
+  font-weight: t.$fw-semibold;
+  color-scheme: dark;
+}
+
+// ── assistimos ──────────────────────────────────────────────
+
+.visualizacoes {
+  display: flex;
+  flex-direction: column;
+}
+
+.visualizacao {
+  padding: t.$space-4 0;
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: t.$space-2 t.$space-5;
+
+  & + & {
+    border-top: 1px solid t.$border-subtle;
+  }
+}
+
+.quando {
+  color: t.$text;
+  font-size: t.$fs-sm;
+  font-weight: t.$fw-semibold;
+  white-space: nowrap;
+}
+
+.onde {
+  min-width: 0;
+  color: t.$text-support;
+  font-size: t.$fs-sm;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.quem {
+  display: flex;
+  gap: t.$space-1;
+}
+
+.remover {
+  width: 36px;
+  height: 36px;
+  border-radius: t.$radius-md;
+  color: t.$text-label;
+  font-size: t.$fs-lg;
+}
+
+.observacao {
+  grid-column: 1 / -1;
+  color: t.$text-label;
+  font-size: t.$fs-xs;
+  font-style: italic;
+}
+
+// ── botões ──────────────────────────────────────────────────
+
+.primario {
+  min-height: 52px;
+  border-radius: t.$radius-lg;
+  background: t.$text;
+  color: t.$bg;
+  font-size: t.$fs-md;
+  font-weight: t.$fw-semibold;
+}
+
+.ingresso {
+  min-height: 52px;
+  border-radius: t.$radius-lg;
+  border: 1px solid rgba(244, 241, 248, 0.18);
+  background: rgba(244, 241, 248, 0.1);
+  color: t.$text;
+  font-size: t.$fs-md;
+  font-weight: t.$fw-medium;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: t.$space-3;
+}
+
+.acoes {
+  display: flex;
+  gap: t.$space-3;
+}
+
+.contorno {
+  flex: 1;
+  min-height: t.$touch-target;
+  padding: 0 t.$space-6;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border-strong;
+  color: t.$text;
+  font-size: t.$fs-sm;
+  font-weight: t.$fw-semibold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:disabled {
+    opacity: 0.55;
+  }
+}
+
+// "Onde assistir": contorno no acento secundário do perfil (§7)
+.contornoAcento {
+  border-color: t.$accent-2;
+  color: t.$accent-2-on-soft;
+}
+
+// "Remover do catálogo": contorno vermelho, sozinho numa linha (§7)
+.perigo {
+  align-self: flex-start;
+  min-height: t.$touch-target;
+  padding: 0 t.$space-7;
+  border-radius: t.$radius-md;
+  border: 1px solid #e5484d;
+  color: #ff8589;
+  font-size: t.$fs-sm;
+  font-weight: t.$fw-semibold;
+
+  &:disabled {
+    opacity: 0.55;
+  }
+}
+
+.edicao {
+  padding: t.$space-6;
+  border-radius: t.$radius-lg;
+  border: 1px solid t.$border;
+  background: t.$surface-card;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-5;
+}
+
+.campoRotulado {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-2;
+}
+
+.rotuloDoCampo {
+  font-size: t.$fs-2xs;
+  letter-spacing: t.$ls-label;
+  text-transform: uppercase;
+  color: t.$text-group-label;
+}
+
+.campo {
+  width: 100%;
+  min-height: t.$touch-target;
+  padding: 0 t.$space-6;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border-strong;
+  background: t.$surface-chip;
+  color: t.$text;
+  font-size: t.$fs-base;
+
+  &:focus-visible {
+    outline: none;
+    border-color: t.$accent;
+  }
+}
+
+.erro {
+  color: #ff9b9b;
+  font-size: t.$fs-sm;
+}
+
+// §5.4: a atribuição do TMDB fica onde os dados dele aparecem
+.atribuicao {
+  color: t.$text-group-label;
+  font-size: t.$fs-3xs;
+  text-align: center;
+}
+
+// ── estados da tela ─────────────────────────────────────────
+
+.aviso {
+  margin: t.$space-10 auto;
+  padding: 0 t.$gutter;
+  color: t.$text-support;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: t.$space-5;
+}
+
+.tentar {
+  min-height: t.$touch-target;
+  padding: 0 t.$space-8;
+  border-radius: t.$radius-md;
+  background: t.$accent-soft;
+  border: 1px solid t.$accent;
+  color: t.$accent-on-soft;
+  font-weight: t.$fw-semibold;
+}

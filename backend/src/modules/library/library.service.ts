@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client';
 import type { Pessoa } from '@prisma/client';
 import { ConflictError, NotFoundError, ValidationError } from '../../shared/errors';
+import { env } from '../../config/env';
 import { prisma } from '../../shared/prisma';
 // arquivos de dentro dos módulos, não os barris: os barris exportam rotas, e
 // rota importando o orquestrador importando rota fecharia um ciclo
@@ -130,6 +131,9 @@ export async function detalheDoAcervo(titleId: string, eu: Pessoa): Promise<Deta
     estreia: data ? { data: data.toISOString().slice(0, 10), mundial: !dataBr } : null,
     statusProducao: extra.productionStatus,
     justwatchUrl: extra.justwatchUrl,
+    // Sem link salvo, a busca do JustWatch pelo título em português: a busca do
+    // site é textual, e acrescentar o ano atrapalha mais do que ajuda.
+    ondeAssistirUrl: extra.justwatchUrl ?? `${env.JUSTWATCH_SEARCH_URL}${encodeURIComponent(base.titulo)}`,
     emCartaz: base.disponibilidade.some((d) => d.status === 'em_cartaz' || d.status === 'pre_estreia'),
     eu,
     pessoas,

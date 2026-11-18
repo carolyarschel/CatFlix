@@ -1,0 +1,162 @@
+@use '../../shared/styles/tokens' as t;
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-8;
+}
+
+.grupo {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-4;
+}
+
+.rotulo {
+  padding: 0;
+  margin-bottom: t.$space-4;
+  font-size: t.$fs-2xs;
+  letter-spacing: t.$ls-label;
+  text-transform: uppercase;
+  color: t.$text-group-label;
+}
+
+// ── controle segmentado: dia/mês/ano, casa/cinema ───────────
+
+.segmentos {
+  display: flex;
+  gap: t.$space-2;
+  padding: t.$space-1;
+  border-radius: t.$radius-lg;
+  background: t.$surface-chip;
+  border: 1px solid t.$border;
+}
+
+.segmento {
+  flex: 1;
+  min-height: 40px;
+  border-radius: t.$radius-md;
+  color: t.$text-support;
+  font-size: t.$fs-sm;
+  font-weight: t.$fw-medium;
+}
+
+.ativo {
+  background: t.$accent-soft;
+  color: t.$accent-on-soft;
+  font-weight: t.$fw-semibold;
+}
+
+// ── campos ──────────────────────────────────────────────────
+
+.campo {
+  width: 100%;
+  min-height: t.$touch-target;
+  padding: 0 t.$space-6;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border-strong;
+  background: t.$surface-chip;
+  color: t.$text;
+  font-size: t.$fs-md;
+  // o seletor de data do sistema segue o tema escuro
+  color-scheme: dark;
+
+  &:focus-visible {
+    outline: none;
+    border-color: t.$accent;
+  }
+}
+
+.texto {
+  padding: t.$space-4 t.$space-6;
+  resize: vertical;
+  font-family: inherit;
+  line-height: t.$lh-body;
+}
+
+.cinema {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-3;
+}
+
+// ── quem estava ─────────────────────────────────────────────
+
+.pessoas {
+  display: flex;
+  gap: t.$space-3;
+}
+
+.pessoa {
+  flex: 1;
+  min-height: 52px;
+  padding: 0 t.$space-5;
+  border-radius: t.$radius-lg;
+  border: 1px solid t.$border-strong;
+  background: t.$surface-card;
+  color: t.$text-support;
+  font-size: t.$fs-sm;
+  font-weight: t.$fw-medium;
+  display: flex;
+  align-items: center;
+  gap: t.$space-4;
+  opacity: 0.6;
+}
+
+// a borda já vem no acento da própria pessoa (inline): sem terceira cor (§7)
+.pessoaMarcada {
+  color: t.$text;
+  font-weight: t.$fw-semibold;
+  opacity: 1;
+}
+
+.inicial {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  color: #17131e;
+  font-size: t.$fs-xs;
+  font-weight: t.$fw-bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// ── fim ─────────────────────────────────────────────────────
+
+.problema {
+  color: t.$text-support;
+  font-size: t.$fs-sm;
+}
+
+.acoes {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-3;
+}
+
+.primario {
+  min-height: 52px;
+  border-radius: t.$radius-lg;
+  background: t.$text;
+  color: t.$bg;
+  font-size: t.$fs-md;
+  font-weight: t.$fw-semibold;
+
+  &:disabled {
+    opacity: 0.45;
+  }
+}
+
+.secundario {
+  min-height: t.$touch-target;
+  border-radius: t.$radius-lg;
+  color: t.$text-secondary;
+  font-size: t.$fs-sm;
+  font-weight: t.$fw-medium;
+}

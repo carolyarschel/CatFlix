@@ -6,9 +6,9 @@
  * isso custaria mais no bundle do que o app todo de pôsteres.
  */
 
-type Props = { tamanho?: number };
+type Props = { tamanho?: number; /** espessura do traço; ícone pequeno pede traço mais grosso */ traco?: number };
 
-function Svg({ tamanho = 22, children }: Props & { children: React.ReactNode }) {
+function Svg({ tamanho = 22, traco = 1.7, children }: Props & { children: React.ReactNode }) {
   return (
     <svg
       width={tamanho}
@@ -16,7 +16,7 @@ function Svg({ tamanho = 22, children }: Props & { children: React.ReactNode }) 
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.7"
+      strokeWidth={traco}
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
@@ -79,6 +79,32 @@ export const IconeIngresso = (p: Props) => (
 export const IconeSeta = (p: Props) => (
   <Svg {...p}>
     <path d="M6 9l6 6 6-6" />
+  </Svg>
+);
+
+/**
+ * Os rostos do casal, redesenhados do `Icons.png` da Carol (18/11/2026): o gato
+ * é a CatFlix, o urso é o HBUrso. Em traço, como os outros ícones, para pegar
+ * a cor do perfil por `currentColor` — o PNG traz o urso em azul, mas o §7 da
+ * expansão manda usar só as cores dos perfis, sem inventar uma terceira.
+ */
+export const IconeGato = (p: Props) => (
+  <Svg {...p}>
+    <path d="M5.6 9.6C4.9 8 4.7 5.9 5.4 3.9c.2-.5.7-.7 1.2-.5 1.6.5 2.9 1.7 3.8 2.9 1.1-.3 2.3-.3 3.4 0 .9-1.2 2.2-2.4 3.8-2.9.5-.2 1 0 1.2.5.7 2 .5 4.1-.2 5.7.8 1.7 1.1 3.6.7 5.4-.8 3.5-3.7 5.5-7.2 5.5s-6.4-2-7.2-5.5c-.4-1.8-.1-3.7.7-5.4Z" />
+    <path d="M1.8 12.9l3 .2M1.9 16.3l2.9-.9M22.2 12.9l-3 .2M22.1 16.3l-2.9-.9" />
+  </Svg>
+);
+
+export const IconeUrso = (p: Props) => (
+  <Svg {...p}>
+    <path d="M6.3 10.1C4.5 8.9 4.1 6.4 5.5 4.9c1.4-1.5 3.8-1.4 4.9.4 1.1-.2 2.2-.2 3.2 0 1.1-1.8 3.5-1.9 4.9-.4 1.4 1.5 1 4-.8 5.2 1.1 1.5 1.8 3.2 1.8 4.9-.1 3.5-3.3 5.6-7.5 5.6s-7.4-2.1-7.5-5.6c0-1.7.7-3.4 1.8-4.9Z" />
+  </Svg>
+);
+
+/** O "+" do cabeçalho: adicionar um filme ao acervo (cineon-expansao §4.1). */
+export const IconeMais = (p: Props) => (
+  <Svg {...p}>
+    <path d="M12 5v14M5 12h14" />
   </Svg>
 );
 

@@ -33,7 +33,8 @@ export function ListaPage({
   const query = useMemo(() => {
     if (!fonte) return {};
     return {
-      ...(fonte.availability ? { availability: fonte.availability } : {}),
+      ...(fonte.availability ? { availability: [fonte.availability].flat().join(',') } : {}),
+      ...(fonte.naLista ? { naLista: '1' } : {}),
       ...(fonte.status ? { status: fonte.status } : {}),
       ...(fonte.porUsuario ? { user: perfil.id } : {}),
     };

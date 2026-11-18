@@ -1,0 +1,111 @@
+@use '../../shared/styles/tokens' as t;
+
+.bloco {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-5;
+}
+
+.rotulo {
+  margin: 0;
+  font-size: t.$fs-2xs;
+  font-family: t.$font-text;
+  font-weight: t.$fw-medium;
+  letter-spacing: t.$ls-label;
+  text-transform: uppercase;
+  color: t.$text-group-label;
+  display: flex;
+  align-items: center;
+  gap: t.$space-4;
+}
+
+.contagem {
+  padding: 0 t.$space-4;
+  border-radius: t.$radius-pill;
+  background: t.$surface-chip;
+  color: t.$text-support;
+  font-size: t.$fs-xs;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.vazio {
+  color: t.$text-label;
+  font-size: t.$fs-sm;
+}
+
+// ── filtro por tipo de sala ─────────────────────────────────
+
+.salas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: t.$space-3;
+}
+
+.sala {
+  min-height: t.$touch-target;
+  padding: 0 t.$space-6;
+  border-radius: t.$radius-pill;
+  border: 1px solid rgba(244, 241, 248, 0.18);
+  background: rgba(244, 241, 248, 0.1);
+  color: t.$text;
+  font-size: t.$fs-sm;
+  font-weight: t.$fw-medium;
+  white-space: nowrap;
+}
+
+.salaAtiva {
+  border-color: t.$accent;
+  background: t.$accent-soft;
+  color: t.$accent-on-soft;
+}
+
+// ── por cinema e dia ────────────────────────────────────────
+
+.cinema {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-5;
+  padding-bottom: t.$space-5;
+
+  & + & {
+    border-top: 1px solid t.$border-subtle;
+    padding-top: t.$space-7;
+  }
+}
+
+.nomeDoCinema {
+  margin: 0;
+  font-size: t.$fs-md;
+  color: t.$text;
+}
+
+.dia {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-3;
+}
+
+.nomeDoDia {
+  font-size: t.$fs-2xs;
+  letter-spacing: t.$ls-label;
+  text-transform: uppercase;
+  color: t.$text-group-label;
+}
+
+.horarios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: t.$space-3;
+}
+
+.maisDias {
+  align-self: flex-start;
+  min-height: t.$touch-target;
+  padding: 0 t.$space-7;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border-strong;
+  color: t.$text-secondary;
+  font-size: t.$fs-sm;
+  font-weight: t.$fw-medium;
+}

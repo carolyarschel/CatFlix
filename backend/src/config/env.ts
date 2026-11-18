@@ -68,6 +68,9 @@ const envSchema = z
     TMDB_LANGUAGE: z.string().default('pt-BR'),
     TMDB_FALLBACK_LANGUAGE: z.string().default('en-US'),
     TMDB_REGION: z.string().length(2).default('BR'),
+    // busca do JustWatch, para o "Onde assistir" de filme sem link salvo
+    // (cineon-expansao §6; endereço conferido no site em 18/11/2026)
+    JUSTWATCH_SEARCH_URL: z.string().url().default('https://br.justwatch.com/br/busca?q='),
 
     // OMDb (§5.3)
     OMDB_BASE_URL: z.string().default('https://www.omdbapi.com'),

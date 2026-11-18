@@ -77,18 +77,6 @@ $largura: 150px;
   gap: t.$space-1;
 }
 
-.marca {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  color: #17131e;
-  font-size: t.$fs-2xs;
-  font-weight: t.$fw-bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .nome {
   position: relative;
   padding: t.$space-8 t.$space-4 t.$space-4;

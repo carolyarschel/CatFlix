@@ -1,0 +1,267 @@
+@use '../../shared/styles/tokens' as t;
+
+.tela {
+  position: relative;
+  min-height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: calc(#{t.$space-10} + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-7;
+  overflow-x: clip;
+
+  // o desktop segue o mobile (§3): a mesma coluna, mais larga
+  @media (min-width: t.$bp-desktop) {
+    max-width: 720px;
+  }
+}
+
+.ambiente {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 220px;
+  background: linear-gradient(to bottom, t.$ambient 0%, t.$bg 100%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.cabecalho {
+  padding: t.$space-7 t.$gutter 0;
+  display: flex;
+  align-items: center;
+  gap: t.$space-4;
+}
+
+.voltar {
+  width: t.$touch-target;
+  height: t.$touch-target;
+  margin-left: -#{t.$space-4};
+  border-radius: t.$radius-lg;
+  color: t.$text;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.titulo {
+  margin: 0;
+  font-size: t.$fs-xxl;
+}
+
+.conteudo {
+  padding: 0 t.$gutter;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-6;
+}
+
+// ── busca ───────────────────────────────────────────────────
+
+.busca {
+  min-height: 52px;
+  padding: 0 t.$space-6;
+  border-radius: t.$radius-lg;
+  border: 1px solid t.$border-strong;
+  background: t.$surface-chip;
+  color: t.$text-label;
+  display: flex;
+  align-items: center;
+  gap: t.$space-4;
+
+  &:focus-within {
+    border-color: t.$accent;
+  }
+}
+
+.campo {
+  flex: 1;
+  min-width: 0;
+  min-height: 50px;
+  background: none;
+  border: 0;
+  color: t.$text;
+  font-size: t.$fs-md;
+
+  // o foco aparece na caixa inteira (`.busca:focus-within`); o contorno do
+  // próprio campo, dentro dela, desenhava um segundo retângulo
+  &:focus,
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+.aviso {
+  color: t.$text-support;
+  font-size: t.$fs-sm;
+  line-height: t.$lh-body;
+}
+
+.resultados {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-3;
+
+  &[aria-busy='true'] {
+    opacity: 0.6;
+  }
+}
+
+.resultado {
+  width: 100%;
+  padding: t.$space-3;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border-subtle;
+  background: t.$surface-card;
+  display: flex;
+  align-items: center;
+  gap: t.$space-5;
+  text-align: left;
+}
+
+.poster {
+  width: 44px;
+  aspect-ratio: #{t.$poster-ratio};
+  flex-shrink: 0;
+  border-radius: t.$radius-sm;
+  object-fit: cover;
+  background: t.$surface-chip;
+}
+
+.posterGrande {
+  width: 76px;
+  border-radius: t.$radius-poster;
+}
+
+.semPoster {
+  display: block;
+}
+
+.texto {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.nome {
+  font-size: t.$fs-base;
+  font-weight: t.$fw-semibold;
+  color: t.$text;
+}
+
+.meta {
+  font-size: t.$fs-xs;
+  color: t.$text-support;
+}
+
+.original {
+  font-size: t.$fs-xs;
+  color: t.$text-label;
+  font-style: italic;
+}
+
+.selo {
+  flex-shrink: 0;
+  padding: 3px t.$space-3;
+  border-radius: t.$radius-pill;
+  background: t.$accent-soft;
+  color: t.$accent-on-soft;
+  font-size: t.$fs-3xs;
+  font-weight: t.$fw-semibold;
+  white-space: nowrap;
+}
+
+// §5.4: a atribuição do TMDB fica onde os dados dele aparecem
+.atribuicao {
+  margin-top: t.$space-5;
+  color: t.$text-group-label;
+  font-size: t.$fs-3xs;
+  text-align: center;
+}
+
+// ── filme escolhido e ações ─────────────────────────────────
+
+.escolhido {
+  display: flex;
+  align-items: center;
+  gap: t.$space-6;
+}
+
+.nomeGrande {
+  font-family: t.$font-display;
+  font-size: t.$fs-xl;
+  font-weight: t.$fw-semibold;
+  line-height: t.$lh-title;
+  letter-spacing: t.$ls-title;
+}
+
+.opcoes {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-3;
+}
+
+.primario,
+.secundario {
+  min-height: 52px;
+  border-radius: t.$radius-lg;
+  font-size: t.$fs-md;
+  font-weight: t.$fw-semibold;
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+
+// os dois botões de largura total do HeroCard (§12)
+.primario {
+  background: t.$text;
+  color: t.$bg;
+}
+
+.secundario {
+  background: rgba(244, 241, 248, 0.1);
+  border: 1px solid rgba(244, 241, 248, 0.18);
+  color: t.$text;
+}
+
+.discreto {
+  min-height: t.$touch-target;
+  color: t.$text-secondary;
+  font-size: t.$fs-sm;
+  font-weight: t.$fw-medium;
+}
+
+.feito {
+  font-family: t.$font-display;
+  font-size: t.$fs-lg;
+  font-weight: t.$fw-semibold;
+}
+
+.removido {
+  padding: t.$space-3 t.$space-3 t.$space-3 t.$space-6;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border-strong;
+  background: t.$surface-chip;
+  color: t.$text-support;
+  font-size: t.$fs-sm;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: t.$space-4;
+}
+
+.desfazer {
+  min-height: 36px;
+  padding: 0 t.$space-6;
+  border-radius: t.$radius-md;
+  color: t.$accent-on-soft;
+  font-weight: t.$fw-semibold;
+}

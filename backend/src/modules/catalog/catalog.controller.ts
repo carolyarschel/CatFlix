@@ -63,7 +63,11 @@ export async function getTitles(req: Request, res: Response): Promise<void> {
   const availability = texto(req.query.availability);
   const status = texto(req.query.status);
 
-  const disponibilidade = availability ? disponibilidades.safeParse(availability) : null;
+  // `?availability=em_cartaz,pre_estreia` soma (OU): é o recorte da trilha
+  // "Na lista de vocês", que vale para o que dá para ver no cinema agora
+  const disponibilidade = availability
+    ? z.array(disponibilidades).safeParse(availability.split(',').map((d) => d.trim()))
+    : null;
   if (disponibilidade && !disponibilidade.success) {
     throw new ValidationError(`Disponibilidade desconhecida: "${availability}".`, {
       details: { validas: disponibilidades.options },
@@ -84,6 +88,8 @@ export async function getTitles(req: Request, res: Response): Promise<void> {
     user: texto(req.query.user) ? perfilDaRequisicao(req) : undefined,
     status: estado?.success ? estado.data : undefined,
     q: texto(req.query.q) ?? texto(req.query.busca),
+    // `?naLista=1`: só o que está na lista "quero assistir" de alguém
+    naLista: req.query.naLista === '1' || req.query.naLista === 'true',
   });
 
   res.json({ itens, total: itens.length });

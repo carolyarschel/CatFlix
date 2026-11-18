@@ -22,7 +22,7 @@ export function BottomNav({
   const itens = [
     { id: 'inicio', rotulo: 'Início', icone: <IconeInicio tamanho={21} /> },
     { id: 'em-breve', rotulo: 'Em breve', icone: <IconeCalendario tamanho={21} /> },
-    { id: 'marcados', rotulo: 'Marcados', icone: <IconeMarcador tamanho={21} /> },
+    { id: 'na-lista', rotulo: 'Na lista', icone: <IconeMarcador tamanho={21} /> },
   ];
 
   return (
