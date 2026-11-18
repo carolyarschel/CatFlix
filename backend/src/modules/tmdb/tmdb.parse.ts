@@ -14,6 +14,38 @@ export function anoDeLancamento(valor: string | null | undefined): number | null
   return data ? data.getUTCFullYear() : null;
 }
 
+/**
+ * A metadata deste filme já venceu? (cineon-expansao §5.3)
+ *
+ * Lançamento — ainda não estreou, ou estreou há até 90 dias — vence em 7 dias:
+ * elenco, sinopse e data mudam muito nessa fase. O resto, em 90.
+ *
+ * Sem data, o status de produção decide: filme anunciado ("Planned", "In
+ * Production"…) costuma vir sem data e é lançamento; um "Released" sem data é
+ * filme antigo que o TMDB nunca datou, e reconsultá-lo toda semana não traria
+ * nada.
+ */
+export function precisaAtualizarMetadata(
+  filme: {
+    releaseDate: Date | null;
+    productionStatus: string | null;
+    metadataUpdatedAt: Date | null;
+  },
+  config: { janelaDeLancamentoDias: number; lancamentoDias: number; acervoDias: number },
+  agora = new Date(),
+): boolean {
+  if (!filme.metadataUpdatedAt) return true;
+
+  const dia = 86_400_000;
+  const diasDesdeORefresh = (agora.getTime() - filme.metadataUpdatedAt.getTime()) / dia;
+
+  const lancamento = filme.releaseDate
+    ? (agora.getTime() - filme.releaseDate.getTime()) / dia <= config.janelaDeLancamentoDias
+    : filme.productionStatus !== 'Released';
+
+  return diasDesdeORefresh >= (lancamento ? config.lancamentoDias : config.acervoDias);
+}
+
 /** `runtime` vem 0 em filme não lançado; 0 minuto não é duração. */
 function minutos(runtime: number | null | undefined): number | null {
   return typeof runtime === 'number' && runtime > 0 ? runtime : null;

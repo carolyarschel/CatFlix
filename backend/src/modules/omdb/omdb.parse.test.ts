@@ -97,3 +97,24 @@ describe('cadência de atualização (§5.3)', () => {
     expect(precisaAtualizarNotas(null, dias(8), omdbConfig, agora)).toBe(true);
   });
 });
+
+describe('cadência do acervo (cineon-expansao §5.3)', () => {
+  const agora = new Date('2026-11-18T12:00:00Z');
+  const dias = (n: number) => new Date(agora.getTime() - n * 86_400_000);
+
+  it('filme com mais de um ano reconsulta só uma vez por mês', () => {
+    const de2019 = new Date('2019-07-01T00:00:00Z');
+    expect(precisaAtualizarNotas(de2019, dias(8), omdbConfig, agora)).toBe(false);
+    expect(precisaAtualizarNotas(de2019, dias(29), omdbConfig, agora)).toBe(false);
+    expect(precisaAtualizarNotas(de2019, dias(30), omdbConfig, agora)).toBe(true);
+  });
+
+  it('com menos de um ano, segue a regra do cinema (semanal)', () => {
+    const haSeisMeses = dias(180);
+    expect(precisaAtualizarNotas(haSeisMeses, dias(8), omdbConfig, agora)).toBe(true);
+  });
+
+  it('nunca consultado vence sempre, mesmo no acervo', () => {
+    expect(precisaAtualizarNotas(new Date('1984-01-01T00:00:00Z'), null, omdbConfig, agora)).toBe(true);
+  });
+});

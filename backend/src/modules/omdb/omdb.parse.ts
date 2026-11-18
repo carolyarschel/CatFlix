@@ -48,12 +48,20 @@ export function normalizarNotas(corpo: OmdbSucesso): NotasNormalizadas {
 
 /**
  * Com que frequência reconsultar as notas (§5.3): diariamente na primeira
- * semana após a estreia, semanalmente depois.
+ * semana após a estreia, semanalmente depois — e, para filme com mais de um
+ * ano, mensalmente (cineon-expansao §5.3: o acervo não muda de nota toda
+ * semana, e a cota diária do OMDb é para o cinema).
  */
 export function precisaAtualizarNotas(
   releaseDate: Date | null,
   ratingsUpdatedAt: Date | null,
-  config: { janelaDeEstreiaDias: number; refreshRecenteDias: number; refreshAntigoDias: number },
+  config: {
+    janelaDeEstreiaDias: number;
+    refreshRecenteDias: number;
+    refreshAntigoDias: number;
+    acervoIdadeMinimaDias: number;
+    refreshAcervoDias: number;
+  },
   agora = new Date(),
 ): boolean {
   if (!ratingsUpdatedAt) return true;
@@ -64,7 +72,11 @@ export function precisaAtualizarNotas(
   if (!releaseDate) return diasDesdeAConsulta >= config.refreshAntigoDias;
 
   const diasDesdeAEstreia = (agora.getTime() - releaseDate.getTime()) / 86_400_000;
-  const recemEstreado = diasDesdeAEstreia >= 0 && diasDesdeAEstreia <= config.janelaDeEstreiaDias;
 
+  if (diasDesdeAEstreia > config.acervoIdadeMinimaDias) {
+    return diasDesdeAConsulta >= config.refreshAcervoDias;
+  }
+
+  const recemEstreado = diasDesdeAEstreia >= 0 && diasDesdeAEstreia <= config.janelaDeEstreiaDias;
   return diasDesdeAConsulta >= (recemEstreado ? config.refreshRecenteDias : config.refreshAntigoDias);
 }

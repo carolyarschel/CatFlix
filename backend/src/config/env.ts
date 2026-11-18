@@ -72,6 +72,8 @@ const envSchema = z
     // OMDb (§5.3)
     OMDB_BASE_URL: z.string().default('https://www.omdbapi.com'),
     OMDB_API_KEY: z.string().optional(),
+    /** chamadas ao OMDb por 24 h (cineon-expansao §5.3); o tier grátis dá 1.000 */
+    OMDB_DAILY_QUOTA: z.coerce.number().int().positive().default(900),
 
     // canaries / alertas (§8)
     NOTIFIER_WEBHOOK_URL: z.string().optional(),

@@ -111,8 +111,8 @@ TMDB, 703 sessões ativas, 13 facetas e 70 pendências de revisão.
 |---|---|---|
 | `sessoes` | 06h, 13h, 20h | cinemas, sessões, matching, catálogo, disponibilidade, tags |
 | `proximos` | 05h30 | pré-estreias e em breve |
-| `metadata` | 04h | refresh do TMDB vencido (30 dias) |
-| `notas` | 04h30 | IMDb e Rotten Tomatoes |
+| `metadata` | 04h | refresh do TMDB: lançamentos a cada 7 dias, o resto a cada 90 (no máx. 300 por execução) |
+| `notas` | 04h30 | IMDb e Rotten Tomatoes, dentro da cota diária do OMDb (`OMDB_DAILY_QUOTA`) |
 
 Fuso `America/Sao_Paulo`, não o do servidor. O agendador fica **desligado em
 desenvolvimento** e ligado em produção; `CRON_ENABLED` força qualquer um dos

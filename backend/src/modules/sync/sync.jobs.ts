@@ -28,14 +28,17 @@ import {
 } from '../ingresso';
 import { decidirERegistrar, FontesDeProducao } from '../matching';
 import type { EventoParaMatching } from '../matching';
-import { OmdbClient, precisaAtualizarNotas } from '../omdb';
+import { OmdbClient, cotaDoOmdb, precisaAtualizarNotas } from '../omdb';
 import { recalcularTodasAsTagsAuto } from '../tags';
-import { TmdbClient, normalizarMetadata } from '../tmdb';
+import { TmdbClient, normalizarMetadata, precisaAtualizarMetadata } from '../tmdb';
 import type { ContextoDoJob } from './sync.runs';
 
 const log = logger.child({ module: 'sync:jobs' });
 
-/** Teto de segurança para não estourar a cota diária do OMDb (§5.3). */
+/**
+ * Teto por execução, além da cota diária: o job roda uma vez por dia, e a cota
+ * de 24 h pode estar quase inteira livre — este número limita a rajada.
+ */
 const MAX_NOTAS_POR_EXECUCAO = 200;
 
 function paraLista(valor: string | null | undefined): string[] {
@@ -266,38 +269,50 @@ export async function jobProximosLancamentos(ctx: ContextoDoJob): Promise<void> 
 const COLUNAS_DO_ACERVO_DESDE = new Date('2026-11-18T12:00:00Z');
 
 /**
- * Refresh de metadata (§5.2: cache de 30 dias).
+ * Refresh de metadata (cineon-expansao §5.3): lançamento a cada 7 dias, o resto
+ * a cada 90 — ver `precisaAtualizarMetadata`.
  *
  * Só toca em títulos que já têm `tmdb_id` — órfão sem candidato não tem o que
  * atualizar, e quem resolve isso é a fila de revisão.
+ *
+ * Os mais velhos primeiro, até o teto por execução: depois de uma importação
+ * grande, o backlog se esgota em alguns dias em vez de numa rajada só.
  */
 export async function jobMetadataTmdb(ctx: ContextoDoJob): Promise<void> {
-  const limite = new Date(Date.now() - tmdbConfig.cacheDays * 86_400_000);
-
-  const vencidos = await prisma.titleExternalId.findMany({
-    where: {
-      source: 'tmdb',
-      title: {
-        status: 'matched',
-        OR: [
-          { metadataUpdatedAt: null },
-          { metadataUpdatedAt: { lt: limite } },
-          // metadata gravada antes das colunas do acervo existirem: sem isto,
-          // um filme refrescado na véspera do deploy passaria até 30 dias sem
-          // a estreia do Brasil separada e apareceria como "Estreia (mundial)"
-          { metadataUpdatedAt: { lt: COLUNAS_DO_ACERVO_DESDE } },
-        ],
-      },
+  const candidatos = await prisma.titleExternalId.findMany({
+    where: { source: 'tmdb', title: { status: 'matched' } },
+    select: {
+      externalId: true,
+      titleId: true,
+      title: { select: { releaseDate: true, productionStatus: true, metadataUpdatedAt: true } },
     },
-    select: { externalId: true, titleId: true },
   });
 
-  ctx.contagens.readCount = vencidos.length;
-  if (vencidos.length === 0) return;
+  const agora = new Date();
+  const vencidos = candidatos
+    .filter(
+      (c) =>
+        precisaAtualizarMetadata(c.title, tmdbConfig.refresh, agora) ||
+        // metadata gravada antes das colunas do acervo existirem: sem isto, um
+        // filme refrescado na véspera do deploy passaria até 90 dias sem a
+        // estreia do Brasil separada e apareceria como "Estreia (mundial)"
+        (c.title.metadataUpdatedAt !== null && c.title.metadataUpdatedAt < COLUNAS_DO_ACERVO_DESDE),
+    )
+    .sort(
+      (a, b) =>
+        (a.title.metadataUpdatedAt?.getTime() ?? 0) - (b.title.metadataUpdatedAt?.getTime() ?? 0),
+    );
+
+  const daVez = vencidos.slice(0, tmdbConfig.maxPorExecucao);
+  ctx.contagens.readCount = daVez.length;
+  ctx.detalhes.candidatos = candidatos.length;
+  ctx.detalhes.vencidos = vencidos.length;
+  ctx.detalhes.adiados = vencidos.length - daVez.length;
+  if (daVez.length === 0) return;
 
   const tmdb = new TmdbClient({ syncRunId: ctx.syncRunId });
 
-  for (const { externalId } of vencidos) {
+  for (const { externalId } of daVez) {
     try {
       const metadata = await tmdb.obterMetadata(Number(externalId));
       await prisma.$transaction((tx) => upsertPorTmdbId(tx, metadata));
@@ -310,8 +325,36 @@ export async function jobMetadataTmdb(ctx: ContextoDoJob): Promise<void> {
 }
 
 /**
+ * A ordem em que as notas vencidas gastam a cota do OMDb.
+ *
+ * 1. o que está em cartaz ou em pré-estreia — é a nota que se olha na frente
+ *    do cinema;
+ * 2. o que nunca foi consultado — filme recém-adicionado sem nota nenhuma;
+ * 3. o resto, da consulta mais velha para a mais nova.
+ *
+ * Sem isto, um acervo de centenas de filmes recém-importado (§11) comeria a
+ * cota do dia e o filme que estreou ontem ficaria sem nota.
+ */
+export function priorizarNotas<T extends { titleId: string; ratingsUpdatedAt: Date | null }>(
+  vencidos: T[],
+  emCartaz: ReadonlySet<string>,
+): T[] {
+  const peso = (v: T) => (emCartaz.has(v.titleId) ? 0 : v.ratingsUpdatedAt === null ? 1 : 2);
+  return [...vencidos].sort(
+    (a, b) =>
+      peso(a) - peso(b) ||
+      (a.ratingsUpdatedAt?.getTime() ?? 0) - (b.ratingsUpdatedAt?.getTime() ?? 0),
+  );
+}
+
+/**
  * Notas do OMDb (§5.3): diária na primeira semana após a estreia, semanal
- * depois. É o `Title.releaseDate` que diz em qual regime o filme está.
+ * depois, mensal para filme com mais de um ano (cineon-expansao §5.3). É o
+ * `Title.releaseDate` que diz em qual regime o filme está.
+ *
+ * Respeita a cota diária (`OMDB_DAILY_QUOTA`, contada pelas chamadas das
+ * últimas 24 h) além do teto por execução. O que não coube fica para amanhã,
+ * na ordem de `priorizarNotas`.
  */
 export async function jobNotasOmdb(ctx: ContextoDoJob): Promise<void> {
   const candidatos = await prisma.titleExternalId.findMany({
@@ -323,16 +366,39 @@ export async function jobNotasOmdb(ctx: ContextoDoJob): Promise<void> {
     },
   });
 
-  const vencidos = candidatos.filter((c) =>
-    precisaAtualizarNotas(c.title.releaseDate, c.title.ratingsUpdatedAt, omdbConfig),
+  const vencidos = candidatos
+    .filter((c) => precisaAtualizarNotas(c.title.releaseDate, c.title.ratingsUpdatedAt, omdbConfig))
+    .map((c) => ({ ...c, ratingsUpdatedAt: c.title.ratingsUpdatedAt }));
+
+  const emCartaz = new Set(
+    (
+      await prisma.availability.findMany({
+        where: {
+          titleId: { in: vencidos.map((v) => v.titleId) },
+          source: 'cinema',
+          status: { in: ['em_cartaz', 'pre_estreia'] },
+          endedAt: null,
+        },
+        select: { titleId: true },
+      })
+    ).map((a) => a.titleId),
   );
 
-  ctx.contagens.readCount = vencidos.length;
-  ctx.detalhes.candidatos = candidatos.length;
+  const cota = await cotaDoOmdb(omdbConfig.dailyQuota);
+  const cabem = Math.min(cota.restante, MAX_NOTAS_POR_EXECUCAO);
+  const daVez = priorizarNotas(vencidos, emCartaz).slice(0, cabem);
 
-  if (vencidos.length > MAX_NOTAS_POR_EXECUCAO) {
-    log.warn('mais títulos vencidos que o teto por execução', {
+  ctx.contagens.readCount = daVez.length;
+  ctx.detalhes.candidatos = candidatos.length;
+  ctx.detalhes.vencidos = vencidos.length;
+  ctx.detalhes.adiados = vencidos.length - daVez.length;
+  ctx.detalhes.cota = { limite: omdbConfig.dailyQuota, usadasEm24h: cota.usadas };
+
+  if (daVez.length < vencidos.length) {
+    log.warn('notas vencidas ficaram para a próxima execução', {
       vencidos: vencidos.length,
+      daVez: daVez.length,
+      cotaRestante: cota.restante,
       teto: MAX_NOTAS_POR_EXECUCAO,
     });
   }
@@ -340,7 +406,7 @@ export async function jobNotasOmdb(ctx: ContextoDoJob): Promise<void> {
   const omdb = new OmdbClient({ syncRunId: ctx.syncRunId });
   let semNota = 0;
 
-  for (const alvo of vencidos.slice(0, MAX_NOTAS_POR_EXECUCAO)) {
+  for (const alvo of daVez) {
     try {
       const r = await omdb.buscarNotas(alvo.externalId);
 

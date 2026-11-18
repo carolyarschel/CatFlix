@@ -11,8 +11,25 @@ export const tmdbConfig = {
   /** §5.2: "elenco principal (primeiros N do cast)" */
   castLimit: 12,
   appendToResponse: 'credits,external_ids,release_dates',
-  /** §5.2: cache de metadata de 30 dias */
-  cacheDays: 30,
+  /**
+   * Cadência do refresh de metadata (cineon-expansao §5.3), no lugar dos 30
+   * dias do contexto original — pensados para o cinema, e desperdiçados num
+   * acervo de centenas de filmes antigos.
+   *
+   * Lançamento (ainda não estreou, ou estreou há até 90 dias): a cada 7 dias,
+   * porque elenco, sinopse e data mudam muito nessa fase. O resto: a cada 90.
+   */
+  refresh: {
+    janelaDeLancamentoDias: 90,
+    lancamentoDias: 7,
+    acervoDias: 90,
+  },
+  /**
+   * Teto por execução do job. Uma importação do histórico (§11) vence de uma
+   * vez centenas de filmes; sem teto, o job das 04h faria ~2 pedidos por filme
+   * de uma vez só. O que sobra fica para o dia seguinte, os mais velhos antes.
+   */
+  maxPorExecucao: 300,
   imagens: {
     base: env.TMDB_IMAGE_BASE,
     poster: 'w500',
@@ -23,8 +40,11 @@ export const tmdbConfig = {
 } as const;
 
 export const omdbConfig = {
-  /** §5.3: tier grátis, 1.000 requisições/dia */
-  dailyQuota: 1000,
+  /**
+   * Chamadas por 24 h (`OMDB_DAILY_QUOTA`, padrão 900). O tier grátis dá
+   * 1.000; a folga cobre consultas fora do job e erro de contagem.
+   */
+  dailyQuota: env.OMDB_DAILY_QUOTA,
   /**
    * §5.3: "diária na primeira semana após a estreia, semanal depois".
    * O `Title.releaseDate` é o que diz em qual dos dois regimes o filme está.
@@ -32,6 +52,12 @@ export const omdbConfig = {
   janelaDeEstreiaDias: 7,
   refreshRecenteDias: 1,
   refreshAntigoDias: 7,
+  /**
+   * Acervo (cineon-expansao §5.3): filme com mais de 1 ano não muda de nota
+   * de uma semana para a outra — mensal basta, e poupa a cota para o cinema.
+   */
+  acervoIdadeMinimaDias: 365,
+  refreshAcervoDias: 30,
 } as const;
 
 /** Monta a URL absoluta de uma imagem do TMDB a partir do caminho relativo. */

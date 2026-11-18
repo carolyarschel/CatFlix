@@ -38,7 +38,7 @@ import semSinopsePt from './__fixtures__/movie-sem-sinopse-pt.json';
 import semSinopseEn from './__fixtures__/movie-sem-sinopse-reserva-en.json';
 import dunaReexibicao from './__fixtures__/movie-duna-parte-2-reexibicao.json';
 import { TmdbClient } from './tmdb.client';
-import { estreiaNoBrasil, normalizarMetadata } from './tmdb.parse';
+import { estreiaNoBrasil, normalizarMetadata, precisaAtualizarMetadata } from './tmdb.parse';
 import { tmdbMovieSchema } from './tmdb.schemas';
 
 function resposta(corpo: unknown): Response {
@@ -148,5 +148,41 @@ describe('sinopse com idioma de reserva (§5.2)', () => {
 
     expect(meta.overview).toBeNull();
     expect(meta.overviewLanguage).toBeNull();
+  });
+});
+
+describe('cadência do refresh de metadata (§5.3)', () => {
+  const agora = new Date('2026-11-18T12:00:00Z');
+  const dias = (n: number) => new Date(agora.getTime() - n * 86_400_000);
+  const config = { janelaDeLancamentoDias: 90, lancamentoDias: 7, acervoDias: 90 };
+
+  it('lançamento (estreou há menos de 90 dias) vence em 7 dias', () => {
+    const filme = { releaseDate: dias(30), productionStatus: 'Released', metadataUpdatedAt: dias(6) };
+    expect(precisaAtualizarMetadata(filme, config, agora)).toBe(false);
+    expect(precisaAtualizarMetadata({ ...filme, metadataUpdatedAt: dias(7) }, config, agora)).toBe(true);
+  });
+
+  it('filme que ainda vai estrear também é lançamento', () => {
+    const futuro = new Date(agora.getTime() + 200 * 86_400_000);
+    const filme = { releaseDate: futuro, productionStatus: 'Post Production', metadataUpdatedAt: dias(8) };
+    expect(precisaAtualizarMetadata(filme, config, agora)).toBe(true);
+  });
+
+  it('acervo vence em 90 dias, não em 30', () => {
+    const filme = { releaseDate: dias(3000), productionStatus: 'Released', metadataUpdatedAt: dias(31) };
+    expect(precisaAtualizarMetadata(filme, config, agora)).toBe(false);
+    expect(precisaAtualizarMetadata({ ...filme, metadataUpdatedAt: dias(90) }, config, agora)).toBe(true);
+  });
+
+  it('sem data: anunciado é lançamento, "Released" é acervo', () => {
+    const base = { releaseDate: null, metadataUpdatedAt: dias(8) };
+    expect(precisaAtualizarMetadata({ ...base, productionStatus: 'Planned' }, config, agora)).toBe(true);
+    expect(precisaAtualizarMetadata({ ...base, productionStatus: 'Released' }, config, agora)).toBe(false);
+    expect(precisaAtualizarMetadata({ ...base, productionStatus: null }, config, agora)).toBe(true);
+  });
+
+  it('nunca atualizado vence sempre', () => {
+    const filme = { releaseDate: dias(3000), productionStatus: 'Released', metadataUpdatedAt: null };
+    expect(precisaAtualizarMetadata(filme, config, agora)).toBe(true);
   });
 });

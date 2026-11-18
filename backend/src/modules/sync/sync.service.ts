@@ -30,12 +30,12 @@ const JOBS: Record<string, { jobType: SyncJobType; executar: (ctx: ContextoDoJob
   metadata: {
     jobType: 'tmdb_metadata',
     executar: jobMetadataTmdb,
-    descricao: 'Refresh de metadata do TMDB vencida (30 dias)',
+    descricao: 'Refresh de metadata do TMDB: lançamentos a cada 7 dias, o resto a cada 90',
   },
   notas: {
     jobType: 'omdb_ratings',
     executar: jobNotasOmdb,
-    descricao: 'Notas IMDb e Rotten Tomatoes',
+    descricao: 'Notas IMDb e Rotten Tomatoes, dentro da cota diária do OMDb',
   },
   tags: {
     jobType: 'tags_rebuild',

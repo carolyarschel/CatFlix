@@ -236,7 +236,8 @@ A tabela `user_title_states` **não é apagada** nesta fase. Depois que a migra�
 | 2. Migrations | ✅ `20261118120000_acervo_do_casal` aplicada no banco de desenvolvimento. Os quatro CHECKs recusam o que devem e a conversão de `quero_ver` é idempotente (testado com dados). Regras registradas no `backend/prisma/MIGRATIONS.md`. Vai para produção no próximo deploy. |
 | 3. Módulo `tmdb` | ✅ `TmdbClient.obterMetadata` (sinopse no idioma de reserva), estreia BR pela regra do §5.1, status de produção, `TMDB_LANGUAGE`/`TMDB_FALLBACK_LANGUAGE`/`TMDB_REGION`. Testes com respostas reais salvas em `__fixtures__`. |
 | 4. `watches`, `watchlist`, `ratings`, `library` | ✅ Rotas do §9 (menos `where-to-watch`, que é do passo 7). 11 testes de integração e o fluxo inteiro percorrido pelo HTTP com o TMDB real. |
-| 5. Job de metadata e notas do acervo | próximo |
+| 5. Job de metadata e notas do acervo | ✅ Metadata: lançamento (sem estreia ou com até 90 dias) a cada 7 dias, o resto a cada 90, no máximo 300 por execução, os mais velhos antes. Notas: mensal para filme com mais de 1 ano; cota diária (`OMDB_DAILY_QUOTA`, padrão 900) contada pelas chamadas das últimas 24 h. |
+| 6. Frontend | próximo — depende das perguntas 3 a 5 da seção 6 |
 
 Medido depois do refresh de metadata no banco de desenvolvimento: dos 112 filmes casados, 100 com sinopse em pt-BR, 11 em en-US e 1 sem sinopse em idioma nenhum (antes: 20 sem sinopse). Status de produção vistos: Released 86, Post Production 21, In Production 3, Planned 2.
 
@@ -254,3 +255,10 @@ Medido depois do refresh de metadata no banco de desenvolvimento: dos 112 filmes
 - **Refresh depois do deploy:** o job de metadata trata como vencida toda metadata gravada antes destas colunas existirem. Sem isso, em produção um filme passaria até 30 dias aparecendo como "Estreia (mundial)".
 - **Ainda falta (§3.5): criar filme que não está no TMDB.** A fila Revisar exige um evento do ingresso em cada pendência (`review_items.ingresso_event_id` é obrigatório), então isso pede outra migration, que torna a coluna opcional (não é destrutiva). Fica para um passo próprio.
 - **Visualização apagada depois da nota:** a nota fica. Apagar a visualização por engano não deve levar a nota junto, e o "Remover do catálogo" já tira tudo de uma vez quando é essa a intenção.
+
+**Decisões do passo 5:**
+
+- **A cota do OMDb é uma janela móvel de 24 h**, contada pelos payloads brutos do OMDb (toda chamada é gravada, inclusive as que falham, que também gastam cota). Não sabemos a que horas o OMDb zera o contador, e a janela móvel nunca passa do limite, seja qual for o relógio dele.
+- **Quando a cota não dá para todos:** primeiro o que está em cartaz ou em pré-estreia, depois o que nunca foi consultado, depois a consulta mais antiga. Assim um acervo recém-importado não deixa o filme que estreou ontem sem nota.
+- **Filme sem data:** se o status for "Released", é acervo (90 dias); se for anunciado ou em produção, é lançamento (7 dias).
+- **Medido no banco de desenvolvimento em 18/11/2026:** metadata 0 vencidos de 112 (refrescados no mesmo dia); notas 109 consultadas dentro da cota, 108 com resposta e 1 que o OMDb não conhece. Rodando de novo, o job viu as 109 chamadas na cota e não tinha nada vencido.
