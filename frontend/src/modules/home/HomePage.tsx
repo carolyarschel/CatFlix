@@ -1,12 +1,10 @@
 import { useMemo, useState } from 'react';
-import { Badge } from '../../shared/components/Badge';
 import { BottomNav } from '../../shared/components/BottomNav';
 import { HeroCard } from '../../shared/components/HeroCard';
 import {
   IconeBusca,
   IconeAgenda,
   IconeMais,
-  IconeRevisar,
   IconeSeta,
 } from '../../shared/components/Icones';
 import { PillFilter } from '../../shared/components/PillFilter';
@@ -16,7 +14,6 @@ import { useApi } from '../../shared/hooks/useApi';
 import { useSincronizacao } from '../../shared/hooks/useSincronizacao';
 import { formatarIdade } from '../../shared/formatos';
 import type {
-  ContagemDaRevisao,
   Home,
   ListaDeTitulos,
   PerfilDoApp,
@@ -57,7 +54,6 @@ export function HomePage({
   aoNavegar: (para: string) => void;
 }) {
   const [filtro, setFiltro] = useState<string | null>(null);
-  const [secaoAtiva, setSecaoAtiva] = useState('inicio');
   const [painelDeTags, setPainelDeTags] = useState(false);
   /** ids qualificados vindos do painel: `sala:imax` */
   const [tags, setTags] = useState<string[]>([]);
@@ -66,11 +62,7 @@ export function HomePage({
   // que trocar de pessoa é outra home
   const query = useMemo(() => ({ user: perfil.id }), [perfil.id]);
   const home = useApi<Home>('/home', { query });
-  const revisao = useApi<ContagemDaRevisao>('/review/count');
-  const sync = useSincronizacao(() => {
-    home.recarregar();
-    revisao.recarregar();
-  });
+  const sync = useSincronizacao(() => home.recarregar());
 
   const filtrando = tags.length > 0;
 
@@ -116,24 +108,6 @@ export function HomePage({
     }
   }
 
-  function irPara(destino: string) {
-    setSecaoAtiva(destino);
-
-    if (destino === 'inicio') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-
-    // a âncora só existe se a trilha foi renderizada; com o filtro ligado numa
-    // outra trilha — ou com tag ligada, que troca as trilhas por uma grade —,
-    // limpar o filtro primeiro é o que a pessoa espera
-    setFiltro(null);
-    setTags([]);
-    requestAnimationFrame(() => {
-      document.getElementById(destino)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  }
-
   if (home.carregando && !dados) {
     return <p className={styles.aviso}>Carregando…</p>;
   }
@@ -149,8 +123,6 @@ export function HomePage({
     );
   }
 
-  const pendencias = revisao.dados?.total ?? 0;
-
   return (
     <div className={styles.tela}>
       <div className={styles.ambiente} aria-hidden="true" />
@@ -158,7 +130,7 @@ export function HomePage({
       <header className={styles.cabecalho}>
         <div className={styles.marca}>
           <span className={styles.inicial}>{dados.perfil.inicial}</span>
-          <h1 className={styles.titulo}>Início</h1>
+          <h1 className={styles.titulo}>Cinema</h1>
         </div>
 
         <div className={styles.acoes}>
@@ -196,18 +168,8 @@ export function HomePage({
             <IconeBusca />
           </button>
 
-          {/* §2: sem pendência, o item não é renderizado — nem cinza, nem vazio */}
-          {pendencias > 0 ? (
-            <button
-              type="button"
-              className={styles.acao}
-              aria-label={`Fila de revisão, ${pendencias} pendências`}
-              onClick={() => aoNavegar('/revisar')}
-            >
-              <IconeRevisar />
-              <Badge valor={pendencias} />
-            </button>
-          ) : null}
+          {/* Revisar saiu daqui: mora na aba "Mais" (cineon-expansao §8), e a
+              pendência aparece como badge na própria aba da barra de baixo */}
         </div>
       </header>
 
@@ -341,10 +303,9 @@ export function HomePage({
       )}
 
       <BottomNav
-        perfil={dados.perfil}
-        ativo={secaoAtiva}
-        aoIrPara={irPara}
-        aoAbrirPerfil={() => aoNavegar('/perfil')}
+        ativa="cinema"
+        aoNavegar={aoNavegar}
+        aoTocarNaAtiva={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
       />
 
       {painelDeTags ? (

@@ -5,6 +5,7 @@ import { lerCorpo, textoDaQuery } from '../../shared/validacao';
 import { pessoaDaRequisicao } from '../users/users.pessoa';
 import { removerNota } from '../ratings';
 import { esquemaDaVisualizacao } from '../watches/watches.controller';
+import { listarAssistidos } from './library.assistidos';
 import { buscarParaAdicionar } from './library.busca';
 import {
   adicionarPorTmdbId,
@@ -25,6 +26,24 @@ export async function getBusca(req: Request, res: Response): Promise<void> {
     throw new ValidationError('Digite pelo menos 2 letras para buscar.');
   }
   res.json({ itens: await buscarParaAdicionar(q) });
+}
+
+const filtrosDosAssistidos = z.object({
+  pessoa: z.enum(['CAT', 'BEAR', 'AMBOS']).optional(),
+  local: z.enum(['CASA', 'CINEMA']).optional(),
+  ano: z.coerce.number().int().min(1888).max(2100).optional(),
+  q: z.string().optional(),
+  genero: z.string().optional(),
+  diretor: z.string().optional(),
+  notaMin: z.coerce.number().min(0).max(10).optional(),
+  pagina: z.coerce.number().int().min(1).optional(),
+});
+
+/** `GET /assistidos` — a aba "Assistidos" (§8): um card por filme. */
+export async function getAssistidos(req: Request, res: Response): Promise<void> {
+  const chaves = ['pessoa', 'local', 'ano', 'q', 'genero', 'diretor', 'notaMin', 'pagina'] as const;
+  const bruto = Object.fromEntries(chaves.map((c) => [c, textoDaQuery(req.query[c])]));
+  res.json(await listarAssistidos(lerCorpo(filtrosDosAssistidos, bruto)));
 }
 
 /** `POST /library/titles { tmdbId }` — cria ou reaproveita, nunca duplica. */

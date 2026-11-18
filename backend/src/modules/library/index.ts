@@ -11,3 +11,5 @@ export {
 export type { ResultadoDaRemocao } from './library.service';
 export { libraryRoutes } from './library.routes';
 export type * from './library.types';
+export { listarAssistidos } from './library.assistidos';
+export type { CardDoAssistido, FiltrosDosAssistidos } from './library.assistidos';

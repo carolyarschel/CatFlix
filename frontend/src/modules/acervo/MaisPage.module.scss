@@ -1,0 +1,120 @@
+@use '../../shared/styles/tokens' as t;
+
+.tela {
+  position: relative;
+  min-height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+  padding-top: env(safe-area-inset-top, 0px);
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-8;
+  overflow-x: clip;
+
+  @media (min-width: t.$bp-desktop) {
+    max-width: 720px;
+  }
+}
+
+.ambiente {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 220px;
+  background: linear-gradient(to bottom, t.$ambient 0%, t.$bg 100%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.conteudo {
+  flex: 1;
+  padding: 0 t.$gutter;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-10;
+}
+
+.lista {
+  border-radius: t.$radius-lg;
+  border: 1px solid t.$border;
+  background: t.$surface-card;
+  overflow: hidden;
+
+  li + li {
+    border-top: 1px solid t.$border-subtle;
+  }
+}
+
+.item {
+  width: 100%;
+  min-height: 64px;
+  padding: t.$space-5 t.$space-6;
+  display: flex;
+  align-items: center;
+  gap: t.$space-6;
+  text-align: left;
+}
+
+.icone {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: t.$surface-chip;
+  color: t.$text-secondary;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  // a badge de pendências sai um pouco do círculo
+  > span {
+    top: -5px;
+    right: -9px;
+  }
+}
+
+.textos {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nome {
+  color: t.$text;
+  font-size: t.$fs-base;
+  font-weight: t.$fw-semibold;
+}
+
+.detalhe {
+  color: t.$text-label;
+  font-size: t.$fs-xs;
+}
+
+// ── sobre (§5.4) ────────────────────────────────────────────
+
+.sobre {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-4;
+  color: t.$text-support;
+  font-size: t.$fs-sm;
+  line-height: t.$lh-body;
+
+  a {
+    color: t.$accent-on-soft;
+  }
+}
+
+.rotulo {
+  margin: 0;
+  font-family: t.$font-text;
+  font-size: t.$fs-2xs;
+  font-weight: t.$fw-medium;
+  letter-spacing: t.$ls-label;
+  text-transform: uppercase;
+  color: t.$text-group-label;
+}

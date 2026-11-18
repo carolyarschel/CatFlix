@@ -555,7 +555,7 @@ sem saída.
 O app passa a registrar o que vocês assistiram e querem assistir, além do
 cinema. O documento é [`cineon-expansao/contexto-expansao.md`](cineon-expansao/contexto-expansao.md)
 e o andamento fica em [`cineon-expansao/ESTADO_ATUAL.md`](cineon-expansao/ESTADO_ATUAL.md).
-Backend pronto até o passo 4; o frontend ainda não usa estas rotas.
+Telas no ar (em desenvolvimento): "+" (`/adicionar`), detalhe novo (`/filme/:id`) e as abas Cinema / Assistidos (`/assistidos`) / Quero assistir (`/quero-assistir`) / Mais (`/mais`).
 
 | Rota | O quê |
 |---|---|
@@ -567,6 +567,7 @@ Backend pronto até o passo 4; o frontend ainda não usa estas rotas.
 | `POST /api/library/titles/:id/restaurar` | `{"removidoEm":"…"}`: desfaz a remoção |
 | `POST /api/titles/:id/watches` | já assistimos; tira o filme da lista de quem estava |
 | `GET /api/watches` | assistidos: `pessoa` (`CAT`/`BEAR`/`AMBOS`), `local`, `ano`, `q`, `cursor` |
+| `GET /api/assistidos` | aba Assistidos, um card por filme: `pessoa`, `local`, `ano`, `q`, `genero`, `diretor`, `notaMin`, `pagina` |
 | `PATCH`/`DELETE /api/watches/:id` | editar / remover uma visualização |
 | `GET /api/watchlist?escopo=` | quero assistir, nas trilhas do §8; `AMBOS` = os dois querem |
 | `PUT`/`DELETE /api/titles/:id/watchlist` | `{"interesse":4,"paraOsDois":true}` / tirar da sua lista |

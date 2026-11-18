@@ -369,3 +369,41 @@ export interface DetalheDoAcervo extends DetalheDoTitulo {
   pessoas: SituacaoDaPessoa[];
   visualizacoes: VisualizacaoDoTitulo[];
 }
+
+/** Um card da aba "Assistidos": o mesmo card das trilhas, com a última vez. */
+export interface CardDoAssistido extends CardDeTitulo {
+  ultimaVez: { data: string; precisao: PrecisaoDaData };
+  vezes: number;
+  notas: Array<{ pessoa: Pessoa; nota: number }>;
+}
+
+/** `GET /assistidos` */
+export interface Assistidos {
+  itens: CardDoAssistido[];
+  total: number;
+  proximaPagina: number | null;
+  facetas: { anos: number[]; generos: string[] };
+}
+
+export type GrupoDaLista = 'em_cartaz' | 'estreia_em_breve' | 'ja_disponivel' | 'sem_data';
+
+export interface ItemDaLista {
+  titleId: string;
+  titulo: string;
+  posterUrl: string | null;
+  ano: number | null;
+  orfao: boolean;
+  imdb: string | null;
+  rt: string | null;
+  /** `AAAA-MM-DD`: do Brasil, ou a original quando não há a daqui */
+  estreia: string | null;
+  estreiaMundial: boolean;
+  quem: Array<{ pessoa: Pessoa; interesse: number | null; adicionadoEm: string }>;
+  grupo: GrupoDaLista;
+}
+
+/** `GET /watchlist` */
+export interface ListaQueroAssistir {
+  grupos: Array<{ id: GrupoDaLista; titulo: string; itens: ItemDaLista[] }>;
+  total: number;
+}

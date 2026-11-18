@@ -1,4 +1,7 @@
 import { AdicionarPage } from './modules/acervo/AdicionarPage';
+import { AssistidosPage } from './modules/acervo/AssistidosPage';
+import { MaisPage } from './modules/acervo/MaisPage';
+import { QueroAssistirPage } from './modules/acervo/QueroAssistirPage';
 import { HomePage } from './modules/home/HomePage';
 import { ListaPage } from './modules/home/ListaPage';
 import { LoginPage } from './modules/profile/LoginPage';
@@ -40,6 +43,19 @@ export function App() {
 
   if (rota.caminho === '/revisar') {
     return <RevisarPage aoVoltar={voltar} />;
+  }
+
+  // as abas do acervo do casal (cineon-expansao §8); "Cinema" é a home
+  if (rota.caminho === '/assistidos') {
+    return <AssistidosPage perfil={perfil} aoNavegar={navegar} />;
+  }
+
+  if (rota.caminho === '/quero-assistir') {
+    return <QueroAssistirPage perfil={perfil} aoNavegar={navegar} />;
+  }
+
+  if (rota.caminho === '/mais') {
+    return <MaisPage perfil={perfil} aoNavegar={navegar} />;
   }
 
   // o "+" do cabeçalho (cineon-expansao §4.1)

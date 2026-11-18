@@ -20,6 +20,9 @@ export interface ItemDaLista {
   posterUrl: string | null;
   ano: number | null;
   orfao: boolean;
+  /** já formatadas: "8,5" e "92%" — para o mesmo card das trilhas */
+  imdb: string | null;
+  rt: string | null;
   /** `AAAA-MM-DD`: estreia no Brasil, ou a original quando não há a daqui */
   estreia: string | null;
   /** a estreia acima é a original (não há data do Brasil) */

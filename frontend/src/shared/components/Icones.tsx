@@ -101,6 +101,23 @@ export const IconeUrso = (p: Props) => (
   </Svg>
 );
 
+/** Aba "Assistidos" (cineon-expansao §8). */
+export const IconeOlho = (p: Props) => (
+  <Svg {...p}>
+    <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z" />
+    <circle cx="12" cy="12" r="3" />
+  </Svg>
+);
+
+/** Aba "Mais" (cineon-expansao §8). */
+export const IconeMaisOpcoes = (p: Props) => (
+  <Svg {...p}>
+    <circle cx="5" cy="12" r="1.4" />
+    <circle cx="12" cy="12" r="1.4" />
+    <circle cx="19" cy="12" r="1.4" />
+  </Svg>
+);
+
 /** O "+" do cabeçalho: adicionar um filme ao acervo (cineon-expansao §4.1). */
 export const IconeMais = (p: Props) => (
   <Svg {...p}>

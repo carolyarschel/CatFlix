@@ -20,7 +20,7 @@
 }
 
 .item {
-  min-width: 74px;
+  min-width: 72px;
   min-height: 52px;
   padding: 0 t.$space-4;
   border-radius: 26px;
@@ -40,14 +40,14 @@
   font-weight: t.$fw-semibold;
 }
 
-.inicial {
-  width: 22px;
-  height: 22px;
-  border-radius: 7px;
-  color: t.$accent-on-solid;
-  font-size: t.$fs-xs;
-  font-weight: t.$fw-bold;
+// o ícone segura a badge de pendências da aba "Mais" no canto
+.icone {
+  position: relative;
   display: flex;
-  align-items: center;
-  justify-content: center;
+}
+
+// a badge (um span; o ícone é svg) sai um pouco do ícone, como no cabeçalho
+.icone > span {
+  top: -7px;
+  right: -13px;
 }

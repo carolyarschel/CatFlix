@@ -4,6 +4,8 @@ import { prisma } from '../../shared/prisma';
 // arquivos do serviço, não o barril: o barril exporta rotas
 import { diaNoFuso } from '../cinemas/cinemas.queries';
 import { fusoDaCidade } from '../cinemas/cinemas.service';
+// só formatação, sem consulta: não cria dependência do catálogo
+import { formatarNotaImdb, formatarNotaRt } from '../catalog/catalog.format';
 import type { EscopoDaLista, GrupoDaLista, ItemDaLista, QuemQuer } from './watchlist.types';
 
 /**
@@ -144,6 +146,8 @@ export async function quemQuerOTitulo(titleId: string): Promise<QuemQuer[]> {
 
 // ── a aba "Quero assistir" ───────────────────────────────────
 
+const ORDEM_DAS_PESSOAS: Pessoa[] = ['CAT', 'BEAR'];
+
 const ORDEM_DOS_GRUPOS: GrupoDaLista[] = ['em_cartaz', 'estreia_em_breve', 'ja_disponivel', 'sem_data'];
 
 const ROTULOS: Record<GrupoDaLista, string> = {
@@ -180,6 +184,8 @@ export async function listarLista(escopo?: EscopoDaLista): Promise<{
           posterUrl: true,
           year: true,
           status: true,
+          imdbRating: true,
+          rtRating: true,
           releaseDate: true,
           releaseDateBr: true,
           releaseDateOriginal: true,
@@ -228,9 +234,12 @@ export async function listarLista(escopo?: EscopoDaLista): Promise<{
       posterUrl: titulo.posterUrl,
       ano: titulo.year,
       orfao: titulo.status === 'orphan',
+      imdb: formatarNotaImdb(titulo.imdbRating === null ? null : Number(titulo.imdbRating)),
+      rt: formatarNotaRt(titulo.rtRating),
       estreia,
       estreiaMundial: !titulo.releaseDateBr && Boolean(estreia),
-      quem: quem.sort((a, b) => a.pessoa.localeCompare(b.pessoa)),
+      // CAT antes de BEAR, como em todo card — a ordem do enum, não a alfabética
+      quem: quem.sort((a, b) => ORDEM_DAS_PESSOAS.indexOf(a.pessoa) - ORDEM_DAS_PESSOAS.indexOf(b.pessoa)),
       grupo,
     });
   }

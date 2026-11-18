@@ -240,7 +240,9 @@ A tabela `user_title_states` **não é apagada** nesta fase. Depois que a migra�
 | 6.1 Fluxo do "+" | ✅ Página `/adicionar`, aberta pelo "+" do cabeçalho da home: busca com debounce (400 ms, a partir de 2 letras), Já assistimos (formulário reutilizável `FormularioDeVisualizacao`), Quero assistir, Eu e o outro queremos, Só abrir o filme. Testado no navegador com o TMDB real. |
 | 6.2 Detalhe novo | ✅ `/filme/:id` agora é o detalhe do acervo (`DetalhePage`), na ordem do print, numa coluna (720 px no desktop). O detalhe antigo (`FilmePage`) e o hook do "marcado" saíram; o bloco de sessões virou `SessoesDoFilme`. Testado no navegador, celular e desktop. |
 | Home sem o "marcado" | ✅ Selo do pôster = quem quer assistir, com o rosto do gato/urso; trilha "Na lista de vocês"; botão "Quero assistir" no destaque. |
-| 6.3–6.4 Abas Assistidos e Quero assistir, navegação do §8 | próximo |
+| 6.3–6.4 Abas e navegação do §8 | ✅ Barra de baixo com Cinema / Assistidos / Quero assistir / Mais. Assistidos (`GET /assistidos`): um card por filme, filtros de quem, local, ano, gênero, diretor, nota e título, paginado. Quero assistir: as quatro trilhas e o filtro minha / dele / dos dois. Mais: perfil, Revisar (com badge), programação por data e "Sobre". Testado no navegador. |
+| 6.5 Selo "Na sua lista" | ✅ Coberto pelos rostos no pôster (quem quer assistir) e pela trilha "Na lista de vocês" na home. |
+| 7. Onde assistir e "Sobre" | parcial: o botão já leva ao JustWatch e o "Sobre" tem o aviso do TMDB; faltam o logo do TMDB e os provedores de streaming |
 
 Medido depois do refresh de metadata no banco de desenvolvimento: dos 112 filmes casados, 100 com sinopse em pt-BR, 11 em en-US e 1 sem sinopse em idioma nenhum (antes: 20 sem sinopse). Status de produção vistos: Released 86, Post Production 21, In Production 3, Planned 2.
 
@@ -289,3 +291,12 @@ Medido depois do refresh de metadata no banco de desenvolvimento: dos 112 filmes
 - **Estrelas antes de assistir, notas depois.** Marcar estrelas põe o filme na lista; tocar na estrela que já está marcada apaga as estrelas, mas mantém na lista; "tirar" tira da lista. A nota é um seletor de 0 a 10 em meio ponto, só para quem assistiu.
 - **Remover do catálogo** pede confirmação e oferece "Desfazer" até a página recarregar; ao remover, some o "Desfazer" da lista, que não faria mais sentido.
 - **"Editar"** abre o link do JustWatch e as tags manuais ("De bisnaguinha", "De crédito"), que aparecem como chips no topo.
+
+**Decisões do passo 6.3–6.4:**
+
+- **Revisar saiu do cabeçalho da home e foi para "Mais"** (§8). A pendência aparece como badge na aba "Mais" da barra; sem pendência, nem o item nem a badge aparecem (§2).
+- **A barra continua em pílula no desktop**, sem sidebar: o "o desktop segue o mobile" de 23/09/2026 vale também aqui.
+- **Assistidos é um card por filme**, não por visualização: rever não duplica o pôster. A faixa é a data da última vez (dia, "jul 2019" ou só o ano), os rostos são quem viu, e a linha diz onde e quantas vezes.
+- **Filtro de nota = "algum de vocês deu nota ≥ X".** O §8 não diz de quem; esta é a leitura que não esconde filme bem avaliado por um dos dois.
+- **Ano, gênero, nota e diretor ficam em "Mais filtros"**, para não empurrar a grade para baixo. Os anos e os gêneros oferecidos são só os que existem nos assistidos.
+- **A home se chama "Cinema"**, o nome da aba.

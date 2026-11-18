@@ -3,6 +3,7 @@ import { asyncHandler } from '../../shared/error-handler';
 import {
   deleteNota,
   deleteTitulo,
+  getAssistidos,
   getBusca,
   getTitulo,
   patchTitulo,
@@ -16,6 +17,7 @@ export const libraryRoutes = Router();
 
 // cineon-expansao §9 — as rotas que cruzam módulos
 libraryRoutes.get('/tmdb/search', asyncHandler(getBusca));
+libraryRoutes.get('/assistidos', asyncHandler(getAssistidos));
 
 libraryRoutes.post('/library/titles', asyncHandler(postTitulo));
 libraryRoutes.get('/library/titles/:id', asyncHandler(getTitulo));

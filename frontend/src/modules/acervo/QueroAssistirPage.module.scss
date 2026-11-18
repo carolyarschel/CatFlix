@@ -1,0 +1,98 @@
+@use '../../shared/styles/tokens' as t;
+
+.tela {
+  position: relative;
+  min-height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+  padding-top: env(safe-area-inset-top, 0px);
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-7;
+  overflow-x: clip;
+
+  // o desktop segue o mobile (§3): a mesma coluna, mais larga
+  @media (min-width: t.$bp-desktop) {
+    max-width: 720px;
+  }
+}
+
+.ambiente {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 220px;
+  background: linear-gradient(to bottom, t.$ambient 0%, t.$bg 100%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+// rola de lado, como as pills da home
+.pills {
+  padding: 0 t.$gutter;
+  display: flex;
+  align-items: center;
+  gap: t.$space-3;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.pill {
+  min-height: 38px;
+  flex-shrink: 0;
+  padding: 0 t.$space-6;
+  border-radius: t.$radius-pill;
+  border: 1px solid rgba(244, 241, 248, 0.18);
+  background: rgba(244, 241, 248, 0.1);
+  color: t.$text;
+  font-size: t.$fs-sm;
+  font-weight: t.$fw-medium;
+  white-space: nowrap;
+}
+
+.pillAtiva {
+  border-color: t.$accent;
+  background: t.$accent-soft;
+  color: t.$accent-on-soft;
+}
+
+// ── trilhas ─────────────────────────────────────────────────
+
+.trilhas {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-9;
+
+  &[aria-busy='true'] {
+    opacity: 0.6;
+  }
+}
+
+.aviso {
+  margin: t.$space-10 auto;
+  padding: 0 t.$gutter;
+  color: t.$text-support;
+  text-align: center;
+  line-height: t.$lh-body;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: t.$space-5;
+}
+
+.tentar {
+  min-height: t.$touch-target;
+  padding: 0 t.$space-8;
+  border-radius: t.$radius-md;
+  background: t.$accent-soft;
+  border: 1px solid t.$accent;
+  color: t.$accent-on-soft;
+  font-weight: t.$fw-semibold;
+}
