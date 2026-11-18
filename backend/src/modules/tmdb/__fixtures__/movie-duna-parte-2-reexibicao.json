@@ -1,0 +1,2523 @@
+{
+  "adult": false,
+  "backdrop_path": "/eZ239CUp1d6OryZEBPnO2n87gMG.jpg",
+  "belongs_to_collection": {
+    "id": 726871,
+    "name": "Duna: Coleção",
+    "poster_path": "/wSvsy0TwSg6u47CHqEcax194AGk.jpg",
+    "backdrop_path": "/fahk0Fu7VUUfK6IkTt1R3waOD9F.jpg"
+  },
+  "budget": 190000000,
+  "genres": [
+    {
+      "id": 878,
+      "name": "Ficção científica"
+    },
+    {
+      "id": 12,
+      "name": "Aventura"
+    }
+  ],
+  "homepage": "https://www.warnerbros.com.br/filmes/duna-parte-dois",
+  "id": 693134,
+  "imdb_id": "tt15239678",
+  "origin_country": [
+    "US"
+  ],
+  "original_language": "en",
+  "original_title": "Dune: Part Two",
+  "overview": "A jornada de Paul Atreides continua. Ele está determinado a buscar vingança contra aqueles que destruíram sua família e seu lar. Com a ajuda de Chani e dos Fremen, ele embarca em uma jornada espiritual, mística e marcial. Se torna Muad'Dib, o líder messiânico dos Fremen, enquanto luta para evitar um futuro sombrio que ele testemunhou em visões. No entanto, suas ações inadvertidamente desencadeiam uma Guerra Santa em seu nome, que se espalha pelo universo conhecido. Enquanto enfrenta escolhas difíceis entre o amor por Chani e o destino de seu povo, Paul precisa usar suas habilidades e conhecimentos para evitar o terrível futuro que previu.",
+  "popularity": 46.4531,
+  "poster_path": "/VMy4UGsI2u3f4fALGeCqCdsQBb.jpg",
+  "production_companies": [
+    {
+      "id": 923,
+      "logo_path": "/5UQsZrfbfG2dYJbx8DxfoTr2Bvu.png",
+      "name": "Legendary Pictures",
+      "origin_country": "US"
+    }
+  ],
+  "production_countries": [
+    {
+      "iso_3166_1": "US",
+      "name": "United States of America"
+    }
+  ],
+  "release_date": "2024-02-27",
+  "revenue": 714844358,
+  "runtime": 166,
+  "softcore": false,
+  "spoken_languages": [
+    {
+      "english_name": "English",
+      "iso_639_1": "en",
+      "name": "English"
+    }
+  ],
+  "status": "Released",
+  "tagline": "Vida longa aos guerreiros.",
+  "title": "Duna: Parte Dois",
+  "video": false,
+  "vote_average": 8.1,
+  "vote_count": 9000,
+  "credits": {
+    "cast": [
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 1190668,
+        "known_for_department": "Acting",
+        "name": "Timothée Chalamet",
+        "original_name": "Timothée Chalamet",
+        "popularity": 7.1529,
+        "profile_path": "/c3NJxKbnKkQsttxA2XVh4pwPpIt.jpg",
+        "cast_id": 2,
+        "character": "Paul Atreides",
+        "credit_id": "5e959c45955c6500159f1c98",
+        "order": 0
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 505710,
+        "known_for_department": "Acting",
+        "name": "Zendaya",
+        "original_name": "Zendaya",
+        "popularity": 10.3563,
+        "profile_path": "/1qup8tSt95HLbcy2c2xrx4iJNxv.jpg",
+        "cast_id": 3,
+        "character": "Chani",
+        "credit_id": "5e959c5caf58cb001adc1c94",
+        "order": 1
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 933238,
+        "known_for_department": "Acting",
+        "name": "Rebecca Ferguson",
+        "original_name": "Rebecca Ferguson",
+        "popularity": 7.0464,
+        "profile_path": "/lJloTOheuQSirSLXNA3JHsrMNfH.jpg",
+        "cast_id": 8,
+        "character": "Jessica",
+        "credit_id": "5f193d28519bbb003570317b",
+        "order": 2
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 3810,
+        "known_for_department": "Acting",
+        "name": "Javier Bardem",
+        "original_name": "Javier Bardem",
+        "popularity": 4.7294,
+        "profile_path": "/zfRID0jx8DKBluPGU9xtk9sZWUt.jpg",
+        "cast_id": 14,
+        "character": "Stilgar",
+        "credit_id": "603ccede60c51d7aeb807f49",
+        "order": 3
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 16851,
+        "known_for_department": "Acting",
+        "name": "Josh Brolin",
+        "original_name": "Josh Brolin",
+        "popularity": 5.4238,
+        "profile_path": "/7QpneI3HoZCCDVPyWx3p3t7yeo7.jpg",
+        "cast_id": 5,
+        "character": "Gurney Halleck",
+        "credit_id": "5e959c7daf58cb0012dc1007",
+        "order": 4
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 86654,
+        "known_for_department": "Acting",
+        "name": "Austin Butler",
+        "original_name": "Austin Butler",
+        "popularity": 3.1404,
+        "profile_path": "/atdAs4pFGjUQ4m2W8kJYly7N6cC.jpg",
+        "cast_id": 54,
+        "character": "Feyd-Rautha",
+        "credit_id": "6261033257530e0066d2daa3",
+        "order": 5
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 1373737,
+        "known_for_department": "Acting",
+        "name": "Florence Pugh",
+        "original_name": "Florence Pugh",
+        "popularity": 13.0847,
+        "profile_path": "/nyRW28rq1PJhygm25D4gJKFfPjc.jpg",
+        "cast_id": 53,
+        "character": "Princess Irulan",
+        "credit_id": "626103233d745415a727d041",
+        "order": 6
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 543530,
+        "known_for_department": "Acting",
+        "name": "Dave Bautista",
+        "original_name": "Dave Bautista",
+        "popularity": 4.1237,
+        "profile_path": "/snk6JiXOOoRjPtHU5VMoy6qbd32.jpg",
+        "cast_id": 10,
+        "character": "Beast Rabban",
+        "credit_id": "5f193dd5a6d931003785f7c0",
+        "order": 7
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 4690,
+        "known_for_department": "Acting",
+        "name": "Christopher Walken",
+        "original_name": "Christopher Walken",
+        "popularity": 3.2725,
+        "profile_path": "/ApgDL7nudR9T2GpjCG4vESgymO2.jpg",
+        "cast_id": 55,
+        "character": "Emperor",
+        "credit_id": "627d48c8f6596f16bc6ab4f0",
+        "order": 8
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 121529,
+        "known_for_department": "Acting",
+        "name": "Léa Seydoux",
+        "original_name": "Léa Seydoux",
+        "popularity": 3.7248,
+        "profile_path": "/4q6xqqWLLleQrFjeqeYYV8B0fwE.jpg",
+        "cast_id": 56,
+        "character": "Lady Margot Fenring",
+        "credit_id": "62b1fdef9f51af006252fe1a",
+        "order": 9
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 1640,
+        "known_for_department": "Acting",
+        "name": "Stellan Skarsgård",
+        "original_name": "Stellan Skarsgård",
+        "popularity": 3.5997,
+        "profile_path": "/mW7xmtGV4y79kQGn0zkKVGDMAmw.jpg",
+        "cast_id": 9,
+        "character": "Baron Harkonnen",
+        "credit_id": "5f193d86447f9c0034365752",
+        "order": 10
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 44079,
+        "known_for_department": "Acting",
+        "name": "Charlotte Rampling",
+        "original_name": "Charlotte Rampling",
+        "popularity": 2.2192,
+        "profile_path": "/7fhg5FCcl0VfYERP5D0unpybqgx.jpg",
+        "cast_id": 13,
+        "character": "Reverend Mother Mohiam",
+        "credit_id": "603cced1c56d2d0050bda663",
+        "order": 11
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 2037046,
+        "known_for_department": "Acting",
+        "name": "Souheila Yacoub",
+        "original_name": "Souheila Yacoub",
+        "popularity": 1.3082,
+        "profile_path": "/A233BHgXw0dzbeOpvHfJwL9gLy1.jpg",
+        "cast_id": 110,
+        "character": "Shishakli",
+        "credit_id": "6468f6ff2bcf67011bf33ac8",
+        "order": 12
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 2974,
+        "known_for_department": "Acting",
+        "name": "Roger Yuan",
+        "original_name": "Roger Yuan",
+        "popularity": 0.5521,
+        "profile_path": "/jHdxbT6n3ToYKw0DVFIUkva86SO.jpg",
+        "cast_id": 133,
+        "character": "Lanville",
+        "credit_id": "65d9aa3ae78e2d018680af7e",
+        "order": 13
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 205923,
+        "known_for_department": "Acting",
+        "name": "Babs Olusanmokun",
+        "original_name": "Babs Olusanmokun",
+        "popularity": 1.119,
+        "profile_path": "/bqycmpUrpISeLzQniiYwAZ5X1RN.jpg",
+        "cast_id": 123,
+        "character": "Jamis",
+        "credit_id": "65cf29a69ac5350147df71ce",
+        "order": 14
+      }
+    ],
+    "crew": [
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 137427,
+        "known_for_department": "Directing",
+        "name": "Denis Villeneuve",
+        "original_name": "Denis Villeneuve",
+        "popularity": 5.8442,
+        "profile_path": "/xzQYqb4nR8xT7Zdw5itbEL9K3fd.jpg",
+        "credit_id": "5e959beedb72c00012ad7dcf",
+        "department": "Directing",
+        "job": "Director"
+      }
+    ]
+  },
+  "external_ids": {
+    "imdb_id": "tt15239678",
+    "wikidata_id": "Q109228991",
+    "facebook_id": "dune",
+    "instagram_id": "dunemovie",
+    "twitter_id": "dunemovie"
+  },
+  "release_dates": {
+    "results": [
+      {
+        "iso_3166_1": "AD",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-03-01T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "AE",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "AG",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "AI",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "AL",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "AM",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "AR",
+        "release_dates": [
+          {
+            "certification": "+13",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "+13",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "AS",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-04-15T00:00:00.000Z",
+            "type": 4
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-20T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "AT",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "AU",
+        "release_dates": [
+          {
+            "certification": "M",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "M",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-06-01T00:00:00.000Z",
+            "type": 4
+          },
+          {
+            "certification": "M",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-06-12T00:00:00.000Z",
+            "type": 5
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "AW",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "AZ",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "BA",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "BB",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "BE",
+        "release_dates": [
+          {
+            "certification": "14",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "BG",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "C",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "BH",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "BO",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "BR",
+        "release_dates": [
+          {
+            "certification": "12",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "Re-release",
+            "release_date": "2026-12-03T00:00:00.000Z",
+            "type": 2
+          },
+          {
+            "certification": "14",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "14",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "BS",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "BZ",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "CA",
+        "release_dates": [
+          {
+            "certification": "PG",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-03-01T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "CH",
+        "release_dates": [
+          {
+            "certification": "12",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "CL",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "14",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "CN",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "Aranya Waves Film Festival",
+            "release_date": "2026-09-05T00:00:00.000Z",
+            "type": 1
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "Shanghai International Film Festival",
+            "release_date": "2026-06-13T00:00:00.000Z",
+            "type": 1
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-03-08T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "Re-release(IMAX, CINITY only)",
+            "release_date": "2026-12-04T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-07-17T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "CO",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "CR",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "CY",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "CZ",
+        "release_dates": [
+          {
+            "certification": "12+",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "12+",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          },
+          {
+            "certification": "15+",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-04-16T00:00:00.000Z",
+            "type": 4
+          },
+          {
+            "certification": "12+",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "Blu-ray / DVD",
+            "release_date": "2024-05-29T00:00:00.000Z",
+            "type": 5
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "DE",
+        "release_dates": [
+          {
+            "certification": "12",
+            "descriptors": [
+              "Violence",
+              "Threat",
+              "Stressful Scenes"
+            ],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "12",
+            "descriptors": [
+              "Threat",
+              "Violence",
+              "Stressful Scenes"
+            ],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-04-16T00:00:00.000Z",
+            "type": 4
+          },
+          {
+            "certification": "12",
+            "descriptors": [
+              "Violence",
+              "Threat",
+              "Stressful Scenes"
+            ],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-05-29T00:00:00.000Z",
+            "type": 5
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "DK",
+        "release_dates": [
+          {
+            "certification": "11",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "11",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "DM",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "DO",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "EC",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "EE",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "EG",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "ES",
+        "release_dates": [
+          {
+            "certification": "12",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-03-01T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "12",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "FI",
+        "release_dates": [
+          {
+            "certification": "K-12",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "K-12",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "FO",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "FR",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "Le Grand Rex",
+            "release_date": "2024-02-12T00:00:00.000Z",
+            "type": 1
+          },
+          {
+            "certification": "12",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "12",
+            "descriptors": [],
+            "iso_639_1": "fr",
+            "note": "",
+            "release_date": "2024-07-10T00:00:00.000Z",
+            "type": 5
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "GB",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "London, England",
+            "release_date": "2024-02-15T00:00:00.000Z",
+            "type": 1
+          },
+          {
+            "certification": "12A",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-03-01T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "12",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-04-15T00:00:00.000Z",
+            "type": 4
+          },
+          {
+            "certification": "12",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "Blu-ray / DVD",
+            "release_date": "2024-05-27T00:00:00.000Z",
+            "type": 5
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "GD",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "GE",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "GI",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-03-01T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "GL",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "GR",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "GT",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "GU",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-04-16T00:00:00.000Z",
+            "type": 4
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "GY",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "HK",
+        "release_dates": [
+          {
+            "certification": "IIA",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "HN",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "HR",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "HT",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "HU",
+        "release_dates": [
+          {
+            "certification": "16",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "12",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "ID",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "IE",
+        "release_dates": [
+          {
+            "certification": "12A",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-03-01T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "IL",
+        "release_dates": [
+          {
+            "certification": "12",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "Re-release",
+            "release_date": "2026-12-08T00:00:00.000Z",
+            "type": 2
+          },
+          {
+            "certification": "12",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-27T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "12",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "iTunes / Apple TV",
+            "release_date": "2024-06-10T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "IN",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-03-01T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "IS",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-03-01T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "IT",
+        "release_dates": [
+          {
+            "certification": "6+",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "6+",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-05-23T00:00:00.000Z",
+            "type": 5
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "JM",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "JP",
+        "release_dates": [
+          {
+            "certification": "G",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "Large Format Only",
+            "release_date": "2024-03-08T00:00:00.000Z",
+            "type": 2
+          },
+          {
+            "certification": "G",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-03-15T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "G",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-07-03T00:00:00.000Z",
+            "type": 5
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "KN",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "KR",
+        "release_dates": [
+          {
+            "certification": "12",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "KW",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-04-11T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "KY",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "KZ",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "LB",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "LC",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "LI",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "LT",
+        "release_dates": [
+          {
+            "certification": "N-13",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "LU",
+        "release_dates": [
+          {
+            "certification": "12",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "LV",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "MA",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "MC",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "MD",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "ME",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "MK",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "MP",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-04-16T00:00:00.000Z",
+            "type": 4
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "MS",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "MT",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-03-01T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "MX",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "Mexico City",
+            "release_date": "2024-02-06T00:00:00.000Z",
+            "type": 1
+          },
+          {
+            "certification": "B",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "B",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "MY",
+        "release_dates": [
+          {
+            "certification": "P13",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "NI",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "NL",
+        "release_dates": [
+          {
+            "certification": "12",
+            "descriptors": [
+              "Violence",
+              "Fear"
+            ],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "NO",
+        "release_dates": [
+          {
+            "certification": "12",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "12",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "NZ",
+        "release_dates": [
+          {
+            "certification": "M",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "M",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-06-01T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "PA",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "PE",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "PH",
+        "release_dates": [
+          {
+            "certification": "PG",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2026-11-11T00:00:00.000Z",
+            "type": 2
+          },
+          {
+            "certification": "PG",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "PL",
+        "release_dates": [
+          {
+            "certification": "16",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "PR",
+        "release_dates": [
+          {
+            "certification": "PG-13",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "PG-13",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-04-16T00:00:00.000Z",
+            "type": 4
+          },
+          {
+            "certification": "PG-13",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          },
+          {
+            "certification": "PG-13",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "4K Ultra HD / Blu-ray / DVD",
+            "release_date": "2024-05-14T00:00:00.000Z",
+            "type": 5
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO",
+            "release_date": "2024-06-01T00:00:00.000Z",
+            "type": 6
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "PT",
+        "release_dates": [
+          {
+            "certification": "M/12",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "M/14",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "PY",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "QA",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "RO",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "12",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "RS",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "RU",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "SA",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "SE",
+        "release_dates": [
+          {
+            "certification": "11",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "11",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "SG",
+        "release_dates": [
+          {
+            "certification": "PG13",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "SI",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "SJ",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "SK",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "12",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "SN",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-03-01T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "SR",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "SV",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "TC",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "TH",
+        "release_dates": [
+          {
+            "certification": "G",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "TR",
+        "release_dates": [
+          {
+            "certification": "13+",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-03-01T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "TT",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "TW",
+        "release_dates": [
+          {
+            "certification": "12+",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-28T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "12+",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "Re-release",
+            "release_date": "2026-11-13T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "UA",
+        "release_dates": [
+          {
+            "certification": "16+",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "16+",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "Re-release",
+            "release_date": "2026-12-10T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "US",
+        "release_dates": [
+          {
+            "certification": "PG-13",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "IMAX re-release",
+            "release_date": "2026-11-13T00:00:00.000Z",
+            "type": 2
+          },
+          {
+            "certification": "PG-13",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-03-01T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "PG-13",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-04-16T00:00:00.000Z",
+            "type": 4
+          },
+          {
+            "certification": "PG-13",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          },
+          {
+            "certification": "PG-13",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "4K Ultra HD / Blu-ray / DVD",
+            "release_date": "2024-05-14T00:00:00.000Z",
+            "type": 5
+          },
+          {
+            "certification": "PG-13",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO",
+            "release_date": "2024-06-01T00:00:00.000Z",
+            "type": 6
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "UY",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "VE",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "VG",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "VI",
+        "release_dates": [
+          {
+            "certification": "PG-13",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "PG-13",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-04-16T00:00:00.000Z",
+            "type": 4
+          },
+          {
+            "certification": "PG-13",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO Max",
+            "release_date": "2024-05-21T00:00:00.000Z",
+            "type": 4
+          },
+          {
+            "certification": "PG-13",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "4K Ultra HD / Blu-ray / DVD",
+            "release_date": "2024-05-14T00:00:00.000Z",
+            "type": 5
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "HBO",
+            "release_date": "2024-06-01T00:00:00.000Z",
+            "type": 6
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "VN",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-03-01T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "XK",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-02-29T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "ZA",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2024-03-01T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      }
+    ]
+  }
+}

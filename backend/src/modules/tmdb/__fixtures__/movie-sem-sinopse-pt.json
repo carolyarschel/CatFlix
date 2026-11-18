@@ -1,0 +1,588 @@
+{
+  "adult": false,
+  "backdrop_path": "/oVjiUAsIQ4WZ9W6p7ElnXneoho3.jpg",
+  "belongs_to_collection": null,
+  "budget": 226500000,
+  "genres": [
+    {
+      "id": 878,
+      "name": "Ficção científica"
+    },
+    {
+      "id": 12,
+      "name": "Aventura"
+    },
+    {
+      "id": 28,
+      "name": "Ação"
+    }
+  ],
+  "homepage": "",
+  "id": 1417668,
+  "imdb_id": "tt28069611",
+  "origin_country": [
+    "US"
+  ],
+  "original_language": "en",
+  "original_title": "Star Wars: Starfighter",
+  "overview": "",
+  "popularity": 3.0219,
+  "poster_path": "/6LJetiEQjXUE9kDpXavXpZN1Vjk.jpg",
+  "production_companies": [
+    {
+      "id": 1,
+      "logo_path": "/tlVSws0RvvtPBwViUyOFAO0vcQS.png",
+      "name": "Lucasfilm Ltd.",
+      "origin_country": "US"
+    },
+    {
+      "id": 2575,
+      "logo_path": "/9YJrHYlcfHtwtulkFMAies3aFEl.png",
+      "name": "21 Laps Entertainment",
+      "origin_country": "US"
+    }
+  ],
+  "production_countries": [
+    {
+      "iso_3166_1": "US",
+      "name": "United States of America"
+    }
+  ],
+  "release_date": "2027-05-26",
+  "revenue": 0,
+  "runtime": 0,
+  "softcore": false,
+  "spoken_languages": [
+    {
+      "english_name": "English",
+      "iso_639_1": "en",
+      "name": "English"
+    }
+  ],
+  "status": "Post Production",
+  "tagline": "",
+  "title": "Star Wars: Starfighter",
+  "video": false,
+  "vote_average": 0,
+  "vote_count": 0,
+  "credits": {
+    "cast": [
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 30614,
+        "known_for_department": "Acting",
+        "name": "Ryan Gosling",
+        "original_name": "Ryan Gosling",
+        "popularity": 7.0939,
+        "profile_path": "/lyUyVARQKhGxaxy0FbPJCQRpiaW.jpg",
+        "cast_id": 5,
+        "character": "Kade Auberon",
+        "credit_id": "6790194ae93bd071355b491e",
+        "order": 0
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 4291132,
+        "known_for_department": "Acting",
+        "name": "Flynn Gray",
+        "original_name": "Flynn Gray",
+        "popularity": 0.2889,
+        "profile_path": "/nRz8kp8QqfXtyRjFPILNo9wSQAV.jpg",
+        "cast_id": 12,
+        "character": "",
+        "credit_id": "68b07f7b8b4947f9cd390c41",
+        "order": 1
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 1137824,
+        "known_for_department": "Acting",
+        "name": "Mia Goth",
+        "original_name": "Mia Goth",
+        "popularity": 4.4297,
+        "profile_path": "/rwko7XVaKFcJH1dtAIIsrgLMzHb.jpg",
+        "cast_id": 7,
+        "character": "",
+        "credit_id": "68431b301c6baae1417f58d7",
+        "order": 2
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 136532,
+        "known_for_department": "Acting",
+        "name": "Matt Smith",
+        "original_name": "Matt Smith",
+        "popularity": 3.1489,
+        "profile_path": "/wxMdHj4UA6LgIU5MiA7CKySZeVU.jpg",
+        "cast_id": 8,
+        "character": "",
+        "credit_id": "689285e55fbeac1b93b7fca6",
+        "order": 3
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 9273,
+        "known_for_department": "Acting",
+        "name": "Amy Adams",
+        "original_name": "Amy Adams",
+        "popularity": 4.321,
+        "profile_path": "/gn0K6c6d1L6qQrRc86iL8uyIqiF.jpg",
+        "cast_id": 17,
+        "character": "",
+        "credit_id": "68b07fb557ba8d75155ed766",
+        "order": 4
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 1763709,
+        "known_for_department": "Acting",
+        "name": "Aaron Pierre",
+        "original_name": "Aaron Pierre",
+        "popularity": 2.735,
+        "profile_path": "/hNwZWdT2KxKj1YLbipvtUhNjfAp.jpg",
+        "cast_id": 13,
+        "character": "",
+        "credit_id": "68b07f8b57ba8d75155ed762",
+        "order": 5
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 1131724,
+        "known_for_department": "Acting",
+        "name": "Daniel Ings",
+        "original_name": "Daniel Ings",
+        "popularity": 2.038,
+        "profile_path": "/oupwxNxbTwNEknTFo2jKlrXZsl6.jpg",
+        "cast_id": 16,
+        "character": "",
+        "credit_id": "68b07faedf425abfc10f9379",
+        "order": 6
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 218948,
+        "known_for_department": "Acting",
+        "name": "Simon Bird",
+        "original_name": "Simon Bird",
+        "popularity": 0.96,
+        "profile_path": "/8KVrswjVxJLWt955hZpVOc19SSJ.jpg",
+        "cast_id": 14,
+        "character": "",
+        "credit_id": "68b07f95e8b9112a8f390ca4",
+        "order": 7
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 2266752,
+        "known_for_department": "Acting",
+        "name": "Jamael Westman",
+        "original_name": "Jamael Westman",
+        "popularity": 0.5409,
+        "profile_path": "/2bfbMy9iMXEoN7BWQsQT8ff37XL.jpg",
+        "cast_id": 15,
+        "character": "",
+        "credit_id": "68b07fa2c1e5e784c80f9353",
+        "order": 8
+      }
+    ],
+    "crew": [
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 17825,
+        "known_for_department": "Directing",
+        "name": "Shawn Levy",
+        "original_name": "Shawn Levy",
+        "popularity": 2.0564,
+        "profile_path": "/x7dJcZeemLlgRB2eHlBG60WFc2Q.jpg",
+        "credit_id": "6786dcedfe294a0b474e89a0",
+        "department": "Directing",
+        "job": "Director"
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 489,
+        "known_for_department": "Production",
+        "name": "Kathleen Kennedy",
+        "original_name": "Kathleen Kennedy",
+        "popularity": 0.9399,
+        "profile_path": "/ndgYlie0PHkyqEiEBGM8SqrPOkr.jpg",
+        "credit_id": "6786dcf92b1e40e83fbb2227",
+        "department": "Production",
+        "job": "Producer"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 1,
+        "known_for_department": "Directing",
+        "name": "George Lucas",
+        "original_name": "George Lucas",
+        "popularity": 2.4048,
+        "profile_path": "/mDLDvsx8PaZoEThkBdyaG1JxPdf.jpg",
+        "credit_id": "6786dd03bd3955b2467afbcc",
+        "department": "Writing",
+        "job": "Characters"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 1274663,
+        "known_for_department": "Writing",
+        "name": "Jonathan Tropper",
+        "original_name": "Jonathan Tropper",
+        "popularity": 0.9346,
+        "profile_path": "/8cyJtu5Jja9Rw6uZNkKotL1F2rc.jpg",
+        "credit_id": "6786dd1dbd793c03544f0fd5",
+        "department": "Writing",
+        "job": "Writer"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 17825,
+        "known_for_department": "Directing",
+        "name": "Shawn Levy",
+        "original_name": "Shawn Levy",
+        "popularity": 2.0564,
+        "profile_path": "/x7dJcZeemLlgRB2eHlBG60WFc2Q.jpg",
+        "credit_id": "67901966e93bd071355b4934",
+        "department": "Production",
+        "job": "Producer"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 1638528,
+        "known_for_department": "Art",
+        "name": "James Clyne",
+        "original_name": "James Clyne",
+        "popularity": 0.328,
+        "profile_path": "/cnKuvvlwCgp2RMIo4ZsDGlPgS9x.jpg",
+        "credit_id": "68a7be32b13821e10a96549a",
+        "department": "Art",
+        "job": "Production Design"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 30614,
+        "known_for_department": "Acting",
+        "name": "Ryan Gosling",
+        "original_name": "Ryan Gosling",
+        "popularity": 7.0939,
+        "profile_path": "/lyUyVARQKhGxaxy0FbPJCQRpiaW.jpg",
+        "credit_id": "68b0a46dcdfe9ab03c625247",
+        "department": "Production",
+        "job": "Executive Producer"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 1188380,
+        "known_for_department": "Production",
+        "name": "Dan Levine",
+        "original_name": "Dan Levine",
+        "popularity": 0.4888,
+        "profile_path": "/cc7huBGVPJa7vPF764id5DjorGS.jpg",
+        "credit_id": "68b0a476f91f1133db79c3d5",
+        "department": "Production",
+        "job": "Executive Producer"
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 57634,
+        "known_for_department": "Production",
+        "name": "Mary McLaglen",
+        "original_name": "Mary McLaglen",
+        "popularity": 0.3576,
+        "profile_path": "/qMJ1kyLNpdSToYcUVt4apU0PHCC.jpg",
+        "credit_id": "68b0a49b0317b0b6c179c268",
+        "department": "Production",
+        "job": "Executive Producer"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 10956,
+        "known_for_department": "Directing",
+        "name": "Josh McLaglen",
+        "original_name": "Josh McLaglen",
+        "popularity": 0.554,
+        "profile_path": "/5PJWCWlKF3kJWOHSqs7l7M7nZK9.jpg",
+        "credit_id": "68b0a4a0970ac8111379c2a4",
+        "department": "Production",
+        "job": "Executive Producer"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 51333,
+        "known_for_department": "Camera",
+        "name": "Claudio Miranda",
+        "original_name": "Claudio Miranda",
+        "popularity": 0.8537,
+        "profile_path": "/gHuBe7gSgeMoN8fFIE6wgoDebYw.jpg",
+        "credit_id": "68b0e30602be9ac67f396c8a",
+        "department": "Camera",
+        "job": "Director of Photography"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 10710,
+        "known_for_department": "Art",
+        "name": "Andrew Ackland-Snow",
+        "original_name": "Andrew Ackland-Snow",
+        "popularity": 0.2867,
+        "profile_path": null,
+        "credit_id": "68b5e5a425e103b89f398417",
+        "department": "Art",
+        "job": "Art Direction"
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 141570,
+        "known_for_department": "Costume & Make-Up",
+        "name": "Suttirat Anne Larlarb",
+        "original_name": "Suttirat Anne Larlarb",
+        "popularity": 0.4649,
+        "profile_path": "/xePBzChM1Pr2viBfzj8NLZdBZVI.jpg",
+        "credit_id": "68dd9cb69df77b33692dfaee",
+        "department": "Costume & Make-Up",
+        "job": "Costume Design"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 153,
+        "known_for_department": "Sound",
+        "name": "Thomas Newman",
+        "original_name": "Thomas Newman",
+        "popularity": 0.9381,
+        "profile_path": "/j8rIiOSdBjtDL5vji8m5BtChZou.jpg",
+        "credit_id": "692757372f34c8a5d3a7570f",
+        "department": "Sound",
+        "job": "Original Music Composer"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 54271,
+        "known_for_department": "Editing",
+        "name": "Dean Zimmerman",
+        "original_name": "Dean Zimmerman",
+        "popularity": 0.3075,
+        "profile_path": "/adIjjwmv9b4Rbufz9ggC54f56vc.jpg",
+        "credit_id": "69f3e10c8f7ce2597efbd66c",
+        "department": "Editing",
+        "job": "Editor"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 1335209,
+        "known_for_department": "Editing",
+        "name": "Adam Gerstel",
+        "original_name": "Adam Gerstel",
+        "popularity": 0.1712,
+        "profile_path": "/ccgGaKURpn3ndZOjN9MPIarPoCc.jpg",
+        "credit_id": "69f3e115d93c54b8d8f9fa1e",
+        "department": "Editing",
+        "job": "Editor"
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 51922,
+        "known_for_department": "Production",
+        "name": "Carmen Cuba",
+        "original_name": "Carmen Cuba",
+        "popularity": 0.8039,
+        "profile_path": "/994fHTwOhrpvO8mnroGaGHZ2s11.jpg",
+        "credit_id": "6a7e652032b0cddf42e70986",
+        "department": "Production",
+        "job": "Casting"
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 16363,
+        "known_for_department": "Production",
+        "name": "Nina Gold",
+        "original_name": "Nina Gold",
+        "popularity": 0.7199,
+        "profile_path": "/emeKuabMDN3C8x8ibby7FNtjRgu.jpg",
+        "credit_id": "6a7e652c5fa54118c7bf8951",
+        "department": "Production",
+        "job": "Casting"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 1379990,
+        "known_for_department": "Visual Effects",
+        "name": "Russell Earl",
+        "original_name": "Russell Earl",
+        "popularity": 0.4247,
+        "profile_path": "/4vPOdSJodsLc6mgG8sEsv9qM3ri.jpg",
+        "credit_id": "6ab5bc60b03f8a1d92d114d6",
+        "department": "Visual Effects",
+        "job": "Visual Effects Supervisor"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 71538,
+        "known_for_department": "Writing",
+        "name": "Dave Filoni",
+        "original_name": "Dave Filoni",
+        "popularity": 1.1177,
+        "profile_path": "/iMpXDe7D3eimy3Y8esJcF9czVbm.jpg",
+        "credit_id": "6ada506db49e0b6af231fd80",
+        "department": "Production",
+        "job": "Executive Producer"
+      }
+    ]
+  },
+  "external_ids": {
+    "imdb_id": "tt28069611",
+    "wikidata_id": "Q133894182",
+    "facebook_id": "StarWars",
+    "instagram_id": "starwars",
+    "twitter_id": "starwars"
+  },
+  "release_dates": {
+    "results": [
+      {
+        "iso_3166_1": "AR",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2027-05-27T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "BR",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2027-05-27T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "CZ",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2027-05-27T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "DE",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2027-05-26T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "ES",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2027-05-28T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "FR",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2027-05-26T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "TH",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2027-05-27T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "TR",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2027-05-28T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "US",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2027-05-28T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      }
+    ]
+  }
+}

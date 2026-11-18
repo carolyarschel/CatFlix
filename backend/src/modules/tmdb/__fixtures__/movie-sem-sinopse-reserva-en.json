@@ -1,0 +1,68 @@
+{
+  "adult": false,
+  "backdrop_path": "/oVjiUAsIQ4WZ9W6p7ElnXneoho3.jpg",
+  "belongs_to_collection": null,
+  "budget": 226500000,
+  "genres": [
+    {
+      "id": 878,
+      "name": "Science Fiction"
+    },
+    {
+      "id": 12,
+      "name": "Adventure"
+    },
+    {
+      "id": 28,
+      "name": "Action"
+    }
+  ],
+  "homepage": "https://www.starwars.com/films/star-wars-starfighter",
+  "id": 1417668,
+  "imdb_id": "tt28069611",
+  "origin_country": [
+    "US"
+  ],
+  "original_language": "en",
+  "original_title": "Star Wars: Starfighter",
+  "overview": "When a cynical rogue is confronted by his mysterious past, he is hurled into a dangerous adventure across the galaxy that puts him on a crash course with destiny.",
+  "popularity": 3.0219,
+  "poster_path": "/6LJetiEQjXUE9kDpXavXpZN1Vjk.jpg",
+  "production_companies": [
+    {
+      "id": 1,
+      "logo_path": "/tlVSws0RvvtPBwViUyOFAO0vcQS.png",
+      "name": "Lucasfilm Ltd.",
+      "origin_country": "US"
+    },
+    {
+      "id": 2575,
+      "logo_path": "/9YJrHYlcfHtwtulkFMAies3aFEl.png",
+      "name": "21 Laps Entertainment",
+      "origin_country": "US"
+    }
+  ],
+  "production_countries": [
+    {
+      "iso_3166_1": "US",
+      "name": "United States of America"
+    }
+  ],
+  "release_date": "2027-05-26",
+  "revenue": 0,
+  "runtime": 0,
+  "softcore": false,
+  "spoken_languages": [
+    {
+      "english_name": "English",
+      "iso_639_1": "en",
+      "name": "English"
+    }
+  ],
+  "status": "Post Production",
+  "tagline": "",
+  "title": "Star Wars: Starfighter",
+  "video": false,
+  "vote_average": 0,
+  "vote_count": 0
+}

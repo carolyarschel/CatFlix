@@ -5,6 +5,8 @@ import { ContractError, ExternalApiError } from '../../shared/errors';
 import { HttpClient, type TransportEvent } from '../../shared/http';
 import { logger } from '../../shared/logger';
 import { registrarRawPayload } from '../../shared/raw-payload';
+import { normalizarMetadata } from './tmdb.parse';
+import type { MetadataNormalizada } from './tmdb.types';
 import {
   tmdbErrorSchema,
   tmdbMovieSchema,
@@ -69,6 +71,32 @@ export class TmdbClient {
     });
   }
 
+  /**
+   * Metadata pronta para o catálogo, com a sinopse no idioma de reserva quando
+   * a do idioma principal vem vazia (cineon-expansao §5.2).
+   *
+   * Medido em 18/11/2026: 20 dos 112 filmes casados estavam sem sinopse em
+   * português. O segundo pedido é só o detalhe, sem `append_to_response` —
+   * dele só interessa a sinopse — e só acontece quando falta.
+   *
+   * O matching continua usando `buscarFilme` direto: ele pontua vários
+   * candidatos por evento e não precisa de sinopse, e pagar um pedido a mais
+   * por candidato seria desperdício.
+   */
+  async obterMetadata(tmdbId: number): Promise<MetadataNormalizada> {
+    const { dados } = await this.buscarFilme(tmdbId);
+    const metadata = normalizarMetadata(dados);
+    if (metadata.overview || tmdbConfig.fallbackLanguage === tmdbConfig.language) return metadata;
+
+    const reserva = await this.pedir(`/movie/${tmdbId}`, tmdbMovieSchema, {
+      language: tmdbConfig.fallbackLanguage,
+    });
+    const sinopse = reserva.dados.overview?.trim();
+    if (!sinopse) return metadata;
+
+    return { ...metadata, overview: sinopse, overviewLanguage: tmdbConfig.fallbackLanguage };
+  }
+
   private async pedir<T extends z.ZodTypeAny>(
     endpoint: string,
     schema: T,
@@ -77,6 +105,7 @@ export class TmdbClient {
     const resposta = await this.http.request(endpoint, {
       query: {
         api_key: requireEnv('TMDB_API_KEY'),
+        // `query` vem depois e pode trocar o idioma (pedido de reserva)
         language: tmdbConfig.language,
         ...query,
       },

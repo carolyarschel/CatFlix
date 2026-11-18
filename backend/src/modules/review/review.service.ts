@@ -192,8 +192,8 @@ async function adotarCandidato(
   resolvedById?: string,
 ): Promise<{ titleId: string; mesclou: boolean }> {
   const tmdb = new TmdbClient();
-  const detalhe = await tmdb.buscarFilme(tmdbId);
-  const metadata = normalizarMetadata(detalhe.dados);
+  // com a sinopse no idioma de reserva quando a de português vem vazia
+  const metadata = await tmdb.obterMetadata(tmdbId);
 
   const titleId = await prisma.$transaction((tx) => upsertPorTmdbId(tx, metadata));
 

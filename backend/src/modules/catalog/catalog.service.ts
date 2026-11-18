@@ -116,8 +116,19 @@ export async function upsertPorTmdbId(
     // a cadência de notas do §5.3 ("diária na primeira semana após a estreia")
     // se refere a quando o filme entrou em cartaz AQUI, não lá fora.
     releaseDate: metadata.releaseDateBr ?? metadata.releaseDate,
+    // as duas datas separadas (cineon-expansao §3.1); `releaseDate` acima
+    // mantém o significado de sempre
+    releaseDateBr: metadata.releaseDateBr,
+    releaseDateOriginal: metadata.releaseDate,
+    productionStatus: metadata.productionStatus,
     runtimeMinutes: metadata.runtimeMinutes,
-    overview: metadata.overview,
+    // Sinopse só é escrita quando veio. O matching do cinema chama o TMDB sem
+    // o pedido de reserva em inglês (`TmdbClient.obterMetadata`); sem esta
+    // guarda, um evento novo do mesmo filme (versão dublada, IMAX) apagaria a
+    // sinopse em inglês que o refresh de metadata tinha trazido.
+    ...(metadata.overview
+      ? { overview: metadata.overview, overviewLanguage: metadata.overviewLanguage }
+      : {}),
     posterUrl: metadata.posterUrl,
     backdropUrl: metadata.backdropUrl,
     metadataUpdatedAt: new Date(),

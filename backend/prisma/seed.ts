@@ -16,6 +16,8 @@ const PERFIS = [
     initial: 'C',
     accent: '#FF4D8D',
     accentSecondary: null,
+    // papel no Portão de Gatur (mesmo mapa de users.portao.ts)
+    papel: 'CAT',
   },
   {
     id: 'hburso',
@@ -23,6 +25,7 @@ const PERFIS = [
     initial: 'H',
     accent: '#9D7BFF',
     accentSecondary: '#FF8A3D',
+    papel: 'BEAR',
   },
 ] as const;
 
@@ -35,6 +38,7 @@ async function main(): Promise<void> {
         initial: perfil.initial,
         accent: perfil.accent,
         accentSecondary: perfil.accentSecondary,
+        papel: perfil.papel,
       },
       create: {
         id: perfil.id,
@@ -42,6 +46,7 @@ async function main(): Promise<void> {
         initial: perfil.initial,
         accent: perfil.accent,
         accentSecondary: perfil.accentSecondary,
+        papel: perfil.papel,
       },
     });
     console.log(`perfil garantido: ${perfil.displayName}`);

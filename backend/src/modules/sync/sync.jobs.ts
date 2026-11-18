@@ -285,8 +285,8 @@ export async function jobMetadataTmdb(ctx: ContextoDoJob): Promise<void> {
 
   for (const { externalId } of vencidos) {
     try {
-      const detalhe = await tmdb.buscarFilme(Number(externalId));
-      await prisma.$transaction((tx) => upsertPorTmdbId(tx, normalizarMetadata(detalhe.dados)));
+      const metadata = await tmdb.obterMetadata(Number(externalId));
+      await prisma.$transaction((tx) => upsertPorTmdbId(tx, metadata));
       ctx.contagens.matchedCount += 1;
     } catch (erro) {
       ctx.contagens.errorCount += 1;

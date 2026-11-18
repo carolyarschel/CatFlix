@@ -3,7 +3,11 @@ import { env } from './env';
 /** Parâmetros de metadata e notas (§5.2 e §5.3 do contexto). */
 
 export const tmdbConfig = {
-  language: 'pt-BR',
+  language: env.TMDB_LANGUAGE,
+  /** sinopse vazia no idioma principal → pede a deste (cineon-expansao §5.2) */
+  fallbackLanguage: env.TMDB_FALLBACK_LANGUAGE,
+  /** país das datas de estreia (e, depois, dos provedores de streaming) */
+  region: env.TMDB_REGION,
   /** §5.2: "elenco principal (primeiros N do cast)" */
   castLimit: 12,
   appendToResponse: 'credits,external_ids,release_dates',

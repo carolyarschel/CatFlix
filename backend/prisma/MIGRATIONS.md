@@ -70,3 +70,47 @@ Prisma — não precisam de SQL manual.
 - Renomear coluna = criar a nova, copiar, deixar a antiga para trás. Nunca `DROP`
   no mesmo migration que introduz a substituta.
 - Valor novo em enum é aditivo e seguro; remover valor de enum não é.
+
+## Acervo do casal (`20261118120000_acervo_do_casal`)
+
+Expansão do `cineon-expansao/contexto-expansao.md`. Só soma: três enums, três
+tabelas (`watches`, `watchlist_entries`, `ratings`), cinco colunas em `titles`
+e `users.papel`. O SQL gerado pelo Prisma foi completado à mão com:
+
+```sql
+-- quem assistiu nunca é vazio. O Prisma cria a lista aceitando NULL, e
+-- cardinality(NULL) passaria num CHECK — por isso o NOT NULL explícito
+ALTER TABLE "watches" ADD CONSTRAINT "watches_participants_not_empty"
+  CHECK ("participants" IS NOT NULL AND cardinality("participants") >= 1);
+
+-- cinema e sala só existem quando foi no cinema
+ALTER TABLE "watches" ADD CONSTRAINT "watches_cinema_only_at_cinema"
+  CHECK ("location" = 'CINEMA'
+         OR ("cinema_id" IS NULL AND "cinema_free_name" IS NULL AND "room_type" IS NULL));
+
+ALTER TABLE "watchlist_entries" ADD CONSTRAINT "watchlist_interest_1_to_5"
+  CHECK ("interest" IS NULL OR "interest" BETWEEN 1 AND 5);
+
+-- 0 a 10, em passos de meio ponto
+ALTER TABLE "ratings" ADD CONSTRAINT "ratings_score_half_steps"
+  CHECK ("score" BETWEEN 0 AND 10 AND "score" * 2 = trunc("score" * 2));
+```
+
+E com a conversão de dados que não exige decisão: `users.papel` (`catflix →
+CAT`, `hburso → BEAR`) e `quero_ver → watchlist_entries`, idempotente (`ON
+CONFLICT DO NOTHING`, id `legado-<id antigo>`). `visto` **não** é convertido na
+migration — exige local e quem estava — e `marcado` sai do app. A tabela
+`user_title_states` fica intacta até a conversão ser conferida.
+
+**Por que a conversão mora na migration:** o deploy do Catploy roda
+`prisma migrate deploy` (`build:producao`), então a migration é o único ponto
+que com certeza roda uma vez em produção, na ordem certa.
+
+Verificado no banco de desenvolvimento em 18/11/2026: os quatro CHECKs recusam
+o que devem e o INSERT rodado duas vezes produz uma linha só.
+
+> ⚠️ `prisma migrate dev` exige terminal interativo. Fora dele, gere o SQL com
+> `npx prisma migrate diff --from-schema-datasource prisma/schema.prisma
+> --to-schema-datamodel prisma/schema.prisma --script` dentro de uma pasta
+> nova em `prisma/migrations/`, complete à mão e aplique com
+> `npx prisma migrate deploy`.

@@ -78,24 +78,35 @@ export function normalizarCreditos(filme: TmdbMovie): CreditoNormalizado[] {
   return creditos;
 }
 
+/** Códigos de `release_dates[].type` (documentação do TMDB, conferida em 18/11/2026). */
+const LANCAMENTO_EM_CINEMA = 3;
+const LANCAMENTO_LIMITADO = 2;
+
 /**
- * Estreia nos cinemas brasileiros, do bloco `release_dates`.
+ * Estreia nos cinemas do país configurado (`TMDB_REGION`, Brasil), do bloco
+ * `release_dates`.
  *
- * `type` 3 é lançamento em cinema; 2 é cinema limitado. Ignoramos 1 (estreia
- * de festival), 4 (digital), 5 (físico) e 6 (TV) — o que interessa é quando o
- * filme entrou em cartaz aqui, que é o ano que o ingresso costuma publicar.
+ * Regra (cineon-expansao §5.1): a data de cinema (`type` 3) **mais antiga**; só
+ * sem nenhuma, a de cinema limitado (2). Ignoramos 1 (festival), 4 (digital),
+ * 5 (físico) e 6 (TV).
+ *
+ * As duas metades da regra importam, e há caso real para cada uma: *Duna: Parte
+ * Dois* tem, no Brasil, tipo 3 em 29/02/2024 e tipo 2 em 03/12/2026 — a
+ * reexibição. "Qualquer data de cinema" ou "a mais recente" dariam a da
+ * reexibição como estreia.
  */
 export function estreiaNoBrasil(filme: TmdbMovie): Date | null {
-  const brasil = filme.release_dates?.results?.find((r) => r.iso_3166_1 === 'BR');
-  if (!brasil?.release_dates?.length) return null;
+  const pais = filme.release_dates?.results?.find((r) => r.iso_3166_1 === tmdbConfig.region);
+  if (!pais?.release_dates?.length) return null;
 
-  const cinema = brasil.release_dates
-    .filter((d) => d.type === 3 || d.type === 2)
-    .map((d) => new Date(d.release_date))
-    .filter((d) => !Number.isNaN(d.getTime()))
-    .sort((a, b) => a.getTime() - b.getTime());
+  const maisAntigaDoTipo = (tipo: number): Date | null =>
+    pais
+      .release_dates!.filter((d) => d.type === tipo)
+      .map((d) => new Date(d.release_date))
+      .filter((d) => !Number.isNaN(d.getTime()))
+      .sort((a, b) => a.getTime() - b.getTime())[0] ?? null;
 
-  return cinema[0] ?? null;
+  return maisAntigaDoTipo(LANCAMENTO_EM_CINEMA) ?? maisAntigaDoTipo(LANCAMENTO_LIMITADO);
 }
 
 export function normalizarMetadata(filme: TmdbMovie): MetadataNormalizada {
@@ -109,6 +120,10 @@ export function normalizarMetadata(filme: TmdbMovie): MetadataNormalizada {
     title: filme.title,
     originalTitle: filme.original_title ?? null,
     overview: filme.overview || null,
+    // o pedido sai no idioma principal; `obterMetadata` troca isto quando
+    // precisa buscar a sinopse no idioma de reserva
+    overviewLanguage: filme.overview ? tmdbConfig.language : null,
+    productionStatus: filme.status || null,
     runtimeMinutes: minutos(filme.runtime),
     releaseDate: dataDeLancamento(filme.release_date),
     year: anoDeLancamento(filme.release_date),

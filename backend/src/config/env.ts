@@ -63,6 +63,11 @@ const envSchema = z
     TMDB_BASE_URL: z.string().default('https://api.themoviedb.org/3'),
     TMDB_IMAGE_BASE: z.string().default('https://image.tmdb.org/t/p'),
     TMDB_API_KEY: z.string().optional(),
+    // idioma pedido, idioma de reserva quando a sinopse vem vazia, e o país
+    // das datas de estreia e dos provedores de streaming (cineon-expansao §5.2)
+    TMDB_LANGUAGE: z.string().default('pt-BR'),
+    TMDB_FALLBACK_LANGUAGE: z.string().default('en-US'),
+    TMDB_REGION: z.string().length(2).default('BR'),
 
     // OMDb (§5.3)
     OMDB_BASE_URL: z.string().default('https://www.omdbapi.com'),

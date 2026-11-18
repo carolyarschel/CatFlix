@@ -23,7 +23,16 @@ export interface MetadataNormalizada {
   title: string;
   originalTitle: string | null;
   overview: string | null;
+  /**
+   * Idioma de `overview`: o principal (`pt-BR`) ou o de reserva, quando a
+   * sinopse em português veio vazia e `obterMetadata` foi buscar a outra.
+   * `null` quando não há sinopse em idioma nenhum.
+   */
+  overviewLanguage: string | null;
+  /** Rumored, Planned, In Production, Post Production, Released, Canceled… */
+  productionStatus: string | null;
   runtimeMinutes: number | null;
+  /** estreia ORIGINAL (o `release_date` do TMDB) */
   releaseDate: Date | null;
   year: number | null;
   /**

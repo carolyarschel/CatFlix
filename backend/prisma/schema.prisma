@@ -25,6 +25,24 @@ enum MediaType {
   series
 }
 
+/// As duas pessoas, como o ecossistema Gatur as chama (cineon-expansao §2).
+enum Pessoa {
+  CAT
+  BEAR
+}
+
+/// Datas antigas nem sempre se lembram do dia (cineon-expansao §3.2).
+enum DatePrecision {
+  DIA
+  MES
+  ANO
+}
+
+enum WatchLocation {
+  CASA
+  CINEMA
+}
+
 enum TitleStatus {
   matched
   orphan
@@ -249,15 +267,15 @@ model CanaryCheck {
 }
 
 model Alert {
-  id       String        @id @default(cuid())
-  severity AlertSeverity
-  message  String
+  id          String        @id @default(cuid())
+  severity    AlertSeverity
+  message     String
   /// chave de deduplicação (ex.: "transport:ingresso:403"). Enquanto houver um
   /// Alert aberto com o mesmo fingerprint, o Notifier não reenvia (§8).
   fingerprint String
-  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
-  sentAt      DateTime? @map("sent_at") @db.Timestamptz(3)
-  resolvedAt  DateTime? @map("resolved_at") @db.Timestamptz(3)
+  createdAt   DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  sentAt      DateTime?     @map("sent_at") @db.Timestamptz(3)
+  resolvedAt  DateTime?     @map("resolved_at") @db.Timestamptz(3)
   notifier    String? // qual implementação de Notifier entregou
   details     Json?
 
@@ -300,8 +318,27 @@ model Title {
 
   metadataUpdatedAt DateTime? @map("metadata_updated_at") @db.Timestamptz(3) // cache TMDB de 30 dias (§5.2)
 
+  // ── expansão: acervo do casal (cineon-expansao §3.1) ─────────
+  // `releaseDate` acima continua sendo "a data que o app usa" (a do Brasil
+  // quando o TMDB conhece, senão a original) — a cadência das notas e a faixa
+  // "Estreia" dos cards dependem dela. As duas abaixo são as datas separadas.
+  releaseDateBr       DateTime? @map("release_date_br") @db.Date
+  releaseDateOriginal DateTime? @map("release_date_original") @db.Date
+  /// idioma de `overview`: "pt-BR" ou o de reserva ("en-US") quando a sinopse
+  /// em português veio vazia (expansão §5.2)
+  overviewLanguage    String?   @map("overview_language")
+  /// Rumored, Planned, In Production, Post Production, Released, Canceled…
+  /// Texto, não enum: o TMDB não documenta a lista (verificado em 18/11/2026)
+  productionStatus    String?   @map("production_status")
+  /// página do filme no JustWatch, colada à mão (expansão §6)
+  justwatchUrl        String?   @map("justwatch_url")
+
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  watches   Watch[]
+  watchlist WatchlistEntry[]
+  ratings   Rating[]
 
   externalIds    TitleExternalId[]
   credits        TitleCredit[]
@@ -345,9 +382,9 @@ model TitleExternalId {
 
   confidence   Float?
   method       MatchMethod
-  verifiedById String?   @map("verified_by_id")
-  verifiedBy   User?     @relation(fields: [verifiedById], references: [id], onDelete: SetNull)
-  verifiedAt   DateTime? @map("verified_at") @db.Timestamptz(3)
+  verifiedById String?     @map("verified_by_id")
+  verifiedBy   User?       @relation(fields: [verifiedById], references: [id], onDelete: SetNull)
+  verifiedAt   DateTime?   @map("verified_at") @db.Timestamptz(3)
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
@@ -466,6 +503,7 @@ model Cinema {
   updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
 
   sessions Session[]
+  watches  Watch[]
 
   @@index([cityId, active])
   @@map("cinemas")
@@ -539,6 +577,11 @@ model User {
   accentSecondary String?  @map("accent_secondary") // HBUrso: laranja #FF8A3D
   createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
 
+  /// papel no Portão de Gatur. O id continua "catflix"/"hburso" (trocar a chave
+  /// primária seria destrutivo); as tabelas da expansão e o feed do CG falam
+  /// em CAT/BEAR, e é este campo que liga uma coisa à outra.
+  papel Pessoa? @unique
+
   titleStates   UserTitleState[]
   ownedTags     Tag[]
   pushSubs      PushSubscription[]
@@ -564,11 +607,11 @@ model PushSubscription {
   /// URL do serviço de push do navegador; identifica o dispositivo
   endpoint String @unique
   /// chaves da inscrição, usadas para cifrar o payload do Web Push
-  p256dh String
-  auth   String
+  p256dh   String
+  auth     String
 
-  userAgent String?  @map("user_agent")
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  userAgent  String?   @map("user_agent")
+  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
   lastSentAt DateTime? @map("last_sent_at") @db.Timestamptz(3)
 
   /// o serviço de push respondeu 404/410: a inscrição morreu (app desinstalado,
@@ -757,4 +800,84 @@ model PortaoSessao {
   @@index([usuarioId])
   @@index([expiraEm])
   @@map("portao_sessoes")
+}
+
+// ─────────────────────────────────────────────────────────────
+// ACERVO DO CASAL (cineon-expansao §3.2)
+//
+// Assistido e "quero assistir" são SEMPRE derivados destas tabelas, nunca
+// gravados como status. Apagar é `removedAt`, nunca DELETE (§2).
+// Regras que o Prisma não declara (CHECKs) estão no MIGRATIONS.md.
+// ─────────────────────────────────────────────────────────────
+
+/// Uma vez que alguém assistiu ao filme. Rever conta: várias por filme.
+/// Só filmes: série terá modelo próprio de progresso (§1), não generalizar.
+model Watch {
+  id      String @id @default(cuid())
+  titleId String @map("title_id")
+  title   Title  @relation(fields: [titleId], references: [id], onDelete: Cascade)
+
+  /// com precisão MES guarda o dia 1; com ANO, 1º de janeiro
+  watchedOn     DateTime      @map("watched_on") @db.Date
+  datePrecision DatePrecision @default(DIA) @map("date_precision")
+  location      WatchLocation
+  /// quem estava; nunca vazio (CHECK)
+  participants  Pessoa[]
+
+  // só com location = CINEMA (CHECK). `cinemaId` liga ao Cinema do ingresso;
+  // cinema fora da base vai em `cinemaFreeName`.
+  cinemaId       String? @map("cinema_id")
+  cinema         Cinema? @relation(fields: [cinemaId], references: [id], onDelete: SetNull)
+  cinemaFreeName String? @map("cinema_free_name")
+  roomType       String? @map("room_type")
+
+  note      String?
+  removedAt DateTime? @map("removed_at") @db.Timestamptz(3)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([titleId])
+  @@index([watchedOn])
+  @@index([updatedAt]) // feed do CG (§10.2)
+  @@map("watches")
+}
+
+/// "Quero assistir": uma linha por pessoa e filme. "Os dois querem" não é
+/// gravado — é existirem as duas linhas ativas.
+model WatchlistEntry {
+  id      String @id @default(cuid())
+  titleId String @map("title_id")
+  title   Title  @relation(fields: [titleId], references: [id], onDelete: Cascade)
+  pessoa  Pessoa
+
+  /// 1–5, as estrelas de "Marque seu interesse" (CHECK)
+  interest  Int?
+  addedAt   DateTime  @default(now()) @map("added_at") @db.Timestamptz(3)
+  removedAt DateTime? @map("removed_at") @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  /// tirar e pôr de novo reativa a mesma linha (removedAt = null)
+  @@unique([titleId, pessoa])
+  @@index([pessoa, removedAt])
+  @@map("watchlist_entries")
+}
+
+/// Nota de 0 a 10 com meio ponto, uma por pessoa e filme (escala do
+/// ecossistema Gatur). Só dá nota quem participou de alguma visualização —
+/// regra do service, porque depende de outra tabela.
+model Rating {
+  id      String  @id @default(cuid())
+  titleId String  @map("title_id")
+  title   Title   @relation(fields: [titleId], references: [id], onDelete: Cascade)
+  pessoa  Pessoa
+  /// 0–10 em passos de 0,5 (CHECK)
+  score   Decimal @db.Decimal(3, 1)
+
+  removedAt DateTime? @map("removed_at") @db.Timestamptz(3)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@unique([titleId, pessoa])
+  @@index([updatedAt]) // nota mudou → o feed reenvia as visualizações do filme
+  @@map("ratings")
 }
