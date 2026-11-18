@@ -114,6 +114,13 @@ export const tmdbMovieSchema = z.object({
     .nullish(),
 });
 
+/** `/movie/{id}/credits` sozinho — a busca do "+" só quer o diretor. */
+export const tmdbCreditsSchema = z.object({
+  id: z.number().int(),
+  cast: z.array(tmdbCastSchema).nullish(),
+  crew: z.array(tmdbCrewSchema).nullish(),
+});
+
 /** Corpo de erro do TMDB: chega com 401 ou 404, sempre com este formato. */
 export const tmdbErrorSchema = z.object({
   status_code: z.number().int(),

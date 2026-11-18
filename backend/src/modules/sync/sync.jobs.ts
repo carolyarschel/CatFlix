@@ -259,6 +259,13 @@ export async function jobProximosLancamentos(ctx: ContextoDoJob): Promise<void> 
 }
 
 /**
+ * Quando a migration `acervo_do_casal` acrescentou as estreias separadas, o
+ * status de produção e o idioma da sinopse. Metadata mais velha que isto não
+ * tem esses campos, e vence na primeira execução do job depois do deploy.
+ */
+const COLUNAS_DO_ACERVO_DESDE = new Date('2026-11-18T12:00:00Z');
+
+/**
  * Refresh de metadata (§5.2: cache de 30 dias).
  *
  * Só toca em títulos que já têm `tmdb_id` — órfão sem candidato não tem o que
@@ -272,7 +279,14 @@ export async function jobMetadataTmdb(ctx: ContextoDoJob): Promise<void> {
       source: 'tmdb',
       title: {
         status: 'matched',
-        OR: [{ metadataUpdatedAt: null }, { metadataUpdatedAt: { lt: limite } }],
+        OR: [
+          { metadataUpdatedAt: null },
+          { metadataUpdatedAt: { lt: limite } },
+          // metadata gravada antes das colunas do acervo existirem: sem isto,
+          // um filme refrescado na véspera do deploy passaria até 30 dias sem
+          // a estreia do Brasil separada e apareceria como "Estreia (mundial)"
+          { metadataUpdatedAt: { lt: COLUNAS_DO_ACERVO_DESDE } },
+        ],
       },
     },
     select: { externalId: true, titleId: true },

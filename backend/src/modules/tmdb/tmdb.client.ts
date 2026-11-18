@@ -8,6 +8,7 @@ import { registrarRawPayload } from '../../shared/raw-payload';
 import { normalizarMetadata } from './tmdb.parse';
 import type { MetadataNormalizada } from './tmdb.types';
 import {
+  tmdbCreditsSchema,
   tmdbErrorSchema,
   tmdbMovieSchema,
   tmdbSearchResponseSchema,
@@ -69,6 +70,20 @@ export class TmdbClient {
     return this.pedir(`/movie/${tmdbId}`, tmdbMovieSchema, {
       append_to_response: tmdbConfig.appendToResponse,
     });
+  }
+
+  /**
+   * Só os diretores de um filme (`/movie/{id}/credits`).
+   *
+   * Existe para a busca do "+" (cineon-expansao §4.1), que mostra o diretor em
+   * cada resultado — a busca do TMDB não traz créditos. É bem mais leve que o
+   * detalhe completo, e quem chama guarda o resultado em cache.
+   */
+  async buscarDiretores(tmdbId: number): Promise<string[]> {
+    const { dados } = await this.pedir(`/movie/${tmdbId}/credits`, tmdbCreditsSchema, {});
+    return [
+      ...new Set((dados.crew ?? []).filter((p) => p.job === 'Director').map((p) => p.name)),
+    ];
   }
 
   /**

@@ -621,7 +621,7 @@ export async function detalheDoTitulo(id: string): Promise<DetalheDoTitulo> {
       ratingsUpdatedAt: true,
       genres: { select: { genre: { select: { name: true } } } },
       credits: {
-        select: { role: true, character: true, order: true, person: { select: { name: true } } },
+        select: { role: true, character: true, order: true, person: { select: { name: true, profileUrl: true } } },
         orderBy: [{ role: 'asc' }, { order: 'asc' }],
       },
       companies: { select: { company: { select: { name: true } } } },
@@ -692,10 +692,10 @@ export async function detalheDoTitulo(id: string): Promise<DetalheDoTitulo> {
     generos: titulo.genres.map((g) => g.genre.name),
     diretores: titulo.credits
       .filter((c) => c.role === 'director')
-      .map((c) => ({ nome: c.person.name, personagem: null })),
+      .map((c) => ({ nome: c.person.name, personagem: null, fotoUrl: c.person.profileUrl })),
     elenco: titulo.credits
       .filter((c) => c.role === 'cast')
-      .map((c) => ({ nome: c.person.name, personagem: c.character })),
+      .map((c) => ({ nome: c.person.name, personagem: c.character, fotoUrl: c.person.profileUrl })),
     estudios: titulo.companies.map((c) => c.company.name),
     tags: titulo.tags.map((t) => ({
       id: t.tag.id,

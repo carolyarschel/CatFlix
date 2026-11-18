@@ -235,7 +235,8 @@ A tabela `user_title_states` **não é apagada** nesta fase. Depois que a migra�
 |---|---|
 | 2. Migrations | ✅ `20261118120000_acervo_do_casal` aplicada no banco de desenvolvimento. Os quatro CHECKs recusam o que devem e a conversão de `quero_ver` é idempotente (testado com dados). Regras registradas no `backend/prisma/MIGRATIONS.md`. Vai para produção no próximo deploy. |
 | 3. Módulo `tmdb` | ✅ `TmdbClient.obterMetadata` (sinopse no idioma de reserva), estreia BR pela regra do §5.1, status de produção, `TMDB_LANGUAGE`/`TMDB_FALLBACK_LANGUAGE`/`TMDB_REGION`. Testes com respostas reais salvas em `__fixtures__`. |
-| 4. `watches`, `watchlist`, `ratings`, `library` | próximo |
+| 4. `watches`, `watchlist`, `ratings`, `library` | ✅ Rotas do §9 (menos `where-to-watch`, que é do passo 7). 11 testes de integração e o fluxo inteiro percorrido pelo HTTP com o TMDB real. |
+| 5. Job de metadata e notas do acervo | próximo |
 
 Medido depois do refresh de metadata no banco de desenvolvimento: dos 112 filmes casados, 100 com sinopse em pt-BR, 11 em en-US e 1 sem sinopse em idioma nenhum (antes: 20 sem sinopse). Status de produção vistos: Released 86, Post Production 21, In Production 3, Planned 2.
 
@@ -243,3 +244,13 @@ Medido depois do refresh de metadata no banco de desenvolvimento: dos 112 filmes
 
 - O **matching do cinema não busca a sinopse de reserva**: ele pontua vários candidatos por evento e não precisa dela. Para isso não apagar a sinopse em inglês que o refresh trouxe, o `upsertPorTmdbId` só escreve a sinopse quando ela vem preenchida.
 - A busca do "+" (§4.1) quer o **diretor em cada resultado**, mas a busca do TMDB não traz créditos: seriam um pedido a mais por resultado, a cada busca. Decido isso no passo 4, junto com a rota `GET /tmdb/search`.
+
+**Decisões do passo 4:**
+
+- **Diretor na busca do "+":** do banco, para filme que já está no catálogo; de um cache de processo (7 dias), para busca repetida; do TMDB (`/movie/{id}/credits`, bem mais leve que o detalhe) só para os 6 primeiros resultados que faltarem. Se o pedido falhar, o resultado sai sem diretor, e a busca não cai.
+- **"Nós dois" na lista** (`paraOsDois`) põe o filme na lista da outra pessoa **sem interesse**: as estrelas são de cada um.
+- **Tags do "Editar"** usam as rotas que já existem (`POST`/`DELETE /titles/:id/tags`), com a regra de que cada pessoa só remove as suas. O `PATCH /library/titles/:id` cuida só do link do JustWatch, e só aceita endereço `https://…justwatch.com`.
+- **Remover do catálogo** usa um carimbo único; o desfazer (`POST /library/titles/:id/restaurar`) volta só o que aquele carimbo tirou, e uma visualização apagada antes continua apagada.
+- **Refresh depois do deploy:** o job de metadata trata como vencida toda metadata gravada antes destas colunas existirem. Sem isso, em produção um filme passaria até 30 dias aparecendo como "Estreia (mundial)".
+- **Ainda falta (§3.5): criar filme que não está no TMDB.** A fila Revisar exige um evento do ingresso em cada pendência (`review_items.ingresso_event_id` é obrigatório), então isso pede outra migration, que torna a coluna opcional (não é destrutiva). Fica para um passo próprio.
+- **Visualização apagada depois da nota:** a nota fica. Apagar a visualização por engano não deve levar a nota junto, e o "Remover do catálogo" já tira tudo de uma vez quando é essa a intenção.

@@ -81,6 +81,8 @@ export interface TituloDaLista extends CardDeTitulo {
 export interface PessoaDoTitulo {
   nome: string;
   personagem: string | null;
+  /** foto do TMDB; sem foto, a tela mostra as iniciais (cineon-expansao §5.1) */
+  fotoUrl: string | null;
 }
 
 export interface TagDoTitulo {

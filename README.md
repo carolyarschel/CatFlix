@@ -550,6 +550,33 @@ vez de gravar direto: lá a pessoa vê os três estados, o que já está marcado
 como desfazer. Um toque que grava da home tornaria "marquei sem querer" um beco
 sem saída.
 
+### Acervo do casal (expansão em andamento)
+
+O app passa a registrar o que vocês assistiram e querem assistir, além do
+cinema. O documento é [`cineon-expansao/contexto-expansao.md`](cineon-expansao/contexto-expansao.md)
+e o andamento fica em [`cineon-expansao/ESTADO_ATUAL.md`](cineon-expansao/ESTADO_ATUAL.md).
+Backend pronto até o passo 4; o frontend ainda não usa estas rotas.
+
+| Rota | O quê |
+|---|---|
+| `GET /api/tmdb/search?q=` | busca do "+": pôster, título, ano, diretor e se já está no catálogo |
+| `POST /api/library/titles` | `{"tmdbId":123}`: cria ou reaproveita, nunca duplica |
+| `GET /api/library/titles/:id` | detalhe do acervo: catálogo + situação de cada pessoa + visualizações |
+| `PATCH /api/library/titles/:id` | `{"justwatchUrl":"https://br.justwatch.com/…"}` |
+| `DELETE /api/library/titles/:id` | remover do catálogo (marca, não apaga); devolve `removidoEm` |
+| `POST /api/library/titles/:id/restaurar` | `{"removidoEm":"…"}`: desfaz a remoção |
+| `POST /api/titles/:id/watches` | já assistimos; tira o filme da lista de quem estava |
+| `GET /api/watches` | assistidos: `pessoa` (`CAT`/`BEAR`/`AMBOS`), `local`, `ano`, `q`, `cursor` |
+| `PATCH`/`DELETE /api/watches/:id` | editar / remover uma visualização |
+| `GET /api/watchlist?escopo=` | quero assistir, nas trilhas do §8; `AMBOS` = os dois querem |
+| `PUT`/`DELETE /api/titles/:id/watchlist` | `{"interesse":4,"paraOsDois":true}` / tirar da sua lista |
+| `POST /api/watchlist/restaurar` | `{"ids":[…]}`: o desfazer do "Removido da sua lista" |
+| `PUT`/`DELETE /api/titles/:id/rating` | `{"nota":8.5}`: só quem assistiu |
+
+A pessoa é sempre a da sessão (`CAT`/`BEAR`, por `users.papel`), nunca um
+parâmetro. Assistido e "quero assistir" são sempre calculados, nunca gravados
+como status.
+
 ## Pendências conhecidas
 
 Uma coisa que a implementação atual **não** resolve. Não foi contornada em

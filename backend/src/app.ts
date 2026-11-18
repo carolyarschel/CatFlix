@@ -6,6 +6,9 @@ import { cinemasRoutes } from './modules/cinemas';
 import { reviewRoutes } from './modules/review';
 import { syncRoutes } from './modules/sync';
 import { tagsRoutes } from './modules/tags';
+import { libraryRoutes } from './modules/library';
+import { watchesRoutes } from './modules/watches';
+import { watchlistRoutes } from './modules/watchlist';
 import { authRoutes, exigirPerfil, lerSessao, portao, usersRoutes } from './modules/users';
 import { authConfigurada, isProduction } from './config/env';
 import { prisma } from './shared/prisma';
@@ -92,6 +95,10 @@ export function createApp(): Express {
   app.use('/api', cinemasRoutes);
   app.use('/api', tagsRoutes);
   app.use('/api', usersRoutes);
+  // acervo do casal (cineon-expansao §9)
+  app.use('/api', libraryRoutes);
+  app.use('/api', watchesRoutes);
+  app.use('/api', watchlistRoutes);
 
   app.use(notFoundHandler);
   app.use(errorHandler);
