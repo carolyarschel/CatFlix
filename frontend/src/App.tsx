@@ -1,5 +1,6 @@
 import { AdicionarPage } from './modules/acervo/AdicionarPage';
 import { AssistidosPage } from './modules/acervo/AssistidosPage';
+import { ImportarCgPage } from './modules/acervo/ImportarCgPage';
 import { MaisPage } from './modules/acervo/MaisPage';
 import { QueroAssistirPage } from './modules/acervo/QueroAssistirPage';
 import { HomePage } from './modules/home/HomePage';
@@ -52,6 +53,11 @@ export function App() {
 
   if (rota.caminho === '/quero-assistir') {
     return <QueroAssistirPage perfil={perfil} aoNavegar={navegar} />;
+  }
+
+  // importação do Crônicas de Gatur antigo, pela tela (§11)
+  if (rota.caminho === '/importar-cg') {
+    return <ImportarCgPage aoVoltar={voltar} aoNavegar={navegar} />;
   }
 
   if (rota.caminho === '/mais') {

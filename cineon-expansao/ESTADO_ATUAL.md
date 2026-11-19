@@ -421,3 +421,7 @@ Dump em SQL texto do PostgreSQL 18.6, na raiz do projeto e **fora do git** (`.gi
 
 **Para produção:** depois do deploy (que aplica as migrations), rodar `npm run importar:cg -- --dump <dump> --aplicar` contra o banco de produção — no servidor, ou da máquina da Carol por um túnel SSH.
 - Corrigido também: com a importação, as duas pessoas passaram a ter a tag manual "Favorito", e o painel de tags mostrava **duas** linhas "Favorito" (uma por dono, cada uma contando só os filmes do dono) enquanto o filtro da lista juntava os dois. O painel agora agrupa a tag pelo nome — a contagem do painel volta a ser a da lista. Teste em `tags.facetas.integracao.test.ts`.
+
+**Importação pela tela, sem SSH (19/11/2026, a pedido da Carol):** Mais → "Importar do Crônicas de Gatur". O dump vai por upload (`POST /api/importacao/cg`); a simulação roda em segundo plano e a tela acompanha (`GET /api/importacao/cg/:id`); "Aplicar" grava com os casamentos já calculados (`POST /api/importacao/cg/:id/aplicar`). Uma tarefa por vez, na memória do processo; o servidor não guarda o arquivo, só os filmes lidos dele. O comando de terminal continua existindo e usa o mesmo relatório. Testado no navegador com o dump real: mesmos números do terminal, e aplicar de novo pulou os 181 já importados.
+
+**Para produção:** deploy, depois Mais → "Importar do Crônicas de Gatur" → escolher o `dumpCG.sql` → conferir o relatório → "Aplicar".

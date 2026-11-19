@@ -574,6 +574,9 @@ Telas no ar (em desenvolvimento): "+" (`/adicionar`), detalhe novo (`/filme/:id`
 | `POST /api/watchlist/restaurar` | `{"ids":[…]}`: o desfazer do "Removido da sua lista" |
 | `PUT`/`DELETE /api/titles/:id/rating` | `{"nota":8.5}`: só quem assistiu |
 | `GET /api/titles/:id/where-to-watch` | link do "Onde assistir" (JustWatch salvo ou busca) e provedores do Brasil por tipo |
+| `POST /api/importacao/cg` | corpo = dump do Crônicas de Gatur; começa a simulação da importação (tela Mais → "Importar do Crônicas de Gatur") |
+| `GET /api/importacao/cg/:id` | andamento e, no fim, o relatório |
+| `POST /api/importacao/cg/:id/aplicar` | grava; importar de novo não duplica |
 
 A pessoa é sempre a da sessão (`CAT`/`BEAR`, por `users.papel`), nunca um
 parâmetro. Assistido e "quero assistir" são sempre calculados, nunca gravados

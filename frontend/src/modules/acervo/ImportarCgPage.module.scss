@@ -1,0 +1,229 @@
+@use '../../shared/styles/tokens' as t;
+
+.tela {
+  position: relative;
+  min-height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: calc(#{t.$space-10} + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-7;
+  overflow-x: clip;
+
+  @media (min-width: t.$bp-desktop) {
+    max-width: 720px;
+  }
+}
+
+.ambiente {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 220px;
+  background: linear-gradient(to bottom, t.$ambient 0%, t.$bg 100%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.cabecalho {
+  padding: t.$space-7 t.$gutter 0;
+  display: flex;
+  align-items: center;
+  gap: t.$space-4;
+}
+
+.voltar {
+  width: t.$touch-target;
+  height: t.$touch-target;
+  margin-left: -#{t.$space-4};
+  border-radius: t.$radius-lg;
+  color: t.$text;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.titulo {
+  margin: 0;
+  font-size: t.$fs-xl;
+  line-height: t.$lh-title;
+}
+
+.conteudo {
+  padding: 0 t.$gutter;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-8;
+}
+
+.cartao {
+  padding: t.$space-7;
+  border-radius: t.$radius-lg;
+  border: 1px solid t.$border;
+  background: t.$surface-card;
+  color: t.$text-secondary;
+  font-size: t.$fs-sm;
+  line-height: t.$lh-body;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-5;
+
+  code {
+    font-size: t.$fs-xs;
+    color: t.$text;
+  }
+
+  strong {
+    color: t.$text;
+  }
+}
+
+.feito {
+  border-color: t.$accent;
+}
+
+.fase {
+  color: t.$text;
+  font-family: t.$font-display;
+  font-size: t.$fs-lg;
+  font-weight: t.$fw-semibold;
+}
+
+.miudo {
+  display: block;
+  color: t.$text-label;
+  font-size: t.$fs-xs;
+}
+
+.arquivo {
+  color: t.$text-secondary;
+  font-size: t.$fs-sm;
+
+  &::file-selector-button {
+    margin-right: t.$space-5;
+    min-height: 40px;
+    padding: 0 t.$space-6;
+    border-radius: t.$radius-md;
+    border: 1px solid t.$border-strong;
+    background: t.$surface-chip;
+    color: t.$text;
+    font: inherit;
+  }
+}
+
+.barra {
+  height: 8px;
+  border-radius: t.$radius-pill;
+  background: t.$surface-chip;
+  overflow: hidden;
+
+  span {
+    display: block;
+    height: 100%;
+    background: t.$accent;
+    transition: width 0.4s ease;
+  }
+}
+
+.acoes {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-3;
+}
+
+.primario,
+.secundario {
+  min-height: 52px;
+  border-radius: t.$radius-lg;
+  font-size: t.$fs-md;
+  font-weight: t.$fw-semibold;
+
+  &:disabled {
+    opacity: 0.45;
+  }
+}
+
+.primario {
+  background: t.$text;
+  color: t.$bg;
+}
+
+.secundario {
+  background: rgba(244, 241, 248, 0.1);
+  border: 1px solid rgba(244, 241, 248, 0.18);
+  color: t.$text;
+}
+
+.erro {
+  color: #ff9b9b;
+  font-size: t.$fs-sm;
+}
+
+// ── relatório ───────────────────────────────────────────────
+
+.secao {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-4;
+}
+
+.rotulo {
+  margin: 0;
+  font-family: t.$font-text;
+  font-size: t.$fs-2xs;
+  font-weight: t.$fw-medium;
+  letter-spacing: t.$ls-label;
+  text-transform: uppercase;
+  color: t.$text-group-label;
+  cursor: default;
+}
+
+summary.rotulo {
+  cursor: pointer;
+  min-height: t.$touch-target;
+  display: flex;
+  align-items: center;
+}
+
+.numeros {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: t.$space-3;
+}
+
+.numero {
+  padding: t.$space-4 t.$space-5;
+  border-radius: t.$radius-md;
+  background: t.$surface-chip;
+
+  dt {
+    color: t.$text-label;
+    font-size: t.$fs-xs;
+  }
+
+  dd {
+    margin: 0;
+    color: t.$text;
+    font-family: t.$font-display;
+    font-size: t.$fs-xl;
+    font-weight: t.$fw-semibold;
+  }
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-4;
+  color: t.$text-secondary;
+  font-size: t.$fs-sm;
+
+  strong {
+    color: t.$text;
+  }
+}

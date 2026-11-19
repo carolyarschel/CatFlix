@@ -1,7 +1,7 @@
 import { Badge } from '../../shared/components/Badge';
 import { BottomNav } from '../../shared/components/BottomNav';
 import { CabecalhoDaAba } from '../../shared/components/CabecalhoDaAba';
-import { IconeAgenda, IconeRevisar } from '../../shared/components/Icones';
+import { IconeAgenda, IconeOlho, IconeRevisar } from '../../shared/components/Icones';
 import { SeloDePessoa } from '../../shared/components/SeloDePessoa';
 import { useApi } from '../../shared/hooks/useApi';
 import type { ContagemDaRevisao, PerfilDoApp } from '../../shared/api/tipos';
@@ -67,6 +67,18 @@ export function MaisPage({
               <span className={styles.textos}>
                 <span className={styles.nome}>Programação por data</span>
                 <span className={styles.detalhe}>Tudo o que passa num dia, nos três cinemas</span>
+              </span>
+            </button>
+          </li>
+
+          <li>
+            <button type="button" className={styles.item} onClick={() => aoNavegar('/importar-cg')}>
+              <span className={styles.icone}>
+                <IconeOlho />
+              </span>
+              <span className={styles.textos}>
+                <span className={styles.nome}>Importar do Crônicas de Gatur</span>
+                <span className={styles.detalhe}>Os filmes que vocês registraram no CG antigo</span>
               </span>
             </button>
           </li>

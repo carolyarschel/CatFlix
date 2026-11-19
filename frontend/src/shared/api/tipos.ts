@@ -419,3 +419,43 @@ export interface ListaQueroAssistir {
   grupos: Array<{ id: GrupoDaLista; titulo: string; itens: ItemDaLista[] }>;
   total: number;
 }
+
+// ── Importação do Crônicas de Gatur (cineon-expansao §11) ────
+
+export type FaseDaImportacao = 'casando' | 'pronto' | 'aplicando' | 'aplicado' | 'erro';
+
+export interface RelatorioDaImportacao {
+  totais: {
+    filmes: number;
+    certos: number;
+    duvidas: number;
+    semCandidato: number;
+    visualizacoes: number;
+    lista: number;
+    notas: number;
+    favoritos: number;
+    jaImportados: number;
+  };
+  revisao: Array<{
+    titulo: string;
+    lancamento: string | null;
+    diretor: string | null;
+    candidato: { titulo: string; ano: number | null; tmdbId: number } | null;
+    motivo: string;
+  }>;
+  repetidos: Array<{ titulo: string; tmdbId: number; itens: string[] }>;
+  avisos: Array<{ titulo: string; avisos: string[] }>;
+  certos: Array<{ titulo: string; tmdbId: number; como: string; resumo: string }>;
+}
+
+/** `GET /importacao/cg/:id` */
+export interface EstadoDaImportacao {
+  id: string;
+  fase: FaseDaImportacao;
+  feitos: number;
+  total: number;
+  criadaEm: string;
+  por: string;
+  relatorio: RelatorioDaImportacao | null;
+  erro: string | null;
+}
