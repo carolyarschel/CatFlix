@@ -561,6 +561,7 @@ Telas no ar (em desenvolvimento): "+" (`/adicionar`), detalhe novo (`/filme/:id`
 |---|---|
 | `GET /api/tmdb/search?q=` | busca do "+": pôster, título, ano, diretor e se já está no catálogo |
 | `POST /api/library/titles` | `{"tmdbId":123}`: cria ou reaproveita, nunca duplica |
+| `POST /api/library/titles/manual` | `{"titulo":"…","ano":2027}`: "Não encontrei o filme" — órfão + pendência na fila Revisar |
 | `GET /api/library/titles/:id` | detalhe do acervo: catálogo + situação de cada pessoa + visualizações |
 | `PATCH /api/library/titles/:id` | `{"justwatchUrl":"https://br.justwatch.com/…"}` |
 | `DELETE /api/library/titles/:id` | remover do catálogo (marca, não apaga); devolve `removidoEm` |
@@ -573,6 +574,7 @@ Telas no ar (em desenvolvimento): "+" (`/adicionar`), detalhe novo (`/filme/:id`
 | `PUT`/`DELETE /api/titles/:id/watchlist` | `{"interesse":4,"paraOsDois":true}` / tirar da sua lista |
 | `POST /api/watchlist/restaurar` | `{"ids":[…]}`: o desfazer do "Removido da sua lista" |
 | `PUT`/`DELETE /api/titles/:id/rating` | `{"nota":8.5}`: só quem assistiu |
+| `PUT`/`DELETE /api/titles/:id/comment` | `{"texto":"…"}`: o comentário de quem está logado; texto vazio apaga |
 | `GET /api/titles/:id/where-to-watch` | link do "Onde assistir" (JustWatch salvo ou busca) e provedores do Brasil por tipo |
 | `POST /api/importacao/cg` | corpo = dump do Crônicas de Gatur; começa a simulação da importação (tela Mais → "Importar do Crônicas de Gatur") |
 | `GET /api/importacao/cg/:id` | andamento e, no fim, o relatório |

@@ -22,6 +22,7 @@ export interface RelatorioDaImportacao {
     visualizacoes: number;
     lista: number;
     notas: number;
+    comentarios: number;
     favoritos: number;
     /** só depois de aplicar */
     jaImportados: number;
@@ -70,6 +71,7 @@ export function montarRelatorio(linhas: LinhaDaImportacao[]): RelatorioDaImporta
       visualizacoes: soma((f) => f.visualizacoes.length),
       lista: soma((f) => f.lista.length),
       notas: soma((f) => f.notas.length),
+      comentarios: soma((f) => Object.keys(f.comentarios).length),
       favoritos: soma((f) => f.favoritos.length),
       jaImportados: linhas.filter((l) => l.resultado === 'ja_importado').length,
     },
@@ -119,6 +121,7 @@ export function relatorioEmMarkdown(r: RelatorioDaImportacao, cabecalho: { aplic
     `| Visualizações | ${t.visualizacoes} |`,
     `| Entradas na lista "quero assistir" | ${t.lista} |`,
     `| Notas | ${t.notas} |`,
+    `| Comentários | ${t.comentarios} |`,
     `| Tags "Favorito" | ${t.favoritos} |`,
     ...(cabecalho.aplicado ? [`| Já importados antes (pulados) | ${t.jaImportados} |`] : []),
     '',

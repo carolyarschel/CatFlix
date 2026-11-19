@@ -33,6 +33,8 @@ export interface SituacaoDaPessoa {
   nota: number | null;
   /** só dá nota quem participou de alguma visualização */
   podeDarNota: boolean;
+  /** o comentário dela sobre o filme; comentar não exige ter assistido */
+  comentario: string | null;
 }
 
 /**

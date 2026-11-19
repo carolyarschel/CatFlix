@@ -8,6 +8,7 @@ import { adicionarALista, listarLista, restaurarNaLista } from '../watchlist/wat
 import { buscarParaAdicionar, limparCacheDeDiretores } from './library.busca';
 import {
   adicionarPorTmdbId,
+  adicionarSemTmdb,
   darNota,
   detalheDoAcervo,
   registrarQueAssistimos,
@@ -151,6 +152,37 @@ describe('adicionar pelo "+" (§4.1)', () => {
   });
 });
 
+describe('"Não encontrei o filme" (§3.5)', () => {
+  it('cria um órfão com pendência manual na fila, e ele já pode ir para a lista', async ({ skip }) => {
+    if (!temBanco) skip('sem Postgres');
+    const nome = `${PREFIXO} Sem   TMDB `;
+    try {
+      const { titleId } = await adicionarSemTmdb(nome, 2027);
+
+      const t = await prisma.title.findUniqueOrThrow({ where: { id: titleId } });
+      expect(t).toMatchObject({ status: 'orphan', title: `${PREFIXO} Sem TMDB`, year: 2027 });
+
+      const pendencia = await prisma.reviewItem.findFirstOrThrow({ where: { subjectTitleId: titleId } });
+      expect(pendencia).toMatchObject({
+        origin: 'manual',
+        ingressoEventId: null,
+        ingressoTitle: `${PREFIXO} Sem TMDB`,
+        reason: 'no_candidate',
+        status: 'open',
+      });
+
+      await adicionarALista(titleId, 'CAT');
+      expect((await detalheDoAcervo(titleId, 'CAT')).pessoas.find((p) => p.pessoa === 'CAT')?.querAssistir).toBe(true);
+    } finally {
+      await prisma.reviewItem.deleteMany({ where: { ingressoTitle: { startsWith: PREFIXO } } });
+    }
+  });
+
+  it('título vazio é recusado', async () => {
+    await expect(adicionarSemTmdb('   ', null)).rejects.toThrow(ValidationError);
+  });
+});
+
 describe('registrar que assistimos (§3.3)', () => {
   it('tira o filme da lista de quem estava, e o desfazer devolve', async ({ skip }) => {
     if (!temBanco) skip('sem Postgres');
@@ -245,7 +277,7 @@ describe('remover do catálogo (§4.4)', () => {
     expect(await prisma.title.count({ where: { id } })).toBe(1);
 
     const restauracao = await restaurarNoCatalogo(id, remocao.removidoEm);
-    expect(restauracao).toEqual({ visualizacoes: 1, lista: 1, notas: 1 });
+    expect(restauracao).toEqual({ visualizacoes: 1, lista: 1, notas: 1, comentarios: 0 });
     expect(await prisma.watch.count({ where: { titleId: id, removedAt: null } })).toBe(1);
   });
 });
@@ -319,8 +351,8 @@ describe('detalhe agregado (§7)', () => {
 
     expect(d.eu).toBe('BEAR');
     expect(d.pessoas).toEqual([
-      { pessoa: 'CAT', assistiu: true, querAssistir: false, interesse: null, nota: 7, podeDarNota: true },
-      { pessoa: 'BEAR', assistiu: false, querAssistir: true, interesse: 5, nota: null, podeDarNota: false },
+      { pessoa: 'CAT', assistiu: true, querAssistir: false, interesse: null, nota: 7, podeDarNota: true, comentario: null },
+      { pessoa: 'BEAR', assistiu: false, querAssistir: true, interesse: 5, nota: null, podeDarNota: false, comentario: null },
     ]);
     expect(d.sinopseIdioma).toBe('en-US');
     expect(d.estreia).toEqual({ data: '2027-05-26', mundial: true });

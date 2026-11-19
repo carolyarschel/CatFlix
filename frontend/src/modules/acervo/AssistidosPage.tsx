@@ -7,6 +7,7 @@ import { PosterCard } from '../../shared/components/PosterCard';
 import { useApi } from '../../shared/hooks/useApi';
 import { PESSOA_DO_PERFIL, outraPessoa, perfilDaPessoa } from '../../shared/pessoas';
 import type { Assistidos, CardDoAssistido, PerfilDoApp } from '../../shared/api/tipos';
+import { OpinioesDoCard } from './OpinioesDoCard';
 import styles from './AssistidosPage.module.scss';
 
 /**
@@ -257,7 +258,12 @@ export function AssistidosPage({
         {itens.length > 0 ? (
           <div className={styles.grade} data-carregando={carregando && pagina === 1 ? '' : undefined}>
             {itens.map((item) => (
-              <PosterCard key={item.id} titulo={item} aoAbrir={(id) => aoNavegar(`/filme/${id}`)} />
+              <PosterCard
+                key={item.id}
+                titulo={item}
+                aoAbrir={(id) => aoNavegar(`/filme/${id}`)}
+                rodape={<OpinioesDoCard opinioes={item.opinioes} perfis={perfis.dados?.itens ?? []} />}
+              />
             ))}
           </div>
         ) : null}

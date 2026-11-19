@@ -9,6 +9,7 @@ import { listarAssistidos } from './library.assistidos';
 import { buscarParaAdicionar } from './library.busca';
 import {
   adicionarPorTmdbId,
+  adicionarSemTmdb,
   darNota,
   definirJustwatchUrl,
   detalheDoAcervo,
@@ -52,6 +53,15 @@ export async function postTitulo(req: Request, res: Response): Promise<void> {
   const { tmdbId } = lerCorpo(z.object({ tmdbId: z.number().int().positive() }), req.body);
   const resultado = await adicionarPorTmdbId(tmdbId);
   res.status(resultado.criado ? 201 : 200).json(resultado);
+}
+
+/** `POST /library/titles/manual { titulo, ano? }` — "Não encontrei o filme" (§3.5). */
+export async function postTituloManual(req: Request, res: Response): Promise<void> {
+  const { titulo, ano } = lerCorpo(
+    z.object({ titulo: z.string().trim().min(1).max(200), ano: z.number().int().min(1888).max(2100).nullish() }),
+    req.body,
+  );
+  res.status(201).json(await adicionarSemTmdb(titulo, ano ?? null));
 }
 
 /** `GET /library/titles/:id` — o detalhe do §7. */

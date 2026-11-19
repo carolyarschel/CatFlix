@@ -243,7 +243,7 @@ A tabela `user_title_states` **não é apagada** nesta fase. Depois que a migra�
 | 6.3–6.4 Abas e navegação do §8 | ✅ Barra de baixo com Cinema / Assistidos / Quero assistir / Mais. Assistidos (`GET /assistidos`): um card por filme, filtros de quem, local, ano, gênero, diretor, nota e título, paginado. Quero assistir: as quatro trilhas e o filtro minha / dele / dos dois. Mais: perfil, Revisar (com badge), programação por data e "Sobre". Testado no navegador. |
 | 6.5 Selo "Na sua lista" | ✅ Coberto pelos rostos no pôster (quem quer assistir) e pela trilha "Na lista de vocês" na home. |
 | 7. Onde assistir e "Sobre" | ✅ Provedores de streaming do Brasil no detalhe, por tipo, com "Dados de streaming: JustWatch"; `GET /titles/:id/where-to-watch`; logo oficial do TMDB e as atribuições no "Sobre". Migration `provedores_de_streaming`. |
-| §3.5 Filme fora do TMDB | próximo: migration que deixa a fila Revisar aceitar pendência sem evento do ingresso |
+| §3.5 Filme fora do TMDB | ✅ Link discreto "Não encontrei o filme" no "+", depois de uma busca: título e ano (opcional), e as mesmas opções de sempre. `POST /library/titles/manual` cria o `Title` órfão e uma pendência `manual` / `no_candidate` na fila Revisar, onde "Trocar" liga ao TMDB e o merge leva a lista, as visualizações e as notas. A migration `revisao_sem_ingresso` (a mesma da importação do CG) já estava em produção. |
 
 Medido depois do refresh de metadata no banco de desenvolvimento: dos 112 filmes casados, 100 com sinopse em pt-BR, 11 em en-US e 1 sem sinopse em idioma nenhum (antes: 20 sem sinopse). Status de produção vistos: Released 86, Post Production 21, In Production 3, Planned 2.
 
@@ -277,7 +277,7 @@ Medido depois do refresh de metadata no banco de desenvolvimento: dos 112 filmes
 - **Data com precisão:** Dia / Mês / Só o ano, que viram os formatos que o backend entende.
 - **"Só abrir o filme" ainda abre o detalhe antigo** (`/filme/:id`), até o detalhe novo existir.
 - **O "+" está só na home por enquanto.** As outras telas ganham o botão quando a navegação nova do §8 entrar (6.3–6.4).
-- **O link "Não encontrei o filme" (§3.5) não aparece** enquanto a fila Revisar não aceitar pendência sem evento do ingresso.
+- **O link "Não encontrei o filme" (§3.5)** entrou em 19/11/2026, depois da migration `revisao_sem_ingresso`. O filme só é criado quando a pessoa escolhe o que fazer com ele (lista, assistimos ou abrir): voltar antes disso não deixa órfão nem pendência no banco.
 
 **Respostas de 18/11/2026 (perguntas 3 a 5 e o layout do detalhe):**
 
@@ -425,3 +425,14 @@ Dump em SQL texto do PostgreSQL 18.6, na raiz do projeto e **fora do git** (`.gi
 **Importação pela tela, sem SSH (19/11/2026, a pedido da Carol):** Mais → "Importar do Crônicas de Gatur". O dump vai por upload (`POST /api/importacao/cg`); a simulação roda em segundo plano e a tela acompanha (`GET /api/importacao/cg/:id`); "Aplicar" grava com os casamentos já calculados (`POST /api/importacao/cg/:id/aplicar`). Uma tarefa por vez, na memória do processo; o servidor não guarda o arquivo, só os filmes lidos dele. O comando de terminal continua existindo e usa o mesmo relatório. Testado no navegador com o dump real: mesmos números do terminal, e aplicar de novo pulou os 181 já importados.
 
 **Para produção:** deploy, depois Mais → "Importar do Crônicas de Gatur" → escolher o `dumpCG.sql` → conferir o relatório → "Aplicar".
+
+## 9. Comentários (19/11/2026)
+
+Pedido da Carol: comentar cada filme, editar depois, e ver a nota e o comentário de cada um no card.
+
+- **Um comentário por pessoa e filme**, como a nota (tabela `comments`, módulo `comments`). Cada um escreve e edita só o seu; o do outro aparece para ler. Comentar **não exige ter assistido**, como no CG antigo. Salvar vazio apaga.
+- **Não é a observação da visualização**: esta continua no formulário de "Assistimos" e fala daquela sessão.
+- **Detalhe:** seção "Comentários" logo depois das notas, com Editar / Apagar no seu.
+- **Card dos Assistidos:** embaixo do pôster, o rosto de cada um com a nota e o comentário cortado em 3 linhas (inteiro no detalhe). Só aparece o que existe. Os cards das outras abas (Cinema, Quero assistir) não mudaram.
+- **Os comentários do CG** saíram da observação e viraram comentários de cada pessoa (migration `comentarios`, conferida no banco de desenvolvimento: 81 de 81). A importação passa a gravar direto nos comentários, inclusive de filme que ninguém assistiu ainda.
+- "Remover do catálogo" e o desfazer levam os comentários junto; o merge da fila Revisar também (dois comentários diferentes da mesma pessoa ficam os dois).

@@ -84,7 +84,7 @@ describe('listarAssistidos', () => {
 
     const porNota = await listarAssistidos({ q: PREFIXO, notaMin: 8 });
     expect(porNota.itens.map((i) => i.id)).toEqual([terror.id]);
-    expect(porNota.itens[0]!.notas).toEqual([{ pessoa: 'BEAR', nota: 9 }]);
+    expect(porNota.itens[0]!.opinioes).toEqual([{ pessoa: 'BEAR', nota: 9, comentario: null }]);
 
     // as facetas só oferecem o que existe
     expect(porNota.facetas.generos).toEqual(

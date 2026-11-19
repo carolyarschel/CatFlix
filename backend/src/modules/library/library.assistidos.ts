@@ -1,5 +1,6 @@
 import type { DatePrecision, Pessoa, Prisma, WatchLocation } from '@prisma/client';
 import { prisma } from '../../shared/prisma';
+import { comentariosDosTitulos } from '../comments/comments.service';
 import { formatarNotaImdb, formatarNotaRt } from '../catalog/catalog.format';
 import type { CardDeTitulo, MarcaDeUsuario } from '../catalog/catalog.types';
 
@@ -35,7 +36,17 @@ export interface CardDoAssistido extends CardDeTitulo {
   /** a visualização mais recente, como foi dita */
   ultimaVez: { data: string; precisao: DatePrecision };
   vezes: number;
-  notas: Array<{ pessoa: Pessoa; nota: number }>;
+  /**
+   * A nota e o comentário de cada pessoa, CAT antes de BEAR. Só entra quem tem
+   * ao menos um dos dois; o card mostra o que houver.
+   */
+  opinioes: OpiniaoDaPessoa[];
+}
+
+export interface OpiniaoDaPessoa {
+  pessoa: Pessoa;
+  nota: number | null;
+  comentario: string | null;
 }
 
 const POR_PAGINA = 60;
@@ -154,11 +165,14 @@ export async function listarAssistidos(filtros: FiltrosDosAssistidos): Promise<{
   const total = porTitulo.size;
   const daPagina = [...porTitulo.values()].slice((pagina - 1) * POR_PAGINA, pagina * POR_PAGINA);
 
-  const notas = await prisma.rating.findMany({
-    where: { titleId: { in: daPagina.map((g) => g.ultima.title.id) }, removedAt: null },
-    orderBy: { pessoa: 'asc' },
-    select: { titleId: true, pessoa: true, score: true },
-  });
+  const idsDaPagina = daPagina.map((g) => g.ultima.title.id);
+  const [notas, comentarios] = await Promise.all([
+    prisma.rating.findMany({
+      where: { titleId: { in: idsDaPagina }, removedAt: null },
+      select: { titleId: true, pessoa: true, score: true },
+    }),
+    comentariosDosTitulos(idsDaPagina),
+  ]);
 
   const marcaDe = new Map<Pessoa, MarcaDeUsuario>(
     usuarios.map((u) => [
@@ -189,9 +203,13 @@ export async function listarAssistidos(filtros: FiltrosDosAssistidos): Promise<{
       faixa: faixaDaData(ultima.watchedOn, ultima.datePrecision),
       ultimaVez: { data: dataDita(ultima.watchedOn, ultima.datePrecision), precisao: ultima.datePrecision },
       vezes,
-      notas: notas
-        .filter((n) => n.titleId === t.id)
-        .map((n) => ({ pessoa: n.pessoa, nota: Number(n.score) })),
+      opinioes: (['CAT', 'BEAR'] as const)
+        .map((pessoa) => {
+          const nota = notas.find((n) => n.titleId === t.id && n.pessoa === pessoa);
+          const comentario = comentarios.get(t.id)?.find((c) => c.pessoa === pessoa);
+          return { pessoa, nota: nota ? Number(nota.score) : null, comentario: comentario?.texto ?? null };
+        })
+        .filter((o) => o.nota !== null || o.comentario !== null),
     };
   });
 

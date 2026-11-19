@@ -76,7 +76,11 @@ describe('importarFilme', () => {
     const id = (primeira as { titleId: string }).titleId;
     const visualizacoes = await prisma.watch.findMany({ where: { titleId: id } });
     expect(visualizacoes).toHaveLength(1);
-    expect(visualizacoes[0]).toMatchObject({ location: 'CINEMA', participants: ['CAT', 'BEAR'], note: '🐱 amei' });
+    expect(visualizacoes[0]).toMatchObject({ location: 'CINEMA', participants: ['CAT', 'BEAR'], note: null });
+    // o comentário do CG é o comentário da pessoa sobre o filme, não a observação da sessão
+    expect(await prisma.comment.findMany({ where: { titleId: id }, select: { pessoa: true, text: true } })).toEqual([
+      { pessoa: 'CAT', text: 'amei' },
+    ]);
     expect((await prisma.rating.findMany({ where: { titleId: id } })).map((r) => Number(r.score))).toEqual([9]);
 
     const favorito = await prisma.titleTag.findMany({ where: { titleId: id }, select: { tag: { select: { label: true, ownerId: true } } } });

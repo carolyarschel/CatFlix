@@ -179,6 +179,49 @@
 }
 
 // §5.4: a atribuição do TMDB fica onde os dados dele aparecem
+// §3.5: um link, não um botão — é a saída de emergência, não o caminho
+.naoEncontrei {
+  align-self: center;
+  min-height: t.$touch-target;
+  padding: 0 t.$space-5;
+  color: t.$text-support;
+  font-size: t.$fs-sm;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.rotuloDoCampo {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-3;
+  font-size: t.$fs-2xs;
+  letter-spacing: t.$ls-label;
+  text-transform: uppercase;
+  color: t.$text-group-label;
+}
+
+.campoManual {
+  width: 100%;
+  min-height: t.$touch-target;
+  padding: 0 t.$space-6;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border-strong;
+  background: t.$surface-chip;
+  color: t.$text;
+  font-size: t.$fs-md;
+  letter-spacing: normal;
+  text-transform: none;
+
+  &:focus-visible {
+    outline: none;
+    border-color: t.$accent;
+  }
+
+  &[aria-invalid='true'] {
+    border-color: #ff9b9b;
+  }
+}
+
 .atribuicao {
   margin-top: t.$space-5;
   color: t.$text-group-label;

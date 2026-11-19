@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
 import { decidirCasamento, type CandidatoDaBusca } from './importacao.cg.casamento';
-import { observacao } from './importacao.cg.aplicar';
 import { lerFilmesDoCg } from './importacao.cg.leitura';
 
 /**
@@ -173,12 +172,5 @@ describe('decidirCasamento', () => {
 
   it('busca vazia: sem candidato', async () => {
     expect((await decidirCasamento(filme, [], diretores({}))).tipo).toBe('sem_candidato');
-  });
-});
-
-describe('observacao', () => {
-  it('cada comentário com o rosto de quem escreveu', () => {
-    expect(observacao({ CAT: 'amei', BEAR: 'ok' })).toBe('🐱 amei\n🐻 ok');
-    expect(observacao({})).toBeNull();
   });
 });

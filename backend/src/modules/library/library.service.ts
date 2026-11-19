@@ -7,9 +7,15 @@ import { prisma } from '../../shared/prisma';
 // rota importando o orquestrador importando rota fecharia um ciclo
 import { detalheDoTitulo } from '../catalog/catalog.queries';
 import { upsertPorTmdbId } from '../catalog/catalog.service';
+import { normalizarTitulo } from '../matching/matching.normalizer';
 import { TmdbClient } from '../tmdb';
 import { definirNota, notasDoTitulo, removerNotasDoTitulo, restaurarNotasDoTitulo } from '../ratings';
 import type { NotaDaPessoa } from '../ratings';
+import {
+  comentariosDoTitulo,
+  removerComentariosDoTitulo,
+  restaurarComentariosDoTitulo,
+} from '../comments/comments.service';
 import {
   participouDe,
   registrarVisualizacao,
@@ -82,10 +88,52 @@ async function tituloDoTmdb(tmdbId: number): Promise<string | null> {
   return id?.titleId ?? null;
 }
 
+/**
+ * "Não encontrei o filme" (cineon-expansao §3.5): o filme que ainda não está
+ * no TMDB — comum com anúncio muito recente — entra como `Title` órfão, só com
+ * o título (e o ano, quando se sabe), para poder ir para a lista ou ganhar uma
+ * visualização. Ele aparece com "metadata pendente" e entra na fila Revisar,
+ * onde a Carol o liga ao TMDB quando o filme existir lá; o `mergeTitles` leva
+ * junto tudo o que já tiver sido registrado.
+ *
+ * Não é o caminho normal do "+" (§4.1): a tela só oferece isto num link
+ * discreto, depois da busca.
+ */
+export async function adicionarSemTmdb(titulo: string, ano: number | null): Promise<{ titleId: string }> {
+  const limpo = titulo.trim().replace(/\s+/g, ' ');
+  if (limpo.length === 0) throw new ValidationError('Diga o título do filme.');
+
+  return prisma.$transaction(async (tx) => {
+    const { id } = await tx.title.create({
+      data: {
+        status: 'orphan',
+        title: limpo,
+        normalizedTitle: normalizarTitulo(limpo).normalizado,
+        year: ano,
+      },
+      select: { id: true },
+    });
+
+    await tx.reviewItem.create({
+      data: {
+        origin: 'manual',
+        ingressoEventId: null,
+        ingressoTitle: limpo,
+        ingressoYear: ano,
+        subjectTitleId: id,
+        reason: 'no_candidate',
+        note: 'Adicionado à mão pelo "+": não estava no TMDB. Quando aparecer lá, escolha o filme certo aqui.',
+      },
+    });
+
+    return { titleId: id };
+  });
+}
+
 // ── detalhe (§7) ────────────────────────────────────────────
 
 export async function detalheDoAcervo(titleId: string, eu: Pessoa): Promise<DetalheDoAcervo> {
-  const [base, extra, visualizacoes, lista, notas] = await Promise.all([
+  const [base, extra, visualizacoes, lista, notas, comentarios] = await Promise.all([
     detalheDoTitulo(titleId),
     prisma.title.findUnique({
       where: { id: titleId },
@@ -101,6 +149,7 @@ export async function detalheDoAcervo(titleId: string, eu: Pessoa): Promise<Deta
     visualizacoesDoTitulo(titleId),
     quemQuerOTitulo(titleId),
     notasDoTitulo(titleId),
+    comentariosDoTitulo(titleId),
   ]);
   const provedores = await provedoresDoTitulo(titleId);
 
@@ -122,6 +171,7 @@ export async function detalheDoAcervo(titleId: string, eu: Pessoa): Promise<Deta
       interesse: naLista?.interesse ?? null,
       nota: notas.find((n) => n.pessoa === pessoa)?.nota ?? null,
       podeDarNota: assistiu,
+      comentario: comentarios.find((c) => c.pessoa === pessoa)?.texto ?? null,
     };
   });
 
@@ -234,10 +284,12 @@ export interface ResultadoDaRemocao {
   visualizacoes: number;
   lista: number;
   notas: number;
+  comentarios: number;
 }
 
 /**
- * Tira o filme do acervo: visualizações, lista e notas, com UM carimbo só.
+ * Tira o filme do acervo: visualizações, lista, notas e comentários, com UM
+ * carimbo só.
  *
  * O `Title` não é apagado — ele pode estar em cartaz, e as sessões e o
  * catálogo do cinema não têm nada a ver com o acervo.
@@ -250,9 +302,10 @@ export async function removerDoCatalogo(titleId: string): Promise<ResultadoDaRem
     visualizacoes: await removerVisualizacoesDoTitulo(titleId, removidoEm, tx),
     lista: await removerDaListaDoTitulo(titleId, removidoEm, tx),
     notas: await removerNotasDoTitulo(titleId, removidoEm, tx),
+    comentarios: await removerComentariosDoTitulo(titleId, removidoEm, tx),
   }));
 
-  if (resultado.visualizacoes + resultado.lista + resultado.notas === 0) {
+  if (resultado.visualizacoes + resultado.lista + resultado.notas + resultado.comentarios === 0) {
     throw new NotFoundError('Este filme não está no acervo de vocês.');
   }
   return resultado;
@@ -270,6 +323,7 @@ export async function restaurarNoCatalogo(
     visualizacoes: await restaurarVisualizacoesDoTitulo(titleId, removidoEm, tx),
     lista: await restaurarListaDoTitulo(titleId, removidoEm, tx),
     notas: await restaurarNotasDoTitulo(titleId, removidoEm, tx),
+    comentarios: await restaurarComentariosDoTitulo(titleId, removidoEm, tx),
   }));
 }
 

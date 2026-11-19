@@ -1,0 +1,113 @@
+@use '../../shared/styles/tokens' as t;
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-6;
+}
+
+.comentario {
+  display: flex;
+  align-items: flex-start;
+  gap: t.$space-4;
+}
+
+.corpo,
+.edicao {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-3;
+}
+
+.texto {
+  margin: 0;
+  padding-top: 4px; // alinha a primeira linha com o centro do selo
+  color: t.$text;
+  font-size: t.$fs-sm;
+  line-height: t.$lh-body;
+  // os comentários do CG têm parágrafos
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.vazio {
+  margin: 0;
+  padding-top: 4px;
+  color: t.$text-label;
+  font-size: t.$fs-sm;
+}
+
+.links {
+  display: flex;
+  gap: t.$space-6;
+}
+
+.link,
+.linkDiscreto {
+  align-self: flex-start;
+  min-height: t.$touch-target;
+  font-size: t.$fs-sm;
+  font-weight: t.$fw-medium;
+}
+
+.link {
+  color: t.$accent-on-soft;
+}
+
+.linkDiscreto {
+  color: t.$text-label;
+}
+
+.campo {
+  width: 100%;
+  padding: t.$space-4 t.$space-5;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border-strong;
+  background: t.$surface-chip;
+  color: t.$text;
+  font: inherit;
+  font-size: t.$fs-base;
+  line-height: t.$lh-body;
+  resize: vertical;
+
+  &:focus-visible {
+    outline: none;
+    border-color: t.$accent;
+  }
+}
+
+.acoes {
+  display: flex;
+  gap: t.$space-3;
+}
+
+.salvar,
+.cancelar {
+  min-height: t.$touch-target;
+  padding: 0 t.$space-7;
+  border-radius: t.$radius-md;
+  font-size: t.$fs-sm;
+  font-weight: t.$fw-semibold;
+
+  &:disabled {
+    opacity: 0.55;
+  }
+}
+
+.salvar {
+  background: t.$text;
+  color: t.$bg;
+}
+
+.cancelar {
+  border: 1px solid t.$border-strong;
+  color: t.$text;
+}
+
+.erro {
+  margin: 0;
+  color: #ff9b9b;
+  font-size: t.$fs-sm;
+}

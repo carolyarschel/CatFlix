@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import type { CardDeTitulo } from '../api/tipos';
 import { RatingBadges } from './RatingBadges';
 import { SeloDePessoa } from './SeloDePessoa';
@@ -15,9 +16,12 @@ import styles from './PosterCard.module.scss';
 export function PosterCard({
   titulo,
   aoAbrir,
+  rodape,
 }: {
   titulo: CardDeTitulo;
   aoAbrir?: (id: string) => void;
+  /** o que vem depois da linha — nos Assistidos, a nota e o comentário de cada um */
+  rodape?: ReactNode;
 }) {
   const descricao = [
     titulo.titulo,
@@ -75,6 +79,8 @@ export function PosterCard({
       <RatingBadges imdb={titulo.imdb} rt={titulo.rt} />
 
       {titulo.linha ? <span className={styles.linha}>{titulo.linha}</span> : null}
+
+      {rodape}
     </article>
   );
 }

@@ -215,9 +215,6 @@ export function lerFilmesDoCg(dump: string): FilmeDoCg[] {
       const texto = catalogo.col(c, `notes_${sufixo}`)?.trim();
       if (texto) comentarios[pessoa] = texto;
     }
-    if (Object.keys(comentarios).length > 0 && visualizacoes.length === 0) {
-      avisos.push('comentário sem visualização: não importado (a observação mora na visualização)');
-    }
 
     return {
       chave: `collection:${id}`,

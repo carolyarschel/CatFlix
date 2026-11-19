@@ -360,6 +360,8 @@ export interface SituacaoDaPessoa {
   nota: number | null;
   /** só dá nota quem participou de alguma visualização */
   podeDarNota: boolean;
+  /** o comentário dela sobre o filme; comentar não exige ter assistido */
+  comentario: string | null;
 }
 
 /** `GET /library/titles/:id` — o detalhe do filme da expansão (§7). */
@@ -386,7 +388,14 @@ export interface DetalheDoAcervo extends DetalheDoTitulo {
 export interface CardDoAssistido extends CardDeTitulo {
   ultimaVez: { data: string; precisao: PrecisaoDaData };
   vezes: number;
-  notas: Array<{ pessoa: Pessoa; nota: number }>;
+  /** nota e comentário de cada pessoa, CAT antes de BEAR; só quem tem algum dos dois */
+  opinioes: OpiniaoDaPessoa[];
+}
+
+export interface OpiniaoDaPessoa {
+  pessoa: Pessoa;
+  nota: number | null;
+  comentario: string | null;
 }
 
 /** `GET /assistidos` */
@@ -433,6 +442,7 @@ export interface RelatorioDaImportacao {
     visualizacoes: number;
     lista: number;
     notas: number;
+    comentarios: number;
     favoritos: number;
     jaImportados: number;
   };

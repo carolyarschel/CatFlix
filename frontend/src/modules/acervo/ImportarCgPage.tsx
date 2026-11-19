@@ -216,6 +216,7 @@ function Relatorio({ r }: { r: RelatorioDaImportacao }) {
     ['Visualizações', t.visualizacoes],
     ['Na lista "quero assistir"', t.lista],
     ['Notas', t.notas],
+    ['Comentários', t.comentarios],
     ['Favoritos', t.favoritos],
   ];
 

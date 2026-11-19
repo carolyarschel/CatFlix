@@ -213,6 +213,31 @@ export async function mergeTitles(
     }
     repontados.ratings = notasMigradas;
 
+    // Comentário também é um por pessoa e filme, mas texto não se escolhe:
+    // quando os dois estão ativos e são diferentes, ficam os dois, juntados
+    // com uma linha em branco. Só um ativo: vence o ativo.
+    let comentariosMigrados = 0;
+    for (const comentario of await tx.comment.findMany({ where: { titleId: fromTitleId } })) {
+      const existente = await tx.comment.findUnique({
+        where: { titleId_pessoa: { titleId: toTitleId, pessoa: comentario.pessoa } },
+      });
+      if (!existente) {
+        await tx.comment.update({ where: { id: comentario.id }, data: { titleId: toTitleId } });
+        comentariosMigrados += 1;
+        continue;
+      }
+      if (comentario.removedAt === null) {
+        const texto =
+          existente.removedAt !== null || existente.text === comentario.text
+            ? comentario.text
+            : `${existente.text}\n\n${comentario.text}`;
+        await tx.comment.update({ where: { id: existente.id }, data: { text: texto, removedAt: null } });
+        comentariosMigrados += 1;
+      }
+      await tx.comment.delete({ where: { id: comentario.id } });
+    }
+    repontados.comments = comentariosMigrados;
+
     // provedores são do filme do TMDB, e o destino tem os dele
     await tx.titleProvider.deleteMany({ where: { titleId: fromTitleId } });
 

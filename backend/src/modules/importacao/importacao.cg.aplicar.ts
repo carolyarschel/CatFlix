@@ -31,15 +31,6 @@ export type ResultadoDoFilme =
 
 const PERFIL_DA_PESSOA: Record<Pessoa, string> = { CAT: 'catflix', BEAR: 'hburso' };
 
-/** "🐱 …\n🐻 …" — cada comentário com o rosto de quem escreveu, como no CG. */
-export function observacao(comentarios: FilmeDoCg['comentarios']): string | null {
-  const partes = [
-    comentarios.CAT ? `🐱 ${comentarios.CAT}` : null,
-    comentarios.BEAR ? `🐻 ${comentarios.BEAR}` : null,
-  ].filter(Boolean);
-  return partes.length > 0 ? partes.join('\n') : null;
-}
-
 export async function importarFilme(
   filme: FilmeDoCg,
   casamento: Casamento,
@@ -56,7 +47,6 @@ export async function importarFilme(
     casamento.tipo === 'certo' ? (await adicionarPorTmdbId(casamento.tmdbId, tmdb)).titleId : null;
 
   const ano = filme.lancamento ? Number(filme.lancamento.slice(0, 4)) : null;
-  const nota = observacao(filme.comentarios);
   const motivo = casamento.tipo === 'certo' ? '' : casamento.motivo;
 
   const titleId = await prisma.$transaction(async (tx) => {
@@ -107,8 +97,7 @@ export async function importarFilme(
       },
     });
 
-    // filme sem revisto no CG: a observação vai para a (única) visualização
-    for (const [i, v] of filme.visualizacoes.entries()) {
+    for (const v of filme.visualizacoes) {
       await tx.watch.create({
         data: {
           titleId: id,
@@ -116,7 +105,6 @@ export async function importarFilme(
           datePrecision: 'DIA',
           location: v.local,
           participants: v.participantes,
-          note: i === 0 ? nota : null,
         },
       });
     }
@@ -142,6 +130,19 @@ export async function importarFilme(
         where: { titleId_pessoa: { titleId: id, pessoa: l.pessoa } },
         create: { titleId: id, pessoa: l.pessoa, interest: l.interesse },
         update: { removedAt: null, interest: l.interesse },
+      });
+    }
+
+    // O comentário do CG é do filme, não da sessão: vira o comentário da
+    // pessoa. Filme repetido no CG com comentários diferentes fica com os dois.
+    for (const [pessoa, texto] of Object.entries(filme.comentarios) as Array<[Pessoa, string]>) {
+      const existente = await tx.comment.findUnique({ where: { titleId_pessoa: { titleId: id, pessoa } } });
+      const junto =
+        existente && existente.removedAt === null && existente.text !== texto ? `${existente.text}\n\n${texto}` : texto;
+      await tx.comment.upsert({
+        where: { titleId_pessoa: { titleId: id, pessoa } },
+        create: { titleId: id, pessoa, text: texto },
+        update: { text: junto, removedAt: null },
       });
     }
 

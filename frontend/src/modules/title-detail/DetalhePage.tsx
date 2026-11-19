@@ -4,6 +4,7 @@ import { IconeIngresso, IconeMais, IconeVoltar } from '../../shared/components/I
 import { RatingBadges } from '../../shared/components/RatingBadges';
 import { SeloDePessoa } from '../../shared/components/SeloDePessoa';
 import { useApi } from '../../shared/hooks/useApi';
+import { formatarNota } from '../../shared/notas';
 import { PERFIL_DA_PESSOA, perfilDaPessoa } from '../../shared/pessoas';
 import type {
   DadosDaVisualizacao,
@@ -15,6 +16,7 @@ import type {
 } from '../../shared/api/tipos';
 import { FormularioDeVisualizacao } from '../acervo/FormularioDeVisualizacao';
 import { TagsManuais } from '../tags/TagsManuais';
+import { Comentarios } from './Comentarios';
 import { SessoesDoFilme } from './SessoesDoFilme';
 import styles from './DetalhePage.module.scss';
 
@@ -121,7 +123,9 @@ function Conteudo({
 
   const eu = dados.eu;
   const minha = dados.pessoas.find((p) => p.pessoa === eu);
-  const noAcervo = dados.pessoas.some((p) => p.assistiu || p.querAssistir || p.nota !== null);
+  const noAcervo = dados.pessoas.some(
+    (p) => p.assistiu || p.querAssistir || p.nota !== null || p.comentario !== null,
+  );
   const tagsManuais = dados.tags.filter((t) => t.facet === 'manual');
   const corDe = (pessoa: Pessoa) => perfilDaPessoa(perfis, pessoa);
 
@@ -423,6 +427,11 @@ function Conteudo({
           </ul>
         </Secao>
 
+        {/* os comentários de cada um (19/11/2026): o meu sempre, para poder escrever */}
+        <Secao rotulo="Comentários">
+          <Comentarios titleId={dados.id} eu={eu} pessoas={dados.pessoas} corDe={corDe} aoMudar={recarregar} />
+        </Secao>
+
         {/* 11. assistimos */}
         <Secao rotulo="Assistimos">
           {saiuDaLista ? (
@@ -645,6 +654,3 @@ function formatarDataDaVisualizacao(v: VisualizacaoDoTitulo): string {
 }
 
 /** 8.5 → "8,5" */
-function formatarNota(n: number): string {
-  return Number.isInteger(n) ? String(n) : n.toFixed(1).replace('.', ',');
-}

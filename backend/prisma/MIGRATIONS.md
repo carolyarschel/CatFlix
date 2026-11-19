@@ -142,3 +142,22 @@ Para a importação do Crônicas de Gatur antigo (§11) e o "Não encontrei o fi
 
 As resoluções da fila só tocam no cache do ingresso (`title_external_ids` com
 `source = 'ingresso'`) quando a pendência tem evento.
+
+## Comentários (`20261119180000_comentarios`)
+
+Pedido da Carol (19/11/2026): um comentário por pessoa e filme, editável. Só
+soma:
+
+- Tabela `comments` (`@@unique([title_id, pessoa])`, `removed_at`, índice em
+  `updated_at` para o feed do CG). CHECK `comments_text_nao_vazio`: apagar é
+  marcar `removed_at`, nunca gravar texto vazio.
+- **Conversão de dados:** a importação do CG (§11) tinha gravado os comentários
+  na observação da primeira visualização, como `🐱 …\n🐻 …`. A migration separa
+  os dois textos, grava cada um como comentário da pessoa e esvazia essas
+  observações (o texto não fica em dois lugares). Só toca em observação que
+  começa com o rosto; observação escrita à mão fica como está. Comentários
+  diferentes do mesmo filme (item repetido no CG) são juntados com uma linha em
+  branco. Idempotente (`ON CONFLICT DO NOTHING`, e as observações convertidas
+  ficam vazias).
+- Conferido no banco de desenvolvimento: 54 observações → 81 comentários, os
+  mesmos 81 do dump, texto idêntico.

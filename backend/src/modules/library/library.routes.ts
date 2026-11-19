@@ -10,6 +10,7 @@ import {
   patchTitulo,
   postRestaurarTitulo,
   postTitulo,
+  postTituloManual,
   postVisualizacao,
   putNota,
 } from './library.controller';
@@ -21,6 +22,7 @@ libraryRoutes.get('/tmdb/search', asyncHandler(getBusca));
 libraryRoutes.get('/assistidos', asyncHandler(getAssistidos));
 
 libraryRoutes.post('/library/titles', asyncHandler(postTitulo));
+libraryRoutes.post('/library/titles/manual', asyncHandler(postTituloManual));
 libraryRoutes.get('/library/titles/:id', asyncHandler(getTitulo));
 libraryRoutes.patch('/library/titles/:id', asyncHandler(patchTitulo));
 libraryRoutes.delete('/library/titles/:id', asyncHandler(deleteTitulo));

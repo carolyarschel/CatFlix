@@ -22,19 +22,25 @@ import styles from './AdicionarPage.module.scss';
  * **Nunca duplica:** o backend reaproveita o filme que já entrou pelo cinema
  * (`POST /library/titles`), e o resultado da busca já diz "No catálogo".
  *
- * Não há "nenhum resultado, cria assim mesmo" (§4.1). O link discreto "Não
- * encontrei o filme" do §3.5 espera a migration que deixa a fila Revisar
- * aceitar pendência sem evento do ingresso (ESTADO_ATUAL.md, passo 4).
+ * Não há "nenhum resultado, cria assim mesmo" (§4.1). O que existe é o link
+ * discreto "Não encontrei o filme" (§3.5), depois de uma busca: o filme entra
+ * só com título e ano, sem TMDB, e vai para a fila Revisar para ser ligado ao
+ * TMDB quando existir lá. Ele só é criado quando a pessoa escolhe o que fazer
+ * com ele — voltar antes disso não deixa nada no banco.
  */
 
 const ESPERA_DA_DIGITACAO_MS = 400;
 const MINIMO_DE_LETRAS = 2;
 
+/** Um resultado da busca, ou o filme digitado à mão (`manual`, sem TMDB). */
+type Filme = ResultadoDaBusca & { manual?: boolean };
+
 type Etapa =
   | { tipo: 'buscar' }
-  | { tipo: 'opcoes'; filme: ResultadoDaBusca }
-  | { tipo: 'assistimos'; filme: ResultadoDaBusca }
-  | { tipo: 'feito'; filme: ResultadoDaBusca; titleId: string; mensagem: string; removidos: string[] };
+  | { tipo: 'manual' }
+  | { tipo: 'opcoes'; filme: Filme }
+  | { tipo: 'assistimos'; filme: Filme }
+  | { tipo: 'feito'; filme: Filme; titleId: string; mensagem: string; removidos: string[] };
 
 export function AdicionarPage({
   perfil,
@@ -60,6 +66,8 @@ export function AdicionarPage({
   const [desfeito, setDesfeito] = useState(false);
 
   const campo = useRef<HTMLInputElement>(null);
+  // o filme manual já criado: se a ação seguinte falhar, tentar de novo não cria outro
+  const manualCriado = useRef<{ filme: Filme; titleId: string } | null>(null);
 
   // busca com debounce: cada consulta é uma chamada ao TMDB pelo backend
   useEffect(() => {
@@ -95,8 +103,14 @@ export function AdicionarPage({
   }, [termo]);
 
   /** O id do filme no catálogo: o que já existe, ou o que o "+" acabou de criar. */
-  async function garantirTitulo(filme: ResultadoDaBusca): Promise<string> {
+  async function garantirTitulo(filme: Filme): Promise<string> {
     if (filme.titleId) return filme.titleId;
+    if (filme.manual) {
+      if (manualCriado.current?.filme === filme) return manualCriado.current.titleId;
+      const r = await api.post<{ titleId: string }>('/library/titles/manual', { titulo: filme.titulo, ano: filme.ano });
+      manualCriado.current = { filme, titleId: r.titleId };
+      return r.titleId;
+    }
     const r = await api.post<{ titleId: string }>('/library/titles', { tmdbId: filme.tmdbId });
     // a busca na tela passa a saber que ele está no catálogo
     setResultados((atuais) =>
@@ -117,7 +131,7 @@ export function AdicionarPage({
     }
   }
 
-  function querAssistir(filme: ResultadoDaBusca, paraOsDois: boolean) {
+  function querAssistir(filme: Filme, paraOsDois: boolean) {
     void executar(async () => {
       const titleId = await garantirTitulo(filme);
       await api.put(`/titles/${titleId}/watchlist`, { paraOsDois });
@@ -131,11 +145,11 @@ export function AdicionarPage({
     });
   }
 
-  function abrirDetalhe(filme: ResultadoDaBusca) {
+  function abrirDetalhe(filme: Filme) {
     void executar(async () => aoAbrir(await garantirTitulo(filme)));
   }
 
-  function registrar(filme: ResultadoDaBusca, dados: DadosDaVisualizacao) {
+  function registrar(filme: Filme, dados: DadosDaVisualizacao) {
     void executar(async () => {
       const titleId = await garantirTitulo(filme);
       const r = await api.post<RespostaDaVisualizacao>(`/titles/${titleId}/watches`, dados);
@@ -160,7 +174,8 @@ export function AdicionarPage({
   function voltarUmPasso() {
     setErro(null);
     if (etapa.tipo === 'assistimos') return setEtapa({ tipo: 'opcoes', filme: etapa.filme });
-    if (etapa.tipo === 'opcoes') return setEtapa({ tipo: 'buscar' });
+    if (etapa.tipo === 'opcoes') return setEtapa(etapa.filme.manual ? { tipo: 'manual' } : { tipo: 'buscar' });
+    if (etapa.tipo === 'manual') return setEtapa({ tipo: 'buscar' });
     aoVoltar();
   }
 
@@ -235,7 +250,26 @@ export function AdicionarPage({
             </ul>
           ) : null}
 
+          {/* §3.5: discreto, e só depois de uma busca */}
+          {resultados ? (
+            <button type="button" className={styles.naoEncontrei} onClick={() => setEtapa({ tipo: 'manual' })}>
+              Não encontrei o filme
+            </button>
+          ) : null}
+
           <p className={styles.atribuicao}>Busca e dados de filmes: TMDB</p>
+        </main>
+      ) : etapa.tipo === 'manual' ? (
+        <main className={styles.conteudo}>
+          <FormularioManual
+            tituloInicial={termo.trim()}
+            aoContinuar={(titulo, ano) =>
+              setEtapa({
+                tipo: 'opcoes',
+                filme: { manual: true, tmdbId: 0, titulo, ano, tituloOriginal: null, posterUrl: null, diretores: [], titleId: null },
+              })
+            }
+          />
         </main>
       ) : (
         <main className={styles.conteudo}>
@@ -281,6 +315,12 @@ export function AdicionarPage({
               >
                 {etapa.filme.titleId ? 'Abrir o filme' : 'Só abrir o filme'}
               </button>
+              {etapa.filme.manual ? (
+                <p className={styles.aviso}>
+                  Sem o TMDB, o filme entra só com o título e vai para a fila Revisar. Quando ele aparecer no
+                  TMDB, é lá que vocês ligam os dois, e o que registrarem agora vai junto.
+                </p>
+              ) : null}
               {erro ? (
                 <p className={styles.aviso} role="alert">
                   {erro}
@@ -351,8 +391,64 @@ function Poster({ url, grande = false }: { url: string | null; grande?: boolean 
   );
 }
 
+/** O título (e o ano, se souber) do filme que o TMDB ainda não tem. */
+function FormularioManual({
+  tituloInicial,
+  aoContinuar,
+}: {
+  tituloInicial: string;
+  aoContinuar: (titulo: string, ano: number | null) => void;
+}) {
+  const [titulo, setTitulo] = useState(tituloInicial);
+  const [ano, setAno] = useState('');
+  const anoNumero = ano.trim() === '' ? null : Number(ano);
+  const anoValido = anoNumero === null || (Number.isInteger(anoNumero) && anoNumero >= 1888 && anoNumero <= 2100);
+  const pronto = titulo.trim().length > 0 && anoValido;
+
+  return (
+    <form
+      className={styles.opcoes}
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (pronto) aoContinuar(titulo.trim().replace(/\s+/g, ' '), anoNumero);
+      }}
+    >
+      <p className={styles.aviso}>
+        Para o filme que ainda não está no TMDB, como um anúncio muito recente. Ele entra no acervo só com o
+        título, sem pôster nem sinopse.
+      </p>
+      <label className={styles.rotuloDoCampo}>
+        Título
+        <input
+          className={styles.campoManual}
+          value={titulo}
+          onChange={(e) => setTitulo(e.target.value)}
+          maxLength={200}
+          autoFocus
+          required
+        />
+      </label>
+      <label className={styles.rotuloDoCampo}>
+        Ano (se souber)
+        <input
+          className={styles.campoManual}
+          value={ano}
+          onChange={(e) => setAno(e.target.value.replace(/\D/g, '').slice(0, 4))}
+          inputMode="numeric"
+          placeholder="2027"
+          aria-invalid={!anoValido}
+        />
+      </label>
+      <button type="submit" className={styles.primario} disabled={!pronto}>
+        Continuar
+      </button>
+    </form>
+  );
+}
+
 /** "2025 · Dir. Zach Cregger" — sem ano ou sem diretor, a parte some. */
-function linhaDoFilme(f: ResultadoDaBusca): string {
+function linhaDoFilme(f: Filme): string {
+  if (f.manual) return [f.ano ? String(f.ano) : 'Sem data', 'Fora do TMDB'].join(' · ');
   return [f.ano ? String(f.ano) : 'Sem data', f.diretores.length ? `Dir. ${f.diretores.join(', ')}` : null]
     .filter(Boolean)
     .join(' · ');

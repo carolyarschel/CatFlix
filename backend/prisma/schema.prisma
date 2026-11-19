@@ -346,6 +346,7 @@ model Title {
   watches   Watch[]
   watchlist WatchlistEntry[]
   ratings   Rating[]
+  comments  Comment[]
   providers TitleProvider[]
 
   externalIds    TitleExternalId[]
@@ -896,6 +897,27 @@ model Rating {
   @@unique([titleId, pessoa])
   @@index([updatedAt]) // nota mudou → o feed reenvia as visualizações do filme
   @@map("ratings")
+}
+
+/// O comentário de cada pessoa sobre o filme: um por pessoa e filme, como a
+/// nota, e editável. Não exige ter assistido — no CG antigo também não exigia.
+/// É diferente da observação da visualização (`Watch.note`), que fala daquela
+/// sessão ("com a família", "dormi no meio").
+model Comment {
+  id      String @id @default(cuid())
+  titleId String @map("title_id")
+  title   Title  @relation(fields: [titleId], references: [id], onDelete: Cascade)
+  pessoa  Pessoa
+  /// nunca vazio (CHECK)
+  text    String
+
+  removedAt DateTime? @map("removed_at") @db.Timestamptz(3)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@unique([titleId, pessoa])
+  @@index([updatedAt]) // feed do CG (§10.2)
+  @@map("comments")
 }
 
 // ─────────────────────────────────────────────────────────────
