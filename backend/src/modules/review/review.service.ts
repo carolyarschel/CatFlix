@@ -44,6 +44,8 @@ export interface ItemDaFila {
    * revisão, é sorteio.
    */
   explicacao: string | null;
+  /** "ingresso", "importacao_cg" ou "manual" — de onde veio a pendência */
+  origem: string;
 }
 
 export interface FilaDeRevisao {
@@ -60,11 +62,14 @@ function metaDoEvento(item: {
   const p = (item.ingressoPayload ?? {}) as {
     runtimeMinutes?: number | null;
     distributor?: string | null;
+    /** só nas pendências da importação do CG */
+    director?: string | null;
   };
 
   return [
     item.ingressoYear ? String(item.ingressoYear) : null,
     p.runtimeMinutes ? `${p.runtimeMinutes} min` : null,
+    p.director ? `Dir. ${p.director}` : null,
     p.distributor,
   ]
     .filter(Boolean)
@@ -92,6 +97,8 @@ export async function listarFila(
         reason: true,
         createdAt: true,
         subjectTitleId: true,
+        origin: true,
+        note: true,
         subjectTitle: { select: { posterUrl: true } },
         candidateTitle: { select: { title: true, year: true, posterUrl: true } },
       },
@@ -102,7 +109,9 @@ export async function listarFila(
 
   // A explicação vem da decisão MAIS RECENTE de cada evento: o sync pode ter
   // decidido o mesmo evento várias vezes, e a que vale é a última.
-  const explicacoes = await decisoesRecentes(itens.map((i) => i.ingressoEventId));
+  const explicacoes = await decisoesRecentes(
+    itens.map((i) => i.ingressoEventId).filter((e): e is string => e !== null),
+  );
 
   return {
     itens: itens.map((i) => {
@@ -124,7 +133,10 @@ export async function listarFila(
         criadoEm: i.createdAt,
         subjectTitleId: i.subjectTitleId,
         posterUrl: i.candidateTitle?.posterUrl ?? i.subjectTitle?.posterUrl ?? null,
-        explicacao: explicacoes.get(i.ingressoEventId) ?? null,
+        // pendência sem evento do ingresso (importação, §11): quem a abriu
+        // escreveu o motivo na `note`
+        explicacao: (i.ingressoEventId ? explicacoes.get(i.ingressoEventId) : null) ?? i.note ?? null,
+        origem: i.origin,
       };
     }),
     total,
@@ -187,7 +199,7 @@ async function fechar(
  * tmdbId usar.
  */
 async function adotarCandidato(
-  item: { id: string; ingressoEventId: string; subjectTitleId: string | null },
+  item: { id: string; ingressoEventId: string | null; subjectTitleId: string | null },
   tmdbId: number,
   resolvedById?: string,
 ): Promise<{ titleId: string; mesclou: boolean }> {
@@ -210,20 +222,23 @@ async function adotarCandidato(
     mesclou = true;
   }
 
-  // garante o cache do estágio 0 apontando para o lugar certo
-  await prisma.titleExternalId.upsert({
-    where: { source_externalId: { source: 'ingresso', externalId: item.ingressoEventId } },
-    update: { titleId, method: 'manual', confidence: 1, verifiedAt: new Date(), verifiedById: resolvedById ?? null },
-    create: {
-      titleId,
-      source: 'ingresso',
-      externalId: item.ingressoEventId,
-      method: 'manual',
-      confidence: 1,
-      verifiedAt: new Date(),
-      verifiedById: resolvedById ?? null,
-    },
-  });
+  // garante o cache do estágio 0 apontando para o lugar certo — só quando a
+  // pendência veio do ingresso; a da importação não tem evento
+  if (item.ingressoEventId) {
+    await prisma.titleExternalId.upsert({
+      where: { source_externalId: { source: 'ingresso', externalId: item.ingressoEventId } },
+      update: { titleId, method: 'manual', confidence: 1, verifiedAt: new Date(), verifiedById: resolvedById ?? null },
+      create: {
+        titleId,
+        source: 'ingresso',
+        externalId: item.ingressoEventId,
+        method: 'manual',
+        confidence: 1,
+        verifiedAt: new Date(),
+        verifiedById: resolvedById ?? null,
+      },
+    });
+  }
 
   await recalcularTagsDoTitulo(titleId);
 
@@ -316,18 +331,20 @@ export async function mesclar(
     ...(resolvedById ? { mergedById: resolvedById } : {}),
   });
 
-  await prisma.titleExternalId.upsert({
-    where: { source_externalId: { source: 'ingresso', externalId: item.ingressoEventId } },
-    update: { titleId: toTitleId, method: 'manual', confidence: 1, verifiedAt: new Date() },
-    create: {
-      titleId: toTitleId,
-      source: 'ingresso',
-      externalId: item.ingressoEventId,
-      method: 'manual',
-      confidence: 1,
-      verifiedAt: new Date(),
-    },
-  });
+  if (item.ingressoEventId) {
+    await prisma.titleExternalId.upsert({
+      where: { source_externalId: { source: 'ingresso', externalId: item.ingressoEventId } },
+      update: { titleId: toTitleId, method: 'manual', confidence: 1, verifiedAt: new Date() },
+      create: {
+        titleId: toTitleId,
+        source: 'ingresso',
+        externalId: item.ingressoEventId,
+        method: 'manual',
+        confidence: 1,
+        verifiedAt: new Date(),
+      },
+    });
+  }
 
   await recalcularTagsDoTitulo(toTitleId);
   await fechar(id, 'merged', toTitleId, resolvedById);

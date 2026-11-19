@@ -123,3 +123,22 @@ de nada à mão. Os provedores vêm no mesmo pedido de detalhe do TMDB
 (`append_to_response=…,watch/providers`) e são reescritos a cada refresh de
 metadata. `providers_updated_at` nulo quer dizer "nunca lido", e é isso que faz
 o job de metadata ler os provedores de todo filme uma vez depois do deploy.
+
+## Revisão sem ingresso (`20261119120000_revisao_sem_ingresso`)
+
+Para a importação do Crônicas de Gatur antigo (§11) e o "Não encontrei o filme"
+(§3.5). Só soma ou afrouxa, nada é apagado:
+
+- `review_items.ingresso_event_id` passa a aceitar nulo (`DROP NOT NULL`):
+  pendência que não veio do ingresso não tem evento. O índice parcial
+  `review_items_one_open_per_event` continua valendo — nulos não colidem.
+- `review_items.origin` (`ingresso` por padrão, `importacao_cg`, `manual`).
+  Os campos `ingresso_title`/`ingresso_year`/`ingresso_payload` guardam o
+  título, o ano e os dados da origem também nas pendências que não são do
+  ingresso; renomeá-los seria destrutivo.
+- `ReviewReason` ganha `import_low_confidence`; `ExternalSource` ganha
+  `cronicas_gatur` (o id do item no catálogo do CG — é o que torna a importação
+  idempotente).
+
+As resoluções da fila só tocam no cache do ingresso (`title_external_ids` com
+`source = 'ingresso'`) quando a pendência tem evento.

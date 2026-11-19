@@ -14,7 +14,8 @@ export interface ResultadoDoMerge {
  * Une dois `Title` que são o mesmo filme (§7.3).
  *
  * Reponta TODAS as FKs — sessões, ids externos, tags, estados de usuário,
- * créditos, gêneros, estúdios, decisões e pendências —, grava o `TitleAlias` e
+ * visualizações, lista "quero assistir", notas, créditos, gêneros, estúdios,
+ * decisões e pendências —, grava o `TitleAlias` e
  * marca o absorvido como `merged`, **numa transação só**. Um merge pela metade
  * deixaria sessões apontando para um Title que não é mais o certo.
  *
@@ -153,6 +154,67 @@ export async function mergeTitles(
       await tx.titleTag.delete({ where: { titleId_tagId: { titleId: fromTitleId, tagId: tag.tagId } } });
     }
     repontados.titleTag = tagsMigradas;
+
+    // ── acervo do casal (cineon-expansao) ─────────────────────
+    // Visualizações nunca se perdem nem colidem: rever conta, então todas
+    // migram. Lista e nota são uma por pessoa e filme (`@@unique`): quando as
+    // duas existem, vence a ativa e, entre ativas, a mais recente — perder um
+    // "quero assistir" ou uma nota num merge seria apagar o que a pessoa disse.
+    repontados.watches = (
+      await tx.watch.updateMany({ where: { titleId: fromTitleId }, data: { titleId: toTitleId } })
+    ).count;
+
+    let listaMigrada = 0;
+    for (const entrada of await tx.watchlistEntry.findMany({ where: { titleId: fromTitleId } })) {
+      const existente = await tx.watchlistEntry.findUnique({
+        where: { titleId_pessoa: { titleId: toTitleId, pessoa: entrada.pessoa } },
+      });
+      if (!existente) {
+        await tx.watchlistEntry.update({ where: { id: entrada.id }, data: { titleId: toTitleId } });
+        listaMigrada += 1;
+        continue;
+      }
+      const origemVence =
+        (entrada.removedAt === null && existente.removedAt !== null) ||
+        (entrada.removedAt === null && existente.removedAt === null && entrada.addedAt > existente.addedAt);
+      if (origemVence) {
+        await tx.watchlistEntry.update({
+          where: { id: existente.id },
+          data: {
+            removedAt: null,
+            addedAt: entrada.addedAt,
+            interest: entrada.interest ?? existente.interest,
+          },
+        });
+        listaMigrada += 1;
+      }
+      await tx.watchlistEntry.delete({ where: { id: entrada.id } });
+    }
+    repontados.watchlist = listaMigrada;
+
+    let notasMigradas = 0;
+    for (const nota of await tx.rating.findMany({ where: { titleId: fromTitleId } })) {
+      const existente = await tx.rating.findUnique({
+        where: { titleId_pessoa: { titleId: toTitleId, pessoa: nota.pessoa } },
+      });
+      if (!existente) {
+        await tx.rating.update({ where: { id: nota.id }, data: { titleId: toTitleId } });
+        notasMigradas += 1;
+        continue;
+      }
+      const origemVence =
+        (nota.removedAt === null && existente.removedAt !== null) ||
+        (nota.removedAt === null && existente.removedAt === null && nota.updatedAt > existente.updatedAt);
+      if (origemVence) {
+        await tx.rating.update({ where: { id: existente.id }, data: { score: nota.score, removedAt: null } });
+        notasMigradas += 1;
+      }
+      await tx.rating.delete({ where: { id: nota.id } });
+    }
+    repontados.ratings = notasMigradas;
+
+    // provedores são do filme do TMDB, e o destino tem os dele
+    await tx.titleProvider.deleteMany({ where: { titleId: fromTitleId } });
 
     // ── créditos, gêneros e estúdios ──────────────────────────
     // o destino costuma já ter tudo (veio do TMDB); o que colide é descartado

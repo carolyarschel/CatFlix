@@ -309,3 +309,105 @@ Medido depois do refresh de metadata no banco de desenvolvimento: dos 112 filmes
 - **Ordem na tela:** assinatura, grátis, com anúncios, aluguel, compra — primeiro o que já se paga.
 - **O logo do TMDB** é o arquivo oficial da página de atribuição (versão curta, SVG), em `frontend/public/tmdb-logo.svg`.
 - **Medido no banco de desenvolvimento em 18/11/2026:** 112 filmes lidos, 30 disponíveis em algum serviço no Brasil (os outros estão em cartaz ou não lançaram). Os mais comuns: Amazon Video, Apple TV, Claro tv+, Netflix, Disney+.
+
+---
+
+## 8. Importação do histórico do CG antigo (§11) — mapeamento proposto
+
+Lido em 19/11/2026 do código do Crônicas de Gatur (`Documents/Outros/CronicasGatur`, `backend/prisma/schema.prisma` e o frontend). **Ainda não implementado**: espera o dump atual e as respostas da seção 8.4.
+
+### 8.1 De onde vêm os filmes
+
+| Tabela do CG | O que é | Vira no Cineon |
+|---|---|---|
+| `activities` com `type = 'filme'` | a timeline: "assistimos a tal filme em tal dia" | `Watch` (uma por linha) |
+| `collections` com `collection_type` de filme | o catálogo: lista "quero assistir", "assistindo", "concluído" | `WatchlistEntry` e tags manuais |
+
+Séries e animes (`type = 'serie'`/`'anime'`) ficam de fora, como manda o §1.
+
+### 8.2 Campo a campo (`activities` → `Watch`)
+
+| CG | Cineon | Observação |
+|---|---|---|
+| `title` (+ `collection.tmdb_id`, quando houver) | `Title` pelo `tmdb_id` | `activities` não tem `tmdb_id`. Busca no TMDB por título e ano; o que não for confiança alta vai para a fila Revisar |
+| `activity_date` (sempre data completa) | `watchedOn`, precisão `DIA` | o CG não tem data incompleta |
+| `who_did`: `cat` / `bear` / `both` | `participants`: `[CAT]` / `[BEAR]` / `[CAT, BEAR]` | `both` é o padrão do CG |
+| `location`: `casa` / `cinema` / nulo | `CASA` / `CINEMA` | nulo vira `CASA`, que é o que o formulário do CG mostra |
+| `rating_cat`, `rating_bear` (inteiros 1–10, exibidos como 0,5–5 estrelas) | `Rating` de cada pessoa, mesmo número | cabe direto na escala 0–10 do Cineon |
+| `notes_cat`, `notes_bear` | `Watch.note` | as duas juntas, cada uma com o nome de quem escreveu |
+| `favorite_cat`, `favorite_bear` | — | sem equivalente (pergunta 3) |
+
+### 8.3 Catálogo (`collections` → lista e tags)
+
+| CG | Cineon |
+|---|---|
+| `status_cat` / `status_bear` = `quero_assistir` | `WatchlistEntry` da pessoa |
+| `interest_cat`, `interest_bear` | `interest` da pessoa (falta confirmar a escala) |
+| `payment_bisnaguinha` / `payment_credito` | tags manuais "De bisnaguinha" (da Carol) e "De crédito" (dele) |
+| `tmdb_id` (quando veio de "Lançamentos") | liga direto ao `Title`, sem busca |
+
+### 8.4 O que precisa de resposta
+
+1. **Dump atual.** O `dump.sql` da pasta do CG é de 29/06/2026 e a tabela `activities` está **vazia** nele. Precisa de um dump novo do banco `cg` (ver os comandos no fim da conversa de 19/11/2026: `pg_dump -h localhost -U cat -d cg -Fc -f cg-antigo.dump`).
+2. **Filme "concluído" no catálogo sem atividade na timeline:** vira `Watch` sem data (ano do `added_date`, precisão `ANO`) ou fica de fora?
+3. **Favoritos** (`favorite_cat`/`favorite_bear`): viram uma tag manual "Favorito" de cada pessoa, ou ficam de fora?
+4. **"De bisnaguinha" e "De crédito":** no CG o código marca automaticamente **quem adicionou** (bisnaguinha = o gato adicionou, crédito = o urso). Em 18/11/2026 a Carol descreveu como **quem gosta mais**. Para importar, vale o valor que está no CG?
+
+### 8.5 Depende de outra peça
+
+A fila Revisar precisa aceitar pendência **sem evento do ingresso** (hoje `review_items.ingresso_event_id` é obrigatório) e o motivo `import_low_confidence`. É a mesma migration do §3.5 (filme fora do TMDB), então as duas entram juntas.
+
+⚠️ **Privacidade:** o `dump.sql` antigo está **versionado no git do repositório do CG**. Ele tem só as tabelas quase vazias de junho, mas inclui `users` (com hash de senha) e `push_subscriptions`. Vale tirá-lo do repositório e não versionar o dump novo.
+
+### 8.6 O que tem no dump (`dumpCG.sql`, recebido em 19/11/2026)
+
+Dump em SQL texto do PostgreSQL 18.6, na raiz do projeto e **fora do git** (`.gitignore` criado na raiz no mesmo dia). Perfil só numérico, sem ler títulos nem comentários:
+
+| | Número |
+|---|---|
+| Visualizações de filme na timeline (`activities`, `type = 'filme'`) | **94**, de 02/07/2010 a 12/11/2026; nenhum filme visto duas vezes |
+| Quem viu | os dois: 79 · só a Carol: 12 · só ele: 3 |
+| Onde | cinema: 56 · casa: 20 · sem informação: 18 (vira casa) |
+| Ligadas a um item do catálogo | 93 de 94 (1 aponta para um item que não existe mais) |
+| Filmes no catálogo (`collections`, `collection_type = 'filme'`) | **181** |
+| …com `tmdb_id` | **só 17**; nenhum dos 17 é das 94 visualizações |
+| "Quero assistir" | Carol: 56 · ele: 53 |
+| "Concluído" | 99 (6 sem visualização na timeline) |
+| Com nota | 64 filmes (5 deles sem visualização na timeline); notas de 2 a 10 |
+| Com comentário | Carol: 44 · ele: 38 |
+| Interesse (escala 1–5, a mesma do Cineon) | Carol: 12 · ele: 14 |
+| Favoritos | Carol: 6 · ele: 4 |
+| "De bisnaguinha" / "De crédito" | 29 / 38 |
+
+**Correções ao que a seção 8.2 supunha:** no CG as **notas e os comentários ficam no catálogo** (`collections`), não na timeline (os campos da timeline estão todos vazios). Por isso a nota e o comentário de um filme vão para a visualização ligada a ele.
+
+**Consequência para o casamento com o TMDB:** como quase nada tem `tmdb_id`, o script busca cada filme no TMDB pelo título e confere com o que o catálogo do CG guarda — ano (`release_date`), diretor e duração. O que bater nos três entra direto; o resto vai para a fila Revisar com o motivo `import_low_confidence`.
+
+### 8.7 Decisões da Carol (19/11/2026)
+
+- **Favoritos** (`favorite_cat`/`favorite_bear`): viram uma **tag manual "Favorito" de cada pessoa** (6 da Carol, 4 dele).
+- **"De bisnaguinha" e "De crédito" não são importados.** As tags continuam existindo no Cineon, mas começam vazias.
+- **Os seis filmes "concluídos" no catálogo sem visualização na timeline:**
+
+  | Filme | Decisão |
+  |---|---|
+  | Bugonia | assistido **no cinema**, na data de lançamento que o CG guarda (27/11/2025), pelos dois; notas: Carol 10, ele 9 |
+  | Como Treinar o Seu Dragão 3 | assistido **no cinema** em 17/01/2019, só a Carol; nota dela 10 |
+  | Como Treinar o Seu Dragão (live-action) | assistido **no cinema** em 07/06/2025, só a Carol; nota dela 10 |
+  | Gato de Botas 2: O Último Pedido | assistido **no cinema** em 07/12/2022, pelos dois; sem nota |
+  | A Mulher de Preto | **não assistido**: sem visualização, e a nota 7 dela não é importada (só dá nota quem assistiu) |
+  | A Origem dos Guardiões | **não assistido**: sem visualização, e a nota 8 dela não é importada |
+
+  "Quem" vem do `who_did` do CG. A data é a de lançamento exatamente como o CG a guarda (data completa, precisão de dia).
+
+### 8.8 Andamento da importação (19/11/2026)
+
+**Pronto e testado; simulado com o dump real; ainda NÃO aplicado em banco nenhum.**
+
+- Migration `20261119120000_revisao_sem_ingresso`: a fila Revisar aceita pendência sem evento do ingresso (`origin`, `import_low_confidence`); `ExternalSource.cronicas_gatur` torna a importação idempotente.
+- `mergeTitles` agora leva visualizações, lista, notas e provedores. Era uma lacuna real: uma resolução da fila deixaria esses dados presos no título absorvido.
+- Módulo `importacao` e o comando `npm run importar:cg -- --dump ../dumpCG.sql [--aplicar]`. Sem `--aplicar` é simulação. O relatório sai em `backend/relatorios/`, fora do git.
+
+**Simulação com o dump real:** 181 filmes com algo a importar; **177 casaram com certeza** (17 pelo `tmdb_id` do CG, 156 por título + ano + diretor, 3 por título + ano sem diretor); **4 vão para a fila Revisar**: O Frio da Morte (o TMDB não achou o título), Scarlet (dois filmes com o mesmo título, ano e diretor), Como Treinar o Seu Dragão de 2025 (o CG guarda o diretor errado) e Barbie: Escola de Princesas (sem ano nem diretor). Entram 98 visualizações, 166 entradas de lista, 98 notas e 10 tags "Favorito".
+
+**Itens repetidos no catálogo do CG:** 8 filmes aparecem duas vezes. Entram no mesmo filme do Cineon, e quem assistiu por um item não fica na lista pelo outro (testado). *Homem-Aranha: Sem Volta Para Casa* tem duas visualizações, uma em cada item: pode ser rever ou registro repetido.

@@ -16,7 +16,8 @@
     "prisma:validate": "prisma validate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
-    "seed": "tsx prisma/seed.ts"
+    "seed": "tsx prisma/seed.ts",
+    "importar:cg": "tsx scripts/importar-cg.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

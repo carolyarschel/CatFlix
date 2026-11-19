@@ -1,0 +1,8 @@
+# Dumps de banco têm dados pessoais do casal (e hash de senha): nunca no git.
+*.dump
+dump*.sql
+dumpCG*.sql
+*.backup
+
+# relatórios da importação do CG: têm a lista de filmes do casal
+backend/relatorios/

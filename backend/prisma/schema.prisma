@@ -57,6 +57,8 @@ enum ExternalSource {
   ingresso
   tmdb
   imdb
+  /// id do item no catálogo do Crônicas de Gatur antigo (importação, §11)
+  cronicas_gatur
   tvdb // previsto (Sonarr)
   radarr // previsto
   sonarr // previsto
@@ -142,6 +144,8 @@ enum ReviewReason {
   no_candidate
   possible_duplicate
   probable_non_film
+  /// importação do histórico do CG sem certeza do filme no TMDB (§11)
+  import_low_confidence
 }
 
 enum ReviewStatus {
@@ -743,10 +747,18 @@ model MatchDecision {
 model ReviewItem {
   id String @id @default(cuid())
 
-  ingressoEventId String @map("ingresso_event_id")
-  ingressoTitle   String @map("ingresso_title")
-  ingressoYear    Int?   @map("ingresso_year")
-  ingressoPayload Json?  @map("ingresso_payload") // o que mostrar no card da fila
+  /// De onde veio a pendência: "ingresso" (sync do cinema), "importacao_cg"
+  /// (histórico do Crônicas de Gatur, §11) ou "manual" ("Não encontrei o
+  /// filme", §3.5). Para as duas últimas, os campos `ingresso*` abaixo guardam
+  /// o título, o ano e os dados da origem — os nomes ficaram do tempo em que
+  /// só havia o ingresso, e renomear seria destrutivo.
+  origin String @default("ingresso")
+
+  /// nulo quando a pendência não veio do ingresso
+  ingressoEventId String? @map("ingresso_event_id")
+  ingressoTitle   String  @map("ingresso_title")
+  ingressoYear    Int?    @map("ingresso_year")
+  ingressoPayload Json?   @map("ingresso_payload") // o que mostrar no card da fila
 
   /// Title já criado para esse evento (órfão), quando houver
   subjectTitleId String? @map("subject_title_id")
