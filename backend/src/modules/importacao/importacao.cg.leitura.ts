@@ -110,6 +110,18 @@ const SIM = (v: string | null) => v === 't' || v === 'true';
  */
 export const CONCLUIDOS_NAO_ASSISTIDOS = new Set(['A Mulher de Preto', 'A Origem dos Guardiões']);
 
+/**
+ * Registros repetidos no CG (decisão da Carol de 19/11/2026): a visualização
+ * deste item do catálogo é cópia da de outro item do mesmo filme e não entra.
+ * O que mais o item tiver (nota, lista) continua valendo — quem estava na
+ * visualização descartada estava também na que ficou.
+ *
+ * `collection:242` é *Homem-Aranha: Sem Volta Para Casa* em casa, 26/07/2026 —
+ * a data do cadastro do acervo no CG; fica a de 17/11/2021, no cinema
+ * (`collection:207`).
+ */
+export const VISUALIZACOES_REPETIDAS = new Set(['collection:242']);
+
 export function lerFilmesDoCg(dump: string): FilmeDoCg[] {
   const atividades = lerTabela(dump, 'activities');
   const catalogo = lerTabela(dump, 'collections');
@@ -158,7 +170,12 @@ export function lerFilmesDoCg(dump: string): FilmeDoCg[] {
       }
     }
 
+    // quem estava conta para a nota e a lista, mesmo na visualização descartada
     const viu = new Set(visualizacoes.flatMap((v) => v.participantes));
+    if (VISUALIZACOES_REPETIDAS.has(`collection:${id}`) && visualizacoes.length > 0) {
+      avisos.push('visualização repetida de outro item do mesmo filme: não importada (decisão de 19/11/2026)');
+      visualizacoes = [];
+    }
 
     const lista: FilmeDoCg['lista'] = [];
     for (const [pessoa, sufixo] of [

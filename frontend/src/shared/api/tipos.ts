@@ -80,7 +80,8 @@ export type MotivoDeRevisao =
   | 'low_confidence'
   | 'no_candidate'
   | 'possible_duplicate'
-  | 'probable_non_film';
+  | 'probable_non_film'
+  | 'import_low_confidence';
 
 export interface ItemDaFila {
   id: string;
@@ -97,6 +98,8 @@ export interface ItemDaFila {
   posterUrl: string | null;
   /** o que o matcher escreveu ao parar aqui — é o que torna a fila revisável */
   explicacao: string | null;
+  /** "ingresso", "importacao_cg" ou "manual" */
+  origem: string;
 }
 
 export interface FilaDeRevisao {

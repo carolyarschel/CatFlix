@@ -411,3 +411,13 @@ Dump em SQL texto do PostgreSQL 18.6, na raiz do projeto e **fora do git** (`.gi
 **Simulação com o dump real:** 181 filmes com algo a importar; **177 casaram com certeza** (17 pelo `tmdb_id` do CG, 156 por título + ano + diretor, 3 por título + ano sem diretor); **4 vão para a fila Revisar**: O Frio da Morte (o TMDB não achou o título), Scarlet (dois filmes com o mesmo título, ano e diretor), Como Treinar o Seu Dragão de 2025 (o CG guarda o diretor errado) e Barbie: Escola de Princesas (sem ano nem diretor). Entram 98 visualizações, 166 entradas de lista, 98 notas e 10 tags "Favorito".
 
 **Itens repetidos no catálogo do CG:** 8 filmes aparecem duas vezes. Entram no mesmo filme do Cineon, e quem assistiu por um item não fica na lista pelo outro (testado). *Homem-Aranha: Sem Volta Para Casa* tem duas visualizações, uma em cada item: pode ser rever ou registro repetido.
+
+**Aplicada no banco de DESENVOLVIMENTO em 19/11/2026** (produção ainda não):
+
+- Decisão da Carol: *Homem-Aranha: Sem Volta Para Casa* era **registro repetido** no CG. Fica a visualização de 17/11/2021 no cinema; a de 26/07/2026 em casa (data do cadastro do acervo no CG) não entra, e a nota 8 dela passa para o filme (`VISUALIZACOES_REPETIDAS` na leitura).
+- Resultado: 181 filmes importados; 97 visualizações; 152 entradas ativas na lista; 98 notas; 10 tags "Favorito"; 4 pendências na fila. Nenhuma pessoa ficou "assistiu e quer assistir" no mesmo filme. A segunda execução reconheceu os 181 como já importados e não gravou nada.
+- Confirmada na fila, de ponta a ponta, a pendência de *Como Treinar o Seu Dragão* (2025): o órfão foi unido ao filme do TMDB levando a visualização e a nota.
+- Corrigido no caminho: o filtro da fila validava o motivo contra uma lista escrita à mão, sem `import_low_confidence` (dava 400); agora vem do enum do banco. A fila mostra a origem de cada pendência ("No Crônicas de Gatur").
+
+**Para produção:** depois do deploy (que aplica as migrations), rodar `npm run importar:cg -- --dump <dump> --aplicar` contra o banco de produção — no servidor, ou da máquina da Carol por um túnel SSH.
+- Corrigido também: com a importação, as duas pessoas passaram a ter a tag manual "Favorito", e o painel de tags mostrava **duas** linhas "Favorito" (uma por dono, cada uma contando só os filmes do dono) enquanto o filtro da lista juntava os dois. O painel agora agrupa a tag pelo nome — a contagem do painel volta a ser a da lista. Teste em `tags.facetas.integracao.test.ts`.

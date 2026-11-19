@@ -133,3 +133,32 @@ describe('listarFacetas', () => {
     expect(solto.map((t) => t.id).sort()).toEqual([daSala.id, daManual.id].sort());
   });
 });
+
+describe('listarFacetas — a mesma tag manual nas duas pessoas', () => {
+  it('vira uma linha só, com a contagem que a lista devolve', async ({ skip }) => {
+    if (!temBanco) skip('sem Postgres');
+
+    // o caso de 19/11/2026: "Favorito" da CatFlix e "Favorito" do HBUrso
+    const valor = `${PREFIXO}-favorito`;
+    const [a, b, c] = [await titulo('-fav-a', 'matched'), await titulo('-fav-b', 'matched'), await titulo('-fav-c', 'matched')];
+    for (const [dono, titulos] of [
+      ['catflix', [a.id, b.id]],
+      ['hburso', [b.id, c.id]],
+    ] as const) {
+      const tag = await prisma.tag.create({
+        data: { facet: 'manual', value: valor, label: 'Favorito', origin: 'manual', ownerId: dono },
+        select: { id: true },
+      });
+      for (const titleId of titulos) {
+        await prisma.titleTag.create({ data: { titleId, tagId: tag.id, origin: 'manual', addedById: dono } });
+      }
+    }
+
+    const linhas = (await listarFacetas()).filter((f) => f.value === valor);
+    expect(linhas).toHaveLength(1);
+    expect(linhas[0]).toMatchObject({ facet: 'manual', titulos: 3, ownerId: null });
+
+    const lista = await listarTitulos({ tags: [{ facet: 'manual', value: valor }], limite: 10_000 });
+    expect(lista).toHaveLength(3);
+  });
+});

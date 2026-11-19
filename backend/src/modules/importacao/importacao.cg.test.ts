@@ -108,6 +108,16 @@ describe('lerFilmesDoCg', () => {
     });
   });
 
+  it('registro repetido: a visualização não entra, mas a nota de quem estava sim', () => {
+    const comRepetido = dump(
+      [['5', 'filme', 'Repetido', '2026-07-26', 'both', 'casa', '242', N]],
+      [item({ id: '242', title: 'Repetido', status: 'concluido', rating_cat: '8' })],
+    );
+    const [f] = lerFilmesDoCg(comRepetido);
+    expect(f).toMatchObject({ chave: 'collection:242', visualizacoes: [], notas: [{ pessoa: 'CAT', nota: 8 }] });
+    expect(f!.avisos.join(' ')).toMatch(/repetida/);
+  });
+
   it('livro e item sem nada a importar ficam de fora', () => {
     expect(de('Um Livro')).toBeUndefined();
     expect(de('Nada A Importar')).toBeUndefined();

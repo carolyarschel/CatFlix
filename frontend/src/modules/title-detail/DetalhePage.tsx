@@ -36,6 +36,7 @@ const MOTIVO: Record<string, string> = {
   no_candidate: 'nenhum candidato foi encontrado no TMDB',
   possible_duplicate: 'pode ser o mesmo filme de outro título já no catálogo',
   probable_non_film: 'pode não ser um filme (show, ópera, transmissão)',
+  import_low_confidence: 'veio do Crônicas de Gatur sem certeza de qual filme do TMDB é',
 };
 
 const STATUS_DE_PRODUCAO: Record<string, string> = {

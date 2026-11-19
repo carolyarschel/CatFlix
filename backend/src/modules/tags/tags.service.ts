@@ -235,20 +235,26 @@ export async function listarFacetas(opcoes: { apenasEmCartaz?: boolean } = {}): 
 
   const statusVisiveis = [...STATUS_VISIVEIS];
 
+  // Agrupado por (faceta, valor), e não por tag: as tags manuais são uma por
+  // dono, e quando as duas pessoas usam o mesmo nome ("Favorito", desde a
+  // importação do CG em 19/11/2026) eram DUAS linhas com o mesmo id
+  // `manual:favorito`, cada uma contando só os filmes do dono — enquanto o
+  // filtro da lista (`?tag=manual:favorito`) junta os dois. A contagem do
+  // painel tem de ser a da lista. `ownerId` só vem quando há um dono só.
   return prisma.$queryRaw<FacetaComContagem[]>`
     SELECT
       t.facet,
       t.value,
-      t.label,
-      t.origin::text AS origin,
-      t.owner_id     AS "ownerId",
+      max(t.label)            AS label,
+      max(t.origin::text)     AS origin,
+      CASE WHEN count(DISTINCT t.owner_id) = 1 THEN max(t.owner_id) END AS "ownerId",
       count(DISTINCT tt.title_id)::int AS titulos
     FROM tags t
     JOIN title_tags tt ON tt.tag_id = t.id
     JOIN titles ti ON ti.id = tt.title_id AND ti.status = ANY (${statusVisiveis}::"TitleStatus"[])
     WHERE TRUE ${filtroDeCartaz}
-    GROUP BY t.id, t.facet, t.value, t.label, t.origin, t.owner_id
-    ORDER BY t.facet, titulos DESC, t.label
+    GROUP BY t.facet, t.value
+    ORDER BY t.facet, titulos DESC, label
   `;
 }
 

@@ -15,11 +15,23 @@ import styles from './RevisarPage.module.scss';
  * olhando os dois lados, não confiando num número.
  */
 
+/**
+ * De onde veio a pendência. A fila nasceu só para o ingresso; desde a
+ * importação do Crônicas de Gatur (cineon-expansao §11) há pendências sem
+ * evento, e chamá-las de "evento no ingresso" seria mentir sobre a origem.
+ */
+const ORIGEM: Record<string, string> = {
+  ingresso: 'Evento no ingresso',
+  importacao_cg: 'No Crônicas de Gatur',
+  manual: 'Adicionado à mão',
+};
+
 const ROTULO_DO_MOTIVO: Record<MotivoDeRevisao, string> = {
   low_confidence: 'Confiança baixa',
   no_candidate: 'Sem candidato',
   possible_duplicate: 'Possível duplicata',
   probable_non_film: 'Provavelmente não é filme',
+  import_low_confidence: 'Importação do CG',
 };
 
 export function RevisarPage({ aoVoltar }: { aoVoltar: () => void }) {
@@ -72,8 +84,9 @@ export function RevisarPage({ aoVoltar }: { aoVoltar: () => void }) {
           <h1 className={styles.titulo}>Fila de revisão</h1>
         </div>
         <p className={styles.explicacao}>
-          Sessões que o matcher não ligou a um filme com confiança suficiente. Nada é descartado:
-          até resolver, o título aparece no app com aviso de metadata pendente.
+          Filmes que não foram ligados ao TMDB com confiança suficiente — do ingresso ou da
+          importação do Crônicas de Gatur. Nada é descartado: até resolver, o título aparece no app
+          com aviso de metadata pendente.
         </p>
       </header>
 
@@ -168,7 +181,7 @@ function CardDaFila({
   return (
     <article className={styles.card}>
       <div className={styles.bloco}>
-        <span className={styles.rotulo}>Evento no ingresso</span>
+        <span className={styles.rotulo}>{ORIGEM[item.origem] ?? 'Evento no ingresso'}</span>
         <span className={styles.nome}>{item.eventoTitulo}</span>
         {item.eventoMeta ? <span className={styles.meta}>{item.eventoMeta}</span> : null}
       </div>

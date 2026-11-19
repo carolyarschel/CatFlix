@@ -1,3 +1,4 @@
+import { ReviewReason } from '@prisma/client';
 import type { Request, Response } from 'express';
 import { z } from 'zod';
 import { ValidationError } from '../../shared/errors';
@@ -12,7 +13,10 @@ import {
   substituir,
 } from './review.service';
 
-const motivos = z.enum(['low_confidence', 'no_candidate', 'possible_duplicate', 'probable_non_film']);
+// Do enum do banco, e não uma lista escrita à mão: em 19/11/2026 a lista
+// manual não tinha o `import_low_confidence`, e filtrar a fila pela
+// importação do CG dava 400.
+const motivos = z.enum(Object.values(ReviewReason) as [ReviewReason, ...ReviewReason[]]);
 
 /**
  * Quem está resolvendo.
