@@ -75,7 +75,7 @@ export async function enviarLembretesPendentes(
       codes: true,
       createdBy: true,
       reminderSentAt: true,
-      title: { select: { title: true } },
+      title: { select: { title: true, posterUrl: true, backdropUrl: true } },
     },
   });
   if (devidos.length === 0) return 0;

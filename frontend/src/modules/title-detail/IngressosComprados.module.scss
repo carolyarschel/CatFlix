@@ -110,6 +110,15 @@
   font-size: t.$fs-sm;
 }
 
+.assistido {
+  min-height: t.$touch-target;
+  border-radius: t.$radius-md;
+  background: t.$text;
+  color: t.$bg;
+  font-size: t.$fs-sm;
+  font-weight: t.$fw-bold;
+}
+
 .rodape {
   display: flex;
   align-items: center;

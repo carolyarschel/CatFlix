@@ -1,0 +1,283 @@
+@use '../../shared/styles/tokens' as t;
+
+.carrossel {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-5;
+}
+
+// Rola de lado, um card por vez. Com mais de um, o próximo espia na borda
+// direita — é o que diz "tem mais" sem precisar de seta.
+.trilho {
+  margin: 0 -#{t.$gutter};
+  padding: 0 t.$gutter;
+  display: flex;
+  gap: t.$space-5;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 0 t.$gutter;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  > * {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+  }
+}
+
+.varios > * {
+  flex-basis: calc(100% - 28px);
+}
+
+// ── o card: a mesma caixa do destaque, com o pôster mais baixo ──
+
+.card {
+  min-width: 0;
+  border: 1px solid t.$accent;
+  border-radius: t.$radius-xl;
+  background: #131019;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.palco {
+  position: relative;
+  width: 100%;
+  min-height: 0;
+  padding: 0;
+  aspect-ratio: 358 / 260;
+  background: #221b2e;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  text-align: left;
+
+  @media (min-width: t.$bp-desktop) {
+    aspect-ratio: auto;
+    height: min(40dvh, 380px);
+  }
+}
+
+.imagem {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+}
+
+.selo {
+  position: absolute;
+  top: t.$space-5;
+  left: t.$space-5;
+  padding: 5px t.$space-4;
+  border-radius: t.$radius-pill;
+  background: t.$accent;
+  color: t.$accent-on-solid;
+  font-size: t.$fs-2xs;
+  font-weight: t.$fw-bold;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: t.$space-2;
+}
+
+.titulo {
+  position: relative;
+  margin: 0;
+  padding: t.$space-10 t.$space-7 t.$space-6;
+  font-family: t.$font-display;
+  font-size: t.$fs-xxl;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: t.$ls-display;
+  color: t.$text;
+  background: linear-gradient(to top, rgba(19, 16, 25, 0.98) 15%, rgba(19, 16, 25, 0));
+}
+
+.rodape {
+  flex: 1;
+  padding: t.$space-3 t.$space-7 t.$space-7;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-6;
+}
+
+.sessao {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: t.$space-5;
+}
+
+.onde {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cinema {
+  color: t.$text;
+  font-size: t.$fs-base;
+  font-weight: t.$fw-semibold;
+  line-height: 1.25;
+}
+
+.detalhes {
+  color: t.$text-label;
+  font-size: t.$fs-xs;
+}
+
+.quando {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.dia {
+  color: t.$accent-on-soft;
+  font-size: t.$fs-xs;
+  font-weight: t.$fw-semibold;
+}
+
+.hora {
+  font-family: t.$font-display;
+  font-size: t.$fs-xxl;
+  font-weight: t.$fw-bold;
+  line-height: 1;
+  color: t.$text;
+}
+
+.codigos {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-2;
+}
+
+.codigo {
+  padding: t.$space-1 t.$space-1 t.$space-1 t.$space-5;
+  border-radius: t.$radius-md;
+  border: 1px dashed t.$border-strong;
+  background: t.$bg;
+  display: flex;
+  align-items: center;
+  gap: t.$space-3;
+}
+
+.textoDoCodigo {
+  flex: 1;
+  min-width: 0;
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: t.$fs-lg;
+  font-weight: t.$fw-semibold;
+  letter-spacing: 0.08em;
+  color: t.$text;
+  overflow-wrap: anywhere;
+}
+
+.copiar {
+  flex-shrink: 0;
+  min-height: 38px;
+  padding: 0 t.$space-5;
+  border-radius: t.$radius-sm;
+  background: t.$surface-chip;
+  color: t.$accent-on-soft;
+  font-size: t.$fs-xs;
+  font-weight: t.$fw-semibold;
+}
+
+.semCodigo {
+  margin: 0;
+  color: t.$text-label;
+  font-size: t.$fs-sm;
+}
+
+.assistido {
+  width: 100%;
+  min-height: 52px;
+  border-radius: t.$radius-md;
+  background: t.$text;
+  color: #14111c;
+  font-size: t.$fs-md;
+  font-weight: t.$fw-bold;
+
+  &:disabled {
+    opacity: 0.55;
+  }
+}
+
+// ── embaixo do carrossel ────────────────────────────────────
+
+.pontos {
+  display: flex;
+  justify-content: center;
+  gap: t.$space-1;
+}
+
+// o ponto é pequeno, o alvo de toque não
+.ponto {
+  width: 24px;
+  min-width: 0;
+  min-height: 24px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+
+  &::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: t.$border-strong;
+    transition: background 0.15s ease, width 0.15s ease;
+  }
+}
+
+.pontoAtual::before {
+  width: 18px;
+  border-radius: t.$radius-pill;
+  background: t.$accent;
+}
+
+.aviso {
+  margin: 0;
+  padding: t.$space-4 t.$space-4 t.$space-4 t.$space-6;
+  border-radius: t.$radius-md;
+  background: t.$surface-chip;
+  color: t.$text-secondary;
+  font-size: t.$fs-sm;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: t.$space-4;
+
+  strong {
+    color: t.$text;
+  }
+}
+
+.desfazer {
+  flex-shrink: 0;
+  min-height: 36px;
+  padding: 0 t.$space-4;
+  color: t.$accent-on-soft;
+  font-weight: t.$fw-semibold;
+}
+
+.erro {
+  margin: 0;
+  color: #ff9b9b;
+  font-size: t.$fs-sm;
+  text-align: center;
+}

@@ -516,7 +516,12 @@ function Conteudo({
         {dados.emCartaz ? (
           <>
             {/* ingresso comprado: sessão, códigos e o lembrete 30 min antes (20/11/2026) */}
-            <IngressosComprados titleId={dados.id} sessoes={dados.sessoes} aoNavegar={aoNavegar} />
+            <IngressosComprados
+              titleId={dados.id}
+              sessoes={dados.sessoes}
+              aoNavegar={aoNavegar}
+              aoMarcarAssistido={recarregar}
+            />
             {dados.ingressoUrl ? (
               <a className={styles.ingresso} href={dados.ingressoUrl} target="_blank" rel="noreferrer noopener">
                 <IconeIngresso tamanho={19} />

@@ -2,9 +2,21 @@ import type { Request, Response } from 'express';
 import { z } from 'zod';
 import { lerCorpo } from '../../shared/validacao';
 import { pessoaDaRequisicao } from '../users/users.pessoa';
-import { cadastrarIngresso, editarIngresso, ingressosDoTitulo, removerIngresso } from './tickets.service';
+import {
+  cadastrarIngresso,
+  editarIngresso,
+  ingressosAtivos,
+  ingressosDoTitulo,
+  marcarComoAssistido,
+  removerIngresso,
+} from './tickets.service';
 
 const codigos = z.array(z.string()).max(50);
+
+/** `GET /tickets` — todos os ingressos que ainda servem: o carrossel da aba Cinema. */
+export async function getIngressosAtivos(_req: Request, res: Response): Promise<void> {
+  res.json({ itens: await ingressosAtivos() });
+}
 
 /** `GET /titles/:id/tickets` — os ingressos do filme que ainda servem. */
 export async function getIngressos(req: Request, res: Response): Promise<void> {
@@ -28,4 +40,13 @@ export async function patchIngresso(req: Request, res: Response): Promise<void> 
 export async function deleteIngresso(req: Request, res: Response): Promise<void> {
   await removerIngresso(String(req.params.id));
   res.status(204).end();
+}
+
+/**
+ * `POST /tickets/:id/assistido` — registra a visualização dos dois, no cinema,
+ * na data da sessão. A resposta é a mesma do registro normal, para a tela
+ * oferecer o desfazer da lista.
+ */
+export async function postAssistido(req: Request, res: Response): Promise<void> {
+  res.status(201).json(await marcarComoAssistido(String(req.params.id)));
 }

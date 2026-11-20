@@ -514,6 +514,7 @@ model Cinema {
 
   sessions Session[]
   watches  Watch[]
+  tickets  Ticket[]
 
   @@index([cityId, active])
   @@map("cinemas")
@@ -857,6 +858,9 @@ model Watch {
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
 
+  /// o ingresso que virou esta visualização ("Marcar como assistido")
+  ticket Ticket?
+
   @@index([titleId])
   @@index([watchedOn])
   @@index([updatedAt]) // feed do CG (§10.2)
@@ -944,13 +948,22 @@ model Ticket {
   // desativada pelo sync, e o lembrete não pode depender dela.
   startsAt   DateTime @map("starts_at") @db.Timestamptz(3)
   cinemaName String   @map("cinema_name")
+  /// o cinema da sessão, para o "assistimos" cair no cinema certo
+  cinemaId   String?  @map("cinema_id")
+  cinema     Cinema?  @relation(fields: [cinemaId], references: [id], onDelete: SetNull)
   /// "Sala 7 · IMAX · Legendado"
   details    String?
+  /// o formato da sala ("IMAX"), que vira o tipo de sala da visualização
+  roomLabel  String?  @map("room_label")
 
   /// códigos de resgate, na ordem em que foram digitados
   codes String[]
 
   createdBy      Pessoa    @map("created_by")
+  /// a visualização registrada pelo "Marcar como assistido". Com ela (e não
+  /// removida), o ingresso sai do carrossel da home.
+  watchId        String?   @unique @map("watch_id")
+  watch          Watch?    @relation(fields: [watchId], references: [id], onDelete: SetNull)
   /// o lembrete saiu (ou foi reivindicado para sair): nunca manda duas vezes
   reminderSentAt DateTime? @map("reminder_sent_at") @db.Timestamptz(3)
   createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)

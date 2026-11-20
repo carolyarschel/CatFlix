@@ -2,7 +2,15 @@ import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { ConflictError, ValidationError } from '../../shared/errors';
 import { prisma } from '../../shared/prisma';
 import { conteudoDoLembrete, enviarLembretesPendentes } from './tickets.lembrete';
-import { cadastrarIngresso, editarIngresso, ingressosDoTitulo, limparCodigos, removerIngresso } from './tickets.service';
+import {
+  cadastrarIngresso,
+  editarIngresso,
+  ingressosAtivos,
+  ingressosDoTitulo,
+  limparCodigos,
+  marcarComoAssistido,
+  removerIngresso,
+} from './tickets.service';
 
 /** Ingresso comprado e o lembrete de 30 minutos, contra o banco de desenvolvimento. */
 
@@ -201,5 +209,49 @@ describe('lembrete', () => {
     expect(conteudo.title).toBe('🎟️ Pecadores começa em 30 min');
     expect(conteudo.body).toBe('18h30 · Cinemark · Sala 7 · IMAX\nCódigos: ABC · DEF');
     expect(conteudo.url).toBe('/filme/t');
+  });
+});
+
+describe('marcar como assistido', () => {
+  it('registra os dois, no cinema, no dia da sessão, e tira o ingresso do carrossel', async ({ skip }) => {
+    if (!temBanco) skip('sem Postgres');
+    const agora = new Date();
+    const { titleId, sessoes } = await filmeComSessoes('-assistido', [new Date(agora.getTime() + 60 * MINUTO)]);
+    const ingresso = await cadastrarIngresso(titleId, 'CAT', { sessaoId: sessoes[0]!.id, codigos: ['A'] });
+    expect(ingresso.filme.titulo).toBe(`${PREFIXO}-assistido`);
+    expect((await ingressosAtivos()).map((i) => i.id)).toContain(ingresso.id);
+
+    // a sessão já passou (o filme acabou)
+    const inicio = new Date(agora.getTime() - 3 * 60 * MINUTO);
+    await prisma.ticket.update({ where: { id: ingresso.id }, data: { startsAt: inicio } });
+    await prisma.watchlistEntry.create({ data: { titleId, pessoa: 'BEAR' } });
+
+    const r = await marcarComoAssistido(ingresso.id);
+    expect(r.visualizacao.local).toBe('CINEMA');
+    expect([...r.visualizacao.participantes].sort()).toEqual(['BEAR', 'CAT']);
+    expect(r.removidosDaLista.map((x) => x.pessoa)).toEqual(['BEAR']);
+
+    const watch = await prisma.watch.findUniqueOrThrow({ where: { id: r.visualizacao.id } });
+    const cinema = await prisma.cinema.findFirstOrThrow({ where: { ingressoId: `${PREFIXO}-assistido` } });
+    expect(watch.cinemaId).toBe(cinema.id);
+    expect(watch.roomType).toBe('IMAX');
+    const diaDaSessao = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Sao_Paulo' }).format(inicio);
+    expect(watch.watchedOn.toISOString().slice(0, 10)).toBe(diaDaSessao);
+
+    expect((await ingressosAtivos()).map((i) => i.id)).not.toContain(ingresso.id);
+    expect(await ingressosDoTitulo(titleId)).toEqual([]);
+    await expect(marcarComoAssistido(ingresso.id)).rejects.toThrow(ConflictError);
+
+    // apagar a visualização devolve o ingresso, que pode ser marcado de novo
+    await prisma.watch.update({ where: { id: watch.id }, data: { removedAt: new Date() } });
+    expect((await ingressosAtivos()).map((i) => i.id)).toContain(ingresso.id);
+  });
+
+  it('não marca sessão de um dia que ainda não chegou', async ({ skip }) => {
+    if (!temBanco) skip('sem Postgres');
+    const agora = new Date();
+    const { titleId, sessoes } = await filmeComSessoes('-futuro', [new Date(agora.getTime() + 3 * 24 * 60 * MINUTO)]);
+    const ingresso = await cadastrarIngresso(titleId, 'CAT', { sessaoId: sessoes[0]!.id, codigos: [] });
+    await expect(marcarComoAssistido(ingresso.id)).rejects.toThrow(ValidationError);
   });
 });

@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react';
 import { ApiError, api } from '../../shared/api/client';
 import { IconeIngresso } from '../../shared/components/Icones';
+import { formatarDia } from '../../shared/dias';
 import { useApi } from '../../shared/hooks/useApi';
 import { useNotificacoes } from '../../shared/hooks/useNotificacoes';
 import type { IngressoComprado, SessaoDoDia, SessoesPorCinema } from '../../shared/api/tipos';
-import { formatarDia } from './SessoesDoFilme';
 import styles from './IngressosComprados.module.scss';
 
 /**
@@ -22,10 +22,13 @@ export function IngressosComprados({
   titleId,
   sessoes,
   aoNavegar,
+  aoMarcarAssistido,
 }: {
   titleId: string;
   sessoes: SessoesPorCinema[];
   aoNavegar: (para: string) => void;
+  /** a visualização foi registrada: o detalhe recarrega para mostrá-la */
+  aoMarcarAssistido: () => void;
 }) {
   const ingressos = useApi<{ itens: IngressoComprado[] }>(`/titles/${titleId}/tickets`);
   const notificacoes = useNotificacoes();
@@ -51,6 +54,21 @@ export function IngressosComprados({
   }
 
   // só quando a pessoa pode resolver: ligar, desbloquear ou instalar o app
+  async function marcarAssistido(ingresso: IngressoComprado) {
+    const comecou = new Date(ingresso.inicio).getTime() <= Date.now();
+    const pergunta = comecou
+      ? 'Marcar como assistido pelos dois, no cinema, na data do ingresso?'
+      : 'A sessão ainda não começou. Marcar como assistido mesmo assim?';
+    if (!window.confirm(pergunta)) return;
+    try {
+      await api.post(`/tickets/${ingresso.id}/assistido`, {});
+      ingressos.recarregar();
+      aoMarcarAssistido();
+    } catch (problema) {
+      window.alert(problema instanceof ApiError ? problema.message : 'Não consegui marcar como assistido.');
+    }
+  }
+
   const avisoDeNotificacao =
     itens.length > 0 && ['desligado', 'bloqueado', 'precisa_instalar'].includes(notificacoes.estado);
 
@@ -74,6 +92,7 @@ export function IngressosComprados({
             ingresso={ingresso}
             aoEditar={() => setFormulario(ingresso.id)}
             aoRemover={() => void remover(ingresso)}
+            aoMarcarAssistido={() => void marcarAssistido(ingresso)}
           />
         ),
       )}
@@ -113,10 +132,12 @@ function CartaoDoIngresso({
   ingresso,
   aoEditar,
   aoRemover,
+  aoMarcarAssistido,
 }: {
   ingresso: IngressoComprado;
   aoEditar: () => void;
   aoRemover: () => void;
+  aoMarcarAssistido: () => void;
 }) {
   const [copiado, setCopiado] = useState<string | null>(null);
 
@@ -163,6 +184,12 @@ function CartaoDoIngresso({
       ) : (
         <p className={styles.semCodigo}>Nenhum código de resgate cadastrado.</p>
       )}
+
+      {comecou ? (
+        <button type="button" className={styles.assistido} onClick={aoMarcarAssistido}>
+          Marcar como assistido
+        </button>
+      ) : null}
 
       <div className={styles.rodape}>
         <span className={styles.lembrete}>

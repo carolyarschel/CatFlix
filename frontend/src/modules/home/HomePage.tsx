@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { BottomNav } from '../../shared/components/BottomNav';
 import { HeroCard } from '../../shared/components/HeroCard';
+import { CarrosselDeIngressos } from './CarrosselDeIngressos';
 import {
   IconeBusca,
   IconeAgenda,
@@ -15,6 +16,7 @@ import { useSincronizacao } from '../../shared/hooks/useSincronizacao';
 import { formatarIdade } from '../../shared/formatos';
 import type {
   Home,
+  IngressoComprado,
   ListaDeTitulos,
   PerfilDoApp,
   StatusDeDisponibilidade,
@@ -75,6 +77,9 @@ export function HomePage({
   }, [tags, filtro]);
 
   const lista = useApi<ListaDeTitulos>('/titles', { query: queryDaLista, ativo: filtrando });
+
+  // ingresso comprado vira o destaque da aba (pedido de 20/11/2026)
+  const ingressos = useApi<{ itens: IngressoComprado[] }>('/tickets');
 
   const dados = home.dados;
 
@@ -198,17 +203,32 @@ export function HomePage({
         }
       />
 
-      {dados.hero && !filtro && !filtrando ? (
+      {/* Com ingresso comprado, o destaque vira o carrossel dos ingressos; sem,
+          é o destaque de sempre. Espera a lista de ingressos chegar para não
+          piscar o destaque antes do carrossel. */}
+      {!filtro && !filtrando && (ingressos.dados || ingressos.erro) ? (
         <div className={styles.heroArea}>
-          <HeroCard
-            hero={dados.hero}
-            naMinhaLista={naMinhaLista}
-            salvando={salvandoLista}
-            aoVerSessoes={abrirFilme}
-            // "Quero assistir" grava direto daqui (decisão de 18/11/2026). O
-            // "marquei sem querer" tem volta no mesmo botão: tocar de novo tira
-            // da lista, e o rótulo muda para dizer em que estado está.
-            aoAlternarLista={(id) => void alternarLista(id)}
+          <CarrosselDeIngressos
+            ingressos={ingressos.dados?.itens ?? []}
+            aoAbrirFilme={abrirFilme}
+            aoMudar={() => {
+              ingressos.recarregar();
+              home.recarregar();
+            }}
+            semIngressos={
+              dados.hero ? (
+                <HeroCard
+                  hero={dados.hero}
+                  naMinhaLista={naMinhaLista}
+                  salvando={salvandoLista}
+                  aoVerSessoes={abrirFilme}
+                  // "Quero assistir" grava direto daqui (decisão de 18/11/2026). O
+                  // "marquei sem querer" tem volta no mesmo botão: tocar de novo tira
+                  // da lista, e o rótulo muda para dizer em que estado está.
+                  aoAlternarLista={(id) => void alternarLista(id)}
+                />
+              ) : null
+            }
           />
         </div>
       ) : null}

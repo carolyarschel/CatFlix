@@ -3,6 +3,9 @@ import { ConflictError, NotFoundError, ValidationError } from '../../shared/erro
 import { prisma } from '../../shared/prisma';
 import { rotuloDeAudio, rotuloDeSala } from '../catalog/catalog.format';
 import { fusoDaCidade } from '../cinemas';
+import { registrarVisualizacao } from '../watches';
+import type { VisualizacaoDoTitulo } from '../watches';
+import { tirarDaListaDe } from '../watchlist';
 
 /**
  * Ingresso comprado (pedido de 20/11/2026): para um filme em cartaz, a sessão
@@ -22,14 +25,17 @@ export const MAXIMO_DE_CODIGOS = 10;
 export const TAMANHO_MAXIMO_DO_CODIGO = 120;
 
 /**
- * Até quando o ingresso aparece depois de a sessão começar. Cobre o filme
- * inteiro (e o trailer): o código ainda pode ser pedido na porta da sala.
+ * Até quando o ingresso aparece depois de a sessão começar, se ninguém marcar
+ * como assistido. Cobre o filme e dá folga para marcar no dia seguinte; depois
+ * disso ele some sozinho, para um ingresso esquecido não ficar na home para
+ * sempre.
  */
-const VISIVEL_DEPOIS_DO_INICIO_MS = 4 * 60 * 60 * 1000;
+const VISIVEL_DEPOIS_DO_INICIO_MS = 3 * 24 * 60 * 60 * 1000;
 
 export interface IngressoComprado {
   id: string;
   titleId: string;
+  filme: { titulo: string; posterUrl: string | null; backdropUrl: string | null };
   /** `null` quando a sessão sumiu da base; a cópia abaixo continua valendo */
   sessaoId: string | null;
   inicio: Date;
@@ -91,6 +97,7 @@ async function copiaDaSessao(db: ClientePrisma, sessaoId: string, titleId: strin
       roomType: true,
       is3d: true,
       audio: true,
+      cinemaId: true,
       cinema: { select: { name: true } },
     },
   });
@@ -102,7 +109,9 @@ async function copiaDaSessao(db: ClientePrisma, sessaoId: string, titleId: strin
   return {
     startsAt: sessao.startsAt,
     cinemaName: sessao.cinema.name,
+    cinemaId: sessao.cinemaId,
     details: detalhesDaSessao(sessao),
+    roomLabel: sessao.roomType && sessao.roomType !== 'normal' ? rotuloDeSala(sessao.roomType) : null,
   };
 }
 
@@ -133,6 +142,7 @@ const SELECAO = {
   codes: true,
   createdBy: true,
   reminderSentAt: true,
+  title: { select: { title: true, posterUrl: true, backdropUrl: true } },
 } as const;
 
 type IngressoCru = Prisma.TicketGetPayload<{ select: typeof SELECAO }>;
@@ -141,6 +151,7 @@ export function formatarIngresso(t: IngressoCru, fuso: string): IngressoComprado
   return {
     id: t.id,
     titleId: t.titleId,
+    filme: { titulo: t.title.title, posterUrl: t.title.posterUrl, backdropUrl: t.title.backdropUrl },
     sessaoId: t.sessionId,
     inicio: t.startsAt,
     ...partesNoFuso(t.startsAt, fuso),
@@ -152,17 +163,33 @@ export function formatarIngresso(t: IngressoCru, fuso: string): IngressoComprado
   };
 }
 
-/** Os ingressos de um filme que ainda servem: sessão futura ou em andamento. */
-export async function ingressosDoTitulo(titleId: string, agora = new Date()): Promise<IngressoComprado[]> {
+/**
+ * Ingresso que ainda serve: ninguém marcou como assistido (ou a visualização
+ * foi apagada depois) e a sessão não ficou para trás há mais de 3 dias.
+ */
+function ativos(agora: Date): Prisma.TicketWhereInput {
+  return {
+    startsAt: { gte: new Date(agora.getTime() - VISIVEL_DEPOIS_DO_INICIO_MS) },
+    OR: [{ watchId: null }, { watch: { removedAt: { not: null } } }],
+  };
+}
+
+async function listar(where: Prisma.TicketWhereInput): Promise<IngressoComprado[]> {
   const [linhas, fuso] = await Promise.all([
-    prisma.ticket.findMany({
-      where: { titleId, startsAt: { gte: new Date(agora.getTime() - VISIVEL_DEPOIS_DO_INICIO_MS) } },
-      orderBy: { startsAt: 'asc' },
-      select: SELECAO,
-    }),
+    prisma.ticket.findMany({ where, orderBy: { startsAt: 'asc' }, select: SELECAO }),
     fusoDaCidade(),
   ]);
   return linhas.map((t) => formatarIngresso(t, fuso));
+}
+
+/** Os ingressos de um filme que ainda servem, do mais próximo ao mais longe. */
+export async function ingressosDoTitulo(titleId: string, agora = new Date()): Promise<IngressoComprado[]> {
+  return listar({ titleId, ...ativos(agora) });
+}
+
+/** Todos os ingressos que ainda servem — o carrossel da aba Cinema. */
+export async function ingressosAtivos(agora = new Date()): Promise<IngressoComprado[]> {
+  return listar(ativos(agora));
 }
 
 function ehSessaoRepetida(erro: unknown): boolean {
@@ -228,4 +255,70 @@ export async function editarIngresso(
 export async function removerIngresso(id: string): Promise<void> {
   const { count } = await prisma.ticket.deleteMany({ where: { id } });
   if (count === 0) throw new NotFoundError('Esse ingresso não existe mais.');
+}
+
+/**
+ * "Marcar como assistido" (pedido de 20/11/2026): registra a visualização dos
+ * DOIS, no cinema, na data da sessão do ingresso — e tira o filme da lista
+ * "quero assistir" de quem estava, como o registro normal faz. Na mesma
+ * transação, o ingresso guarda a visualização e sai do carrossel.
+ *
+ * A data é o dia da sessão no fuso da cidade: sessão às 23h40 de sexta é
+ * "sexta", mesmo que o servidor já esteja no sábado em UTC.
+ */
+export async function marcarComoAssistido(
+  id: string,
+  agora = new Date(),
+): Promise<{
+  visualizacao: VisualizacaoDoTitulo;
+  removidosDaLista: Array<{ id: string; pessoa: Pessoa }>;
+}> {
+  const fuso = await fusoDaCidade();
+
+  return prisma.$transaction(async (tx) => {
+    const ingresso = await tx.ticket.findUnique({
+      where: { id },
+      select: {
+        titleId: true,
+        startsAt: true,
+        cinemaId: true,
+        cinemaName: true,
+        roomLabel: true,
+        session: { select: { roomType: true } },
+        watch: { select: { removedAt: true } },
+      },
+    });
+    if (!ingresso) throw new NotFoundError('Esse ingresso não existe mais.');
+    if (ingresso.watch && !ingresso.watch.removedAt) {
+      throw new ConflictError('Esse ingresso já foi marcado como assistido.');
+    }
+
+    const { dia } = partesNoFuso(ingresso.startsAt, fuso);
+    if (ingresso.startsAt.getTime() > agora.getTime() && dia > partesNoFuso(agora, fuso).dia) {
+      throw new ValidationError('A sessão ainda não chegou: dá para marcar a partir do dia dela.');
+    }
+
+    const salaDaSessao = ingresso.session?.roomType;
+    const tipoSala =
+      ingresso.roomLabel ?? (salaDaSessao && salaDaSessao !== 'normal' ? rotuloDeSala(salaDaSessao) : null);
+
+    const visualizacao = await registrarVisualizacao(
+      ingresso.titleId,
+      {
+        data: dia,
+        local: 'CINEMA',
+        participantes: ['CAT', 'BEAR'],
+        // cinema que saiu da base vira nome escrito, para não perder o lugar
+        cinemaId: ingresso.cinemaId,
+        cinemaNomeLivre: ingresso.cinemaId ? null : ingresso.cinemaName,
+        tipoSala,
+      },
+      tx,
+    );
+    const removidosDaLista = await tirarDaListaDe(ingresso.titleId, visualizacao.participantes, agora, tx);
+
+    await tx.ticket.update({ where: { id }, data: { watchId: visualizacao.id } });
+
+    return { visualizacao, removidosDaLista };
+  });
 }

@@ -1,7 +1,9 @@
 export {
   cadastrarIngresso,
   editarIngresso,
+  ingressosAtivos,
   ingressosDoTitulo,
+  marcarComoAssistido,
   limparCodigos,
   removerIngresso,
 } from './tickets.service';

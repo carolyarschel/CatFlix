@@ -476,6 +476,7 @@ export interface EstadoDaImportacao {
 export interface IngressoComprado {
   id: string;
   titleId: string;
+  filme: { titulo: string; posterUrl: string | null; backdropUrl: string | null };
   /** `null` quando a sessão sumiu da base; a cópia abaixo continua valendo */
   sessaoId: string | null;
   inicio: string;
