@@ -147,8 +147,7 @@
   display: grid;
   // a mesma grade das tags e do "Ver todos": 2 colunas no celular, 4 no desktop
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: t.$space-8 t.$space-4;
-  justify-items: start;
+  gap: t.$space-4;
   transition: opacity 0.15s ease;
 
   &[data-carregando] {

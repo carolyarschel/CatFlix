@@ -1,38 +1,16 @@
 @use '../../shared/styles/tokens' as t;
 
-.opinioes {
-  display: flex;
-  flex-direction: column;
-  gap: t.$space-3;
-  width: 100%;
-}
-
-.opiniao {
-  display: flex;
-  flex-direction: column;
-  gap: t.$space-1;
-  min-width: 0;
-}
-
-.cabeca {
+.notas {
   display: flex;
   align-items: center;
-  gap: t.$space-2;
+  gap: t.$space-3;
   min-width: 0;
-}
-
-// o nome fica para o leitor de tela e para quem não reconhece o rosto ainda;
-// visualmente, o rosto basta e a nota precisa do espaço
-.quem {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
 }
 
 .nota {
+  display: inline-flex;
+  align-items: center;
+  gap: t.$space-1;
   color: t.$text;
   font-family: t.$font-display;
   font-size: t.$fs-sm;
@@ -40,15 +18,40 @@
   line-height: 1;
 }
 
+.comentarios {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-1;
+  min-width: 0;
+}
+
 .comentario {
+  display: flex;
+  align-items: center;
+  gap: t.$space-2;
+  min-width: 0;
+}
+
+// uma linha por comentário no card; o texto inteiro está no detalhe
+.texto {
+  min-width: 0;
   color: t.$text-secondary;
   font-size: t.$fs-3xs;
-  line-height: 1.4;
-  overflow-wrap: anywhere;
-  // três linhas no card; o texto inteiro está no detalhe
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
+  line-height: 1.35;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// o nome fica para o leitor de tela; visualmente, o rosto basta
+.oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }

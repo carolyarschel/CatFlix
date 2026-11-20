@@ -7,7 +7,7 @@ import { PosterCard } from '../../shared/components/PosterCard';
 import { useApi } from '../../shared/hooks/useApi';
 import { PESSOA_DO_PERFIL, outraPessoa, perfilDaPessoa } from '../../shared/pessoas';
 import type { Assistidos, CardDoAssistido, PerfilDoApp } from '../../shared/api/tipos';
-import { OpinioesDoCard } from './OpinioesDoCard';
+import { ComentariosDoCard, NotasDoCard, temComentarios, temNotas } from './OpinioesDoCard';
 import styles from './AssistidosPage.module.scss';
 
 /**
@@ -262,7 +262,16 @@ export function AssistidosPage({
                 key={item.id}
                 titulo={item}
                 aoAbrir={(id) => aoNavegar(`/filme/${id}`)}
-                rodape={<OpinioesDoCard opinioes={item.opinioes} perfis={perfis.dados?.itens ?? []} />}
+                notas={
+                  temNotas(item.opinioes) ? (
+                    <NotasDoCard opinioes={item.opinioes} perfis={perfis.dados?.itens ?? []} />
+                  ) : undefined
+                }
+                rodape={
+                  temComentarios(item.opinioes) ? (
+                    <ComentariosDoCard opinioes={item.opinioes} perfis={perfis.dados?.itens ?? []} />
+                  ) : undefined
+                }
               />
             ))}
           </div>

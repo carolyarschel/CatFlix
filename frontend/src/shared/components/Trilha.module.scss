@@ -33,12 +33,11 @@
   white-space: nowrap;
 }
 
-/** Último lugar da esteira, no tamanho do card para a fileira não desalinhar. */
+/** Último lugar da esteira; estica até a altura dos cards para a fileira não desalinhar. */
 .cartaoFinal {
-  width: 150px;
-  flex-shrink: 0;
-  aspect-ratio: #{t.$poster-ratio};
-  border-radius: t.$radius-poster;
+  align-self: stretch;
+  min-height: 0;
+  border-radius: t.$radius-xl;
   border: 1px dashed t.$border-strong;
   background: t.$surface-card;
   color: t.$text-secondary;
@@ -72,7 +71,9 @@
     display: none;
   }
 
+  // o card ocupa a largura do contêiner; na esteira, quem fixa é ela
   > * {
+    flex: 0 0 150px;
     scroll-snap-align: start;
   }
 }

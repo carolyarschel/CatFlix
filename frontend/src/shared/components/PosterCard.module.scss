@@ -1,15 +1,31 @@
 @use '../styles/tokens' as t;
 
-// Medidas tiradas do modelo mobile: 150 px de largura, pôster de 222 px.
-// O modelo manda no card, no mobile e no desktop (§3, 23/09/2026).
-$largura: 150px;
-
+// O card ocupa a largura do contêiner: a coluna inteira na grade (e assim fica
+// centralizado nela) e a largura fixa da esteira na trilha (Trilha.module.scss).
+// O pôster fica inteiro, em 2:3; o rodapé vem embaixo dele.
 .card {
-  width: $largura;
-  flex-shrink: 0;
+  position: relative;
+  width: 100%;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: t.$space-3;
+  border-radius: t.$radius-xl;
+  border: 1px solid t.$border;
+  background: t.$surface-card;
+  overflow: hidden;
+  transition: border-color 0.15s ease;
+
+  @media (hover: hover) {
+    &:hover {
+      border-color: t.$border-strong;
+    }
+  }
+
+  // o foco é do card inteiro, não só do pôster
+  &:has(.botao:focus-visible) {
+    outline: 2px solid t.$accent;
+    outline-offset: 2px;
+  }
 }
 
 .botao {
@@ -21,15 +37,24 @@ $largura: 150px;
   // o botão do reset tem 44px de altura mínima; aqui quem manda é o pôster
   min-height: 0;
   min-width: 0;
+
+  // o card inteiro abre o filme, inclusive o rodapé
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
 }
 
 .poster {
   position: relative;
   width: 100%;
   aspect-ratio: #{t.$poster-ratio};
-  border-radius: t.$radius-poster;
-  border: 1px solid t.$border;
-  background: t.$surface-card;
+  background: t.$surface-chip;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -79,15 +104,17 @@ $largura: 150px;
 
 .nome {
   position: relative;
-  padding: t.$space-8 t.$space-4 t.$space-4;
+  padding: t.$space-10 t.$space-4 t.$space-4;
   font-family: t.$font-display;
-  font-size: t.$fs-base;
+  font-size: t.$fs-md;
   line-height: 1.12;
+  letter-spacing: t.$ls-title;
   font-weight: t.$fw-bold;
   color: #efebf5;
   // o degradê existe para o título ser legível sobre qualquer pôster —
-  // com pôster claro, texto branco sem véu some
-  background: linear-gradient(to top, rgba(8, 7, 11, 0.92), rgba(8, 7, 11, 0));
+  // com pôster claro, texto branco sem véu some. Termina na cor do card para
+  // o pôster emendar no rodapé.
+  background: linear-gradient(to top, rgba(21, 18, 29, 0.96) 10%, rgba(21, 18, 29, 0));
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -95,18 +122,45 @@ $largura: 150px;
   -webkit-box-orient: vertical;
 }
 
+// ── rodapé ──────────────────────────────────────────────────
+
+.rodape {
+  flex: 1;
+  min-width: 0;
+  padding: t.$space-3 t.$space-4 t.$space-4;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-2;
+}
+
+// notas à esquerda, pílula à direita; sem espaço, a pílula desce de linha e
+// continua encostada à direita
+.resumo {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: t.$space-2 t.$space-3;
+  min-height: 20px;
+}
+
 .faixa {
-  position: relative;
-  padding: 5px t.$space-3;
-  background: t.$accent;
-  color: t.$accent-on-solid;
+  margin-left: auto;
+  padding: 2px t.$space-2;
+  border-radius: t.$radius-pill;
+  border: 1px solid t.$accent;
+  background: t.$accent-soft;
+  color: t.$accent-on-soft;
   font-size: t.$fs-3xs;
-  font-weight: t.$fw-bold;
-  text-align: center;
+  font-weight: t.$fw-semibold;
+  line-height: 1.4;
+  white-space: nowrap;
 }
 
 .linha {
   font-size: t.$fs-3xs;
   color: t.$text-label;
   line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

@@ -12,15 +12,24 @@ import styles from './PosterCard.module.scss';
  * `desktop-catflix.html` propunha para pré-estreias foi descartado porque o app
  * é usado majoritariamente no celular, e duas formas de card significariam duas
  * formas de errar.
+ *
+ * Desde 20/11/2026 o card é uma caixa só: pôster em cima, com o título por
+ * cima da imagem, e um rodapé com as notas à esquerda e a faixa (data,
+ * urgência) numa pílula à direita; embaixo, uma linha de texto. O card ocupa a
+ * largura que o contêiner der — na grade, a coluna inteira; na trilha, a
+ * largura fixa que a esteira define.
  */
 export function PosterCard({
   titulo,
   aoAbrir,
+  notas,
   rodape,
 }: {
   titulo: CardDeTitulo;
   aoAbrir?: (id: string) => void;
-  /** o que vem depois da linha — nos Assistidos, a nota e o comentário de cada um */
+  /** substitui as notas do IMDb/RT — nos Assistidos, a nota de cada um */
+  notas?: ReactNode;
+  /** substitui a linha de texto — nos Assistidos, os comentários */
   rodape?: ReactNode;
 }) {
   const descricao = [
@@ -31,6 +40,10 @@ export function PosterCard({
   ]
     .filter(Boolean)
     .join(', ');
+
+  const resumo = notas ?? <RatingBadges imdb={titulo.imdb} rt={titulo.rt} />;
+  const temNotas = Boolean(notas) || Boolean(titulo.imdb || titulo.rt);
+  const embaixo = rodape ?? (titulo.linha ? <span className={styles.linha}>{titulo.linha}</span> : null);
 
   return (
     <article className={styles.card}>
@@ -71,16 +84,21 @@ export function PosterCard({
           ) : null}
 
           <span className={styles.nome}>{titulo.titulo}</span>
-
-          {titulo.faixa ? <span className={styles.faixa}>{titulo.faixa}</span> : null}
         </div>
       </button>
 
-      <RatingBadges imdb={titulo.imdb} rt={titulo.rt} />
+      {temNotas || titulo.faixa || embaixo ? (
+        <div className={styles.rodape}>
+          {temNotas || titulo.faixa ? (
+            <div className={styles.resumo}>
+              {temNotas ? resumo : null}
+              {titulo.faixa ? <span className={styles.faixa}>{titulo.faixa}</span> : null}
+            </div>
+          ) : null}
 
-      {titulo.linha ? <span className={styles.linha}>{titulo.linha}</span> : null}
-
-      {rodape}
+          {embaixo}
+        </div>
+      ) : null}
     </article>
   );
 }

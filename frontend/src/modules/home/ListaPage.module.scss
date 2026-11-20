@@ -69,8 +69,7 @@
   // 150 px é a largura do card; `auto-fill` dá 2 colunas no celular e 4 no
   // desktop sem uma segunda medida escrita à mão — igual à grade das tags
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: t.$space-8 t.$space-4;
-  justify-items: start;
+  gap: t.$space-4;
 }
 
 .aviso {
