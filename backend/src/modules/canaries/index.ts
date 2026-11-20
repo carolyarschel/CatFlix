@@ -16,9 +16,10 @@ export { PwaPushNotifier } from './pwa-push.notifier';
 export {
   chavePublica,
   desinscrever,
+  enviarParaPerfis,
   enviarParaTodos,
   inscrever,
   inscricoesVivas,
   pushConfigurado,
 } from './push.service';
-export type { InscricaoDoNavegador, ResultadoDoEnvio } from './push.service';
+export type { ConteudoDoPush, InscricaoDoNavegador, ResultadoDoEnvio } from './push.service';

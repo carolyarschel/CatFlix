@@ -238,6 +238,12 @@ export async function mergeTitles(
     }
     repontados.comments = comentariosMigrados;
 
+    // ingresso comprado não colide: a sessão (única por ingresso) já foi
+    // repontada junto com as sessões, e o ingresso só segue o filme
+    repontados.tickets = (
+      await tx.ticket.updateMany({ where: { titleId: fromTitleId }, data: { titleId: toTitleId } })
+    ).count;
+
     // provedores são do filme do TMDB, e o destino tem os dele
     await tx.titleProvider.deleteMany({ where: { titleId: fromTitleId } });
 

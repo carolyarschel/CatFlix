@@ -348,6 +348,7 @@ model Title {
   ratings   Rating[]
   comments  Comment[]
   providers TitleProvider[]
+  tickets   Ticket[]
 
   externalIds    TitleExternalId[]
   credits        TitleCredit[]
@@ -542,6 +543,9 @@ model Session {
   sessionKind SessionKind @default(regular) @map("session_kind")
 
   purchaseUrl String? @map("purchase_url")
+
+  /// ingresso comprado para esta sessão (no máximo um: os códigos vão juntos)
+  ticket Ticket?
 
   active     Boolean  @default(true) // sessão que sumiu da API → false
   lastSeenAt DateTime @default(now()) @map("last_seen_at") @db.Timestamptz(3)
@@ -918,6 +922,43 @@ model Comment {
   @@unique([titleId, pessoa])
   @@index([updatedAt]) // feed do CG (§10.2)
   @@map("comments")
+}
+
+/// Ingresso comprado para uma sessão (pedido de 20/11/2026): a sessão, os
+/// códigos de resgate e o lembrete por push 30 minutos antes.
+///
+/// É do casal, não de uma pessoa: os dois veem, os dois editam, e o lembrete
+/// vai para os aparelhos das duas contas. `createdBy` é só o registro de quem
+/// cadastrou.
+model Ticket {
+  id      String @id @default(cuid())
+  titleId String @map("title_id")
+  title   Title  @relation(fields: [titleId], references: [id], onDelete: Cascade)
+
+  /// a sessão do ingresso.com. Única: um segundo ingresso para a mesma sessão
+  /// é só mais um código no mesmo registro.
+  sessionId String?  @unique @map("session_id")
+  session   Session? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+
+  // Cópia da sessão no momento da compra. A sessão pode sumir da API ou ser
+  // desativada pelo sync, e o lembrete não pode depender dela.
+  startsAt   DateTime @map("starts_at") @db.Timestamptz(3)
+  cinemaName String   @map("cinema_name")
+  /// "Sala 7 · IMAX · Legendado"
+  details    String?
+
+  /// códigos de resgate, na ordem em que foram digitados
+  codes String[]
+
+  createdBy      Pessoa    @map("created_by")
+  /// o lembrete saiu (ou foi reivindicado para sair): nunca manda duas vezes
+  reminderSentAt DateTime? @map("reminder_sent_at") @db.Timestamptz(3)
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt      DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([titleId])
+  @@index([startsAt])
+  @@map("tickets")
 }
 
 // ─────────────────────────────────────────────────────────────

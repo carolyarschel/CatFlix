@@ -469,3 +469,24 @@ export interface EstadoDaImportacao {
   relatorio: RelatorioDaImportacao | null;
   erro: string | null;
 }
+
+// ── Ingresso comprado (20/11/2026) ───────────────────────────
+
+/** `GET /titles/:id/tickets` — um ingresso do casal para uma sessão. */
+export interface IngressoComprado {
+  id: string;
+  titleId: string;
+  /** `null` quando a sessão sumiu da base; a cópia abaixo continua valendo */
+  sessaoId: string | null;
+  inicio: string;
+  /** `AAAA-MM-DD` no fuso da cidade */
+  dia: string;
+  /** "19h40" */
+  horario: string;
+  cinema: string;
+  /** "Sala 7 · IMAX · Legendado" */
+  detalhes: string | null;
+  codigos: string[];
+  cadastradoPor: Pessoa;
+  lembreteEnviadoEm: string | null;
+}

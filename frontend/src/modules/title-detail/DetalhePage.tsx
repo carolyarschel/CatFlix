@@ -17,6 +17,7 @@ import type {
 import { FormularioDeVisualizacao } from '../acervo/FormularioDeVisualizacao';
 import { TagsManuais } from '../tags/TagsManuais';
 import { Comentarios } from './Comentarios';
+import { IngressosComprados } from './IngressosComprados';
 import { SessoesDoFilme } from './SessoesDoFilme';
 import styles from './DetalhePage.module.scss';
 
@@ -514,6 +515,8 @@ function Conteudo({
         {/* 12. se estiver em cartaz: as sessões e o ingresso.com */}
         {dados.emCartaz ? (
           <>
+            {/* ingresso comprado: sessão, códigos e o lembrete 30 min antes (20/11/2026) */}
+            <IngressosComprados titleId={dados.id} sessoes={dados.sessoes} aoNavegar={aoNavegar} />
             {dados.ingressoUrl ? (
               <a className={styles.ingresso} href={dados.ingressoUrl} target="_blank" rel="noreferrer noopener">
                 <IconeIngresso tamanho={19} />

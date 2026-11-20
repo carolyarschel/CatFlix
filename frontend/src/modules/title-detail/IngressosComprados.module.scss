@@ -1,0 +1,347 @@
+@use '../../shared/styles/tokens' as t;
+
+.bloco {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-5;
+}
+
+.rotulo {
+  margin: 0;
+  font-family: t.$font-text;
+  font-size: t.$fs-2xs;
+  font-weight: t.$fw-medium;
+  letter-spacing: t.$ls-label;
+  text-transform: uppercase;
+  color: t.$text-group-label;
+}
+
+// ── o ingresso ──────────────────────────────────────────────
+
+.cartao {
+  padding: t.$space-6 t.$space-7;
+  border-radius: t.$radius-xl;
+  border: 1px solid t.$accent;
+  background: linear-gradient(to bottom, t.$accent-soft, t.$surface-card 70%);
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-3;
+}
+
+.quando {
+  display: flex;
+  align-items: center;
+  gap: t.$space-3;
+  color: t.$accent-on-soft;
+}
+
+.dia,
+.hora {
+  font-family: t.$font-display;
+  font-weight: t.$fw-bold;
+  color: t.$text;
+}
+
+.dia {
+  font-size: t.$fs-md;
+}
+
+.hora {
+  margin-left: auto;
+  font-size: t.$fs-xl;
+  line-height: 1;
+}
+
+.onde {
+  margin: 0;
+  color: t.$text-secondary;
+  font-size: t.$fs-sm;
+  line-height: 1.4;
+}
+
+.detalhes {
+  color: t.$text-label;
+}
+
+.codigos {
+  margin: t.$space-1 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-2;
+}
+
+.codigo {
+  padding: t.$space-1 t.$space-1 t.$space-1 t.$space-5;
+  border-radius: t.$radius-md;
+  border: 1px dashed t.$border-strong;
+  background: t.$bg;
+  display: flex;
+  align-items: center;
+  gap: t.$space-3;
+}
+
+.textoDoCodigo {
+  flex: 1;
+  min-width: 0;
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: t.$fs-md;
+  font-weight: t.$fw-semibold;
+  letter-spacing: 0.06em;
+  color: t.$text;
+  overflow-wrap: anywhere;
+}
+
+.copiar {
+  flex-shrink: 0;
+  min-height: 36px;
+  padding: 0 t.$space-5;
+  border-radius: t.$radius-sm;
+  background: t.$surface-chip;
+  color: t.$accent-on-soft;
+  font-size: t.$fs-xs;
+  font-weight: t.$fw-semibold;
+}
+
+.semCodigo {
+  margin: 0;
+  color: t.$text-label;
+  font-size: t.$fs-sm;
+}
+
+.rodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: t.$space-4;
+  flex-wrap: wrap;
+}
+
+.lembrete {
+  color: t.$text-support;
+  font-size: t.$fs-xs;
+}
+
+.acoes {
+  display: flex;
+  gap: t.$space-5;
+}
+
+.link,
+.linkDiscreto {
+  min-height: t.$touch-target;
+  min-width: 0;
+  padding: 0;
+  font-size: t.$fs-sm;
+  font-weight: t.$fw-medium;
+}
+
+.link {
+  color: t.$accent-on-soft;
+}
+
+.linkDiscreto {
+  color: t.$text-label;
+}
+
+.dica {
+  margin: 0;
+  color: t.$text-support;
+  font-size: t.$fs-sm;
+  line-height: t.$lh-body;
+
+  .link {
+    min-height: 0;
+    display: inline;
+  }
+}
+
+.comprado {
+  min-height: 52px;
+  border-radius: t.$radius-lg;
+  border: 1px solid t.$accent;
+  background: t.$accent-soft;
+  color: t.$accent-on-soft;
+  font-size: t.$fs-md;
+  font-weight: t.$fw-semibold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: t.$space-3;
+}
+
+// ── o formulário ────────────────────────────────────────────
+
+.formulario {
+  padding: t.$space-6 t.$space-7;
+  border-radius: t.$radius-xl;
+  border: 1px solid t.$border-strong;
+  background: t.$surface-card;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-7;
+}
+
+.grupo {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-3;
+}
+
+.legenda {
+  padding: 0;
+  margin-bottom: t.$space-3;
+  font-size: t.$fs-2xs;
+  font-weight: t.$fw-medium;
+  letter-spacing: t.$ls-label;
+  text-transform: uppercase;
+  color: t.$text-group-label;
+}
+
+.cinemaUnico {
+  margin: 0;
+  color: t.$text;
+  font-weight: t.$fw-semibold;
+}
+
+.opcoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: t.$space-3;
+}
+
+// os dias são muitos (duas semanas de grade): rolam de lado em vez de quebrar
+.opcoesRolando {
+  margin: 0 -#{t.$space-7};
+  padding: 0 t.$space-7;
+  display: flex;
+  gap: t.$space-3;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.opcao,
+.horario {
+  flex-shrink: 0;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border-strong;
+  background: t.$surface-chip;
+  color: t.$text;
+}
+
+.opcao {
+  min-height: 40px;
+  padding: 0 t.$space-6;
+  font-size: t.$fs-sm;
+  font-weight: t.$fw-medium;
+  white-space: nowrap;
+}
+
+.horario {
+  min-height: t.$touch-target;
+  padding: t.$space-2 t.$space-6;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1px;
+
+  &:disabled {
+    opacity: 0.45;
+  }
+}
+
+.opcaoAtiva {
+  border-color: t.$accent;
+  background: t.$accent-soft;
+  color: t.$accent-on-soft;
+}
+
+.horaDoHorario {
+  font-family: t.$font-display;
+  font-size: t.$fs-md;
+  font-weight: t.$fw-semibold;
+  line-height: 1.1;
+}
+
+.detalhesDoHorario {
+  color: t.$text-label;
+  font-size: t.$fs-3xs;
+  white-space: nowrap;
+}
+
+.linhaDoCodigo {
+  display: flex;
+  gap: t.$space-3;
+}
+
+.campo {
+  flex: 1;
+  min-width: 0;
+  min-height: t.$touch-target;
+  padding: 0 t.$space-5;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border-strong;
+  background: t.$surface-chip;
+  color: t.$text;
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: t.$fs-base;
+  letter-spacing: 0.04em;
+
+  &:focus-visible {
+    outline: none;
+    border-color: t.$accent;
+  }
+}
+
+.tirar {
+  flex-shrink: 0;
+  width: t.$touch-target;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$border-strong;
+  color: t.$text-label;
+  font-size: t.$fs-lg;
+}
+
+.botoes {
+  display: flex;
+  gap: t.$space-3;
+}
+
+.salvar,
+.cancelar {
+  min-height: t.$touch-target;
+  padding: 0 t.$space-7;
+  border-radius: t.$radius-md;
+  font-size: t.$fs-sm;
+  font-weight: t.$fw-semibold;
+
+  &:disabled {
+    opacity: 0.55;
+  }
+}
+
+.salvar {
+  background: t.$text;
+  color: t.$bg;
+}
+
+.cancelar {
+  border: 1px solid t.$border-strong;
+  color: t.$text;
+}
+
+.erro {
+  margin: 0;
+  color: #ff9b9b;
+  font-size: t.$fs-sm;
+}

@@ -126,7 +126,7 @@ function agruparPorDia(sessoes: SessaoDoDia[]): Array<[string, SessaoDoDia[]]> {
  * jeito — `new Date('2026-09-24')` seria meia-noite UTC, o dia anterior no
  * Brasil.
  */
-function formatarDia(dia: string): string {
+export function formatarDia(dia: string): string {
   const [ano, mes, data] = dia.split('-').map(Number);
   if (!ano || !mes || !data) return dia;
 

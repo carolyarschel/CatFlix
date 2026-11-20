@@ -1,6 +1,7 @@
 import { createApp } from './app';
 import { env, missingOptionalKeys } from './config/env';
 import { iniciarAgendador, pararAgendador } from './modules/sync';
+import { iniciarLembretesDeIngresso, pararLembretesDeIngresso } from './modules/tickets';
 import { limparSessoesVencidas, portao } from './modules/users';
 import { disconnectPrisma } from './shared/prisma';
 import { logger } from './shared/logger';
@@ -14,6 +15,9 @@ const server = app.listen(env.PORT, () => {
 
   const agendador = iniciarAgendador();
   log.info('agendador', agendador);
+
+  // lembrete do ingresso comprado: a cada minuto, fora do agendador do sync
+  log.info('lembretes de ingresso', { habilitado: iniciarLembretesDeIngresso() });
 
   // Sessões do Portão vencidas só somem quando alguém tenta usá-las; a cada
   // 6 h, apaga as que ficaram para trás (fora do agendador do sync: não é sync).
@@ -39,6 +43,7 @@ async function desligar(sinal: string): Promise<void> {
   log.info('desligando', { sinal });
 
   pararAgendador();
+  pararLembretesDeIngresso();
 
   server.close(async (erro) => {
     if (erro) log.error('erro ao fechar o servidor HTTP', { erro });

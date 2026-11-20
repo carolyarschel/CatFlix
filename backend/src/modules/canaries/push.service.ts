@@ -110,20 +110,47 @@ export interface ResultadoDoEnvio {
  * desinstalado, permissão revogada, navegador limpo. Insistir nele é lixo que
  * só cresce, então ele é marcado como expirado e sai da lista.
  */
-export async function enviarParaTodos(payload: {
+export interface ConteudoDoPush {
   title: string;
   body: string;
   tag?: string;
   url?: string;
   data?: Record<string, unknown>;
-}): Promise<ResultadoDoEnvio> {
+}
+
+export async function enviarParaTodos(payload: ConteudoDoPush): Promise<ResultadoDoEnvio> {
+  return enviar({}, payload);
+}
+
+/**
+ * Manda só para os aparelhos inscritos por estes perfis (`catflix`,
+ * `hburso`). É o envio das notificações das pessoas — o lembrete do ingresso
+ * — em vez dos alertas operacionais, que vão para todo aparelho.
+ *
+ * `ttl` é quanto o serviço de push segura a mensagem se o celular estiver
+ * desligado: um lembrete que chega depois da sessão não serve para nada.
+ */
+export async function enviarParaPerfis(
+  perfis: string[],
+  payload: ConteudoDoPush,
+  opcoes: { ttl?: number } = {},
+): Promise<ResultadoDoEnvio> {
+  if (perfis.length === 0) return { enviados: 0, expirados: 0, falhas: 0, semInscricao: true };
+  return enviar({ userId: { in: perfis } }, payload, opcoes);
+}
+
+async function enviar(
+  filtro: { userId?: { in: string[] } },
+  payload: ConteudoDoPush,
+  opcoes: { ttl?: number } = {},
+): Promise<ResultadoDoEnvio> {
   if (!pushConfigurado()) {
     log.warn('Web Push sem chaves VAPID: nada enviado');
     return { enviados: 0, expirados: 0, falhas: 0, semInscricao: true };
   }
 
   const inscricoes = await prisma.pushSubscription.findMany({
-    where: { expiredAt: null },
+    where: { expiredAt: null, ...filtro },
     select: { id: true, endpoint: true, p256dh: true, auth: true },
   });
 
@@ -146,7 +173,7 @@ export async function enviarParaTodos(payload: {
           keys: { p256dh: inscricao.p256dh, auth: inscricao.auth },
         },
         corpo,
-        { TTL: 3600 },
+        { TTL: opcoes.ttl ?? 3600 },
       );
 
       await prisma.pushSubscription.update({

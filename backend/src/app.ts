@@ -8,6 +8,7 @@ import { syncRoutes } from './modules/sync';
 import { tagsRoutes } from './modules/tags';
 import { libraryRoutes } from './modules/library';
 import { commentsRoutes } from './modules/comments';
+import { ticketsRoutes } from './modules/tickets';
 import { importacaoRoutes } from './modules/importacao';
 import { watchesRoutes } from './modules/watches';
 import { watchlistRoutes } from './modules/watchlist';
@@ -102,6 +103,7 @@ export function createApp(): Express {
   app.use('/api', watchesRoutes);
   app.use('/api', watchlistRoutes);
   app.use('/api', commentsRoutes);
+  app.use('/api', ticketsRoutes);
   // importação do Crônicas de Gatur pela tela (§11)
   app.use('/api', importacaoRoutes);
 
