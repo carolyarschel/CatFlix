@@ -49,7 +49,7 @@ describe('itemDaVisualizacao', () => {
         totais: { duracaoMin: 166 },
         metadados: { generos: ['Aventura', 'Ficção científica'] },
       },
-      inicio: '2026-11-20T00:00:00.000Z',
+      inicio: '2026-11-20',
       precisaoInicio: 'DIA',
       participantes: ['BEAR', 'CAT'],
       notas: [

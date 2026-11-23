@@ -284,7 +284,7 @@ GET /gatur-feed/v1/eventos?desde=<ISO>&cursor=<opaco>      # token de serviço d
 
 **Feito em 23/11/2026** (`backend/src/modules/feed/`, tipos do contrato copiados do CG em `feed.types.ts`):
 - **Categoria pelo local**, e não `filme.assistido`: `CINEMA` → `filme.cinema`, `CASA` → `filme.casa`, as categorias já combinadas no contexto do CG (seção 7 dele). O local vai na própria categoria.
-- `idNaFonte = watch:<id>`; `inicio`/`precisaoInicio` = `watchedOn`/`datePrecision`; `participantes` = `participants`.
+- `idNaFonte = watch:<id>`; `inicio`/`precisaoInicio` = `watchedOn` **sem hora** (`"AAAA-MM-DD"`: como instante, a meia-noite UTC cairia no dia anterior no CG)/`datePrecision`; `participantes` = `participants`.
 - Obra: `title`, `originalTitle` (só se diferente), `year`, `posterUrl`, ids `TMDB`/`IMDB`, `totais.duracaoMin` = `runtimeMinutes` (o "tempo de filme" do CG sai daí) e `metadados.generos` (para a retrospectiva do CG).
 - Notas: as `Rating` não removidas de cada pessoa, `escalaMax: 10`, com o `Comment` dela junto. Comentário sem nota não vai (o contrato exige `valor`).
 - `atualizadoEm` = o maior entre a visualização, o título, as notas e os comentários do filme (calculado no SQL). Paginação: `desde` inclusivo + cursor opaco; `limite` padrão 100, máximo 500; parâmetro inválido → 400.

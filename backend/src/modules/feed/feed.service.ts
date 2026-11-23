@@ -138,7 +138,9 @@ export function itemDaVisualizacao(w: VisualizacaoDoFeed, atualizadoEm: Date): F
       // Para a retrospectiva do CG (gênero mais assistido, seção 11.3 do contexto dele).
       ...(generos.length > 0 ? { metadados: { generos } } : {}),
     },
-    inicio: w.watchedOn.toISOString(),
+    // Data de calendário SEM hora ("AAAA-MM-DD"): `watchedOn` é @db.Date (meia-noite UTC), e como
+    // instante ela cairia no dia anterior no fuso do CG.
+    inicio: w.watchedOn.toISOString().slice(0, 10),
     precisaoInicio: w.datePrecision,
     participantes: [...new Set(w.participants)].sort(),
     ...(notas.length > 0 ? { notas } : {}),
