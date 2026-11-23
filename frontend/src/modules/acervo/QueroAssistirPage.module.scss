@@ -62,22 +62,29 @@
   color: t.$accent-on-soft;
 }
 
-// ── trilhas ─────────────────────────────────────────────────
+// ── grade ───────────────────────────────────────────────────
 
-.trilhas {
+.conteudo {
   flex: 1;
+  padding: 0 t.$gutter;
   display: flex;
   flex-direction: column;
-  gap: t.$space-9;
+  gap: t.$space-8;
 
   &[aria-busy='true'] {
     opacity: 0.6;
   }
 }
 
+// a mesma grade dos Assistidos: 2 colunas no celular, 4 no desktop
+.grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: t.$space-4;
+}
+
 .aviso {
   margin: t.$space-10 auto;
-  padding: 0 t.$gutter;
   color: t.$text-support;
   text-align: center;
   line-height: t.$lh-body;
