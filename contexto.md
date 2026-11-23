@@ -325,7 +325,7 @@ Não implementar agora. A arquitetura já prepara:
 
 ## 14. Crônicas de Gatur
 
-Adiado por decisão da Carol. Não implementar. Apenas não tomar decisões que impeçam: o estado "marcado" vive em `UserTitleState`, e a origem futura dessa marcação poderá ser um adapter em `integrations/`.
+~~Adiado por decisão da Carol. Não implementar.~~ **Atualizado em 23/11/2026:** o Cineon expõe o feed para o CG (Contrato de Feed v1), a partir das visualizações (`Watch`) da expansão. Detalhes em `cineon-expansao/contexto-expansao.md`, seção 10.2.
 
 Referência do outro projeto, caso seja útil depois: Node.js/Express, PostgreSQL, React 18/Vite, autenticação JWT.
 

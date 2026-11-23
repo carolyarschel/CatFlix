@@ -12,6 +12,7 @@ import { ticketsRoutes } from './modules/tickets';
 import { importacaoRoutes } from './modules/importacao';
 import { watchesRoutes } from './modules/watches';
 import { watchlistRoutes } from './modules/watchlist';
+import { feedRoutes } from './modules/feed';
 import { authRoutes, exigirPerfil, lerSessao, portao, usersRoutes } from './modules/users';
 import { authConfigurada, isProduction } from './config/env';
 import { prisma } from './shared/prisma';
@@ -85,6 +86,10 @@ export function createApp(): Express {
     if (isProduction) throw new Error(recado);
     log.warn(recado);
   }
+
+  // Feed do Crônicas de Gatur (cineon-expansao §10.2): quem chama é o backend do CG, com
+  // token de serviço do Portão, não uma pessoa com sessão. Por isso fica antes do exigirPerfil.
+  app.use('/api', feedRoutes);
 
   app.use('/api', exigirPerfil);
 

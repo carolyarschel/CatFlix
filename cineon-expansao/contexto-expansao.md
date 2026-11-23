@@ -282,6 +282,17 @@ GET /gatur-feed/v1/eventos?desde=<ISO>&cursor=<opaco>      # token de serviço d
 - **A lista "quero assistir" não vai para o feed.** A timeline é do que aconteceu.
 - Esta parte pode ser a última da fase. O CG é o último app a ser construído.
 
+**Feito em 23/11/2026** (`backend/src/modules/feed/`, tipos do contrato copiados do CG em `feed.types.ts`):
+- **Categoria pelo local**, e não `filme.assistido`: `CINEMA` → `filme.cinema`, `CASA` → `filme.casa`, as categorias já combinadas no contexto do CG (seção 7 dele). O local vai na própria categoria.
+- `idNaFonte = watch:<id>`; `inicio`/`precisaoInicio` = `watchedOn`/`datePrecision`; `participantes` = `participants`.
+- Obra: `title`, `originalTitle` (só se diferente), `year`, `posterUrl`, ids `TMDB`/`IMDB`, `totais.duracaoMin` = `runtimeMinutes` (o "tempo de filme" do CG sai daí) e `metadados.generos` (para a retrospectiva do CG).
+- Notas: as `Rating` não removidas de cada pessoa, `escalaMax: 10`, com o `Comment` dela junto. Comentário sem nota não vai (o contrato exige `valor`).
+- `atualizadoEm` = o maior entre a visualização, o título, as notas e os comentários do filme (calculado no SQL). Paginação: `desde` inclusivo + cursor opaco; `limite` padrão 100, máximo 500; parâmetro inválido → 400.
+- Série (hoje não existe): obra `SERIE`, sem categoria, até o CG definir as de série.
+- Rota `GET /api/gatur-feed/v1/eventos`, montada **antes** do `exigirPerfil`, protegida por `portao.exigirServico('feed:read')` (`gatur-portao-client` v0.2.0). `aud` = `PORTAO_RECURSO` (padrão: `PORTAO_URL_DO_APP` em produção). Sem Portão ligado ou, em dev, sem `PORTAO_RECURSO`, o feed responde `503 FEED_SEM_CONFIGURACAO` e o resto do app sobe normal.
+- **No Portão:** `npm run app:registrar -- --slug cineon --expoe-feed` (e `-- --slug cg --le-feed`).
+- Testado de ponta a ponta com o banco de dev (só leitura): Portão local → este feed → sync do CG. As 97 visualizações passam na validação do CG, a paginação de 10 em 10 bate com a página única e o sync criou 96 eventos (1 foi para a revisão do CG, por título parecido sem ID externo). Testes de unidade em `feed.service.test.ts`.
+
 ---
 
 ## 11. Histórico dos filmes já assistidos
@@ -316,7 +327,7 @@ Datas incompletas usam `precisaoData`. Quem participou: no CG antigo, rosa é a 
 7. "Onde assistir" (seção 6) e a tela "Sobre" com as atribuições.
 8. Importação do histórico, se a Carol aprovar.
 9. Login pelo Portão (seção 10.1), se o pacote estiver pronto.
-10. Feed para o CG (seção 10.2).
+10. Feed para o CG (seção 10.2). **Feito em 23/11/2026.**
 
 ---
 
@@ -328,9 +339,10 @@ TMDB_FALLBACK_LANGUAGE=en-US
 TMDB_REGION=BR
 OMDB_DAILY_QUOTA=900
 JUSTWATCH_SEARCH_URL=        # [VERIFICAR] endereço da busca do JustWatch Brasil
-PORTAO_ISSUER=https://portao.gatourso.com
-PORTAO_CLIENT_ID=
+PORTAO_ISSUER=https://gate.gatourso.com/api/auth
+PORTAO_CLIENT_KEY=
 PORTAO_CLIENT_SECRET=
+PORTAO_RECURSO=https://cineon.gatourso.com   # aud do token de serviço do feed do CG (obrigatória em dev para o feed)
 ```
 
 ---

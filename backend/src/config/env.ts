@@ -133,6 +133,12 @@ const envSchema = z
     PORTAO_SEGREDO: z.string().min(32, 'PORTAO_SEGREDO precisa de 32+ caracteres').optional(),
     /** Só em dev: aceita `X-Dev-Papel: CAT|BEAR` sem login. Proibido em produção. */
     PORTAO_DEV: z.string().optional(),
+    /**
+     * Origem de PRODUÇÃO (https://cineon.gatourso.com): o `aud` do token de serviço
+     * do feed do CG. Em produção o padrão é o PORTAO_URL_DO_APP; em dev, sem ela,
+     * o feed responde 503.
+     */
+    PORTAO_RECURSO: z.string().url().optional(),
 
     // matching (§7.2) — limiares em configuração, nunca hardcoded
     MATCH_AUTO_THRESHOLD: z.coerce.number().min(0).max(1).default(0.92),
@@ -243,6 +249,8 @@ export interface ConfigDoPortao {
   urlDoApp: string;
   segredo: string;
   modoDev: boolean;
+  /** aud do token de serviço do feed (ver PORTAO_RECURSO). */
+  recurso?: string;
 }
 
 /**
@@ -267,6 +275,7 @@ export function configDoPortao(): ConfigDoPortao | null {
     urlDoApp: env.PORTAO_URL_DO_APP!,
     segredo: env.PORTAO_SEGREDO!,
     modoDev: env.PORTAO_DEV === 'true',
+    ...(env.PORTAO_RECURSO ? { recurso: env.PORTAO_RECURSO } : {}),
   };
 }
 
